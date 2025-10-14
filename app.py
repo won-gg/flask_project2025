@@ -41,7 +41,7 @@ def reg_item_submit_post():
 
     # 결과 페이지로 넘김
     return render_template(
-        "submit_item_result.html",
+        "result.html",
         data={
             "name": name,
             "seller": seller,
