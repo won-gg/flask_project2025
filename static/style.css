@@ -1,0 +1,55 @@
+/* 전체 기본 설정 */
+body {
+  margin: 0;
+  font-family: "Helvetica", "Arial", sans-serif;
+}
+
+/* 네비게이션 바 스타일 */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #CCFFCC; /* 연두 */
+  padding: 15px 40px;
+}
+
+/* 로고 영역 */
+.navbar_logo a {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* 메뉴 영역 */
+.navbar_menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+/* 메뉴 항목 */
+.navbar_menu li {
+  margin-left: 25px;
+}
+
+/* 메뉴 링크 스타일 */
+.navbar_menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+/* 마우스 올렸을 때 효과 */
+.navbar_menu a:hover {
+  color: #9fc3ff; /* 밝은 파란색 */
+}
+
+/* 본문 내용 */
+section, p {
+  padding: 20px 40px;
+  color: #333;
+  font-size: 18px;
+}

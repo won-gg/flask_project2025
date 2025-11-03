@@ -38,27 +38,42 @@ def reg_item():
 def reg_review():
   return render_template("reg_reviews.html")
 
-@application.route("/submit_item")
-def reg_item_submit():
-  name=request.args.get("name")
-  seller=request.args.get("seller")
-  addr=request.args.get("addr")
-  email=request.args.get("email")
-  category=request.args.get("category")
-  card=request.args.get("card")
-  status=request.args.get("status")
-  phone=request.args.get("phone")
-  print(name,seller,addr,email,category,card,status,phone)
-  #return render_template("reg_item.html")
-
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
-  image_file=request.files["file"]
-  image_file.save("static/images/{}".format(image_file.filename))
-  data=request.form
-  DB.insert_item(data['name'], data, image_file.filename)
-  return render_template("submit_item_result.html", data=data, img_path=
-  "static/images/{}".format(image_file.filename))
+    # 파일 받기
+    image_file = request.files["file"]
+    image_path = f"static/images/{image_file.filename}"
+    image_file.save(image_path)
+
+    # 폼 데이터 받기
+    name = request.form.get("name")
+    seller = request.form.get("seller")
+    addr = request.form.get("addr")
+    email = request.form.get("email")
+    category = request.form.get("category")
+    card = request.form.get("card")
+    status = request.form.get("status")
+    phone = request.form.get("phone")
+
+    # 잘 들어왔는지 확인
+    print(name, seller, addr, email, category, card, status, phone)
+
+    # 결과 페이지로 넘김
+    return render_template(
+        "result.html",
+        data={
+            "name": name,
+            "seller": seller,
+            "addr": addr,
+            "email": email,
+            "category": category,
+            "card": card,
+            "status": status,
+            "phone": phone,
+        },
+        img_path=image_path
+    )
+
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
