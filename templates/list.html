@@ -1,5 +1,104 @@
 {% extends "index.html" %}
 
 {% block section %}
-  등록된 상품 리스트 조회 화면 입니다.
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>전체 상품 조회</title>
+  <link rel="stylesheet" href="../static/items_style.css" />
+</head>
+<body>
+  <main>
+    <!-- 좌측 카테고리 -->
+    <aside class="category">
+      <a href="{{ url_for('reg_item') }}">
+        <button class="newItem-btn" type="button">
+        <span class="plus">+</span>
+        <span>상품 등록하기</span>
+      </button>
+      </a>
+
+      <nav class="ctgy-list">
+        <a class="ctgy active" href="#all">All</a>
+        <a class="ctgy" href="#clothes">Clothes</a>
+        <a class="ctgy" href="#books">Books</a>
+        <a class="ctgy" href="#digitals">Digitals</a>
+        <a class="ctgy" href="#etc">Etc</a>
+      </nav>
+    </aside>
+
+    <!-- 우측 상품 목록 -->
+    <section class="item-list">
+      <div class="grid">
+  
+  {% for item_id, item in items.items() %}
+  <article class="item" data-cat="{{ item.category }}">
+    <a href="/item_detail?id={{ item_id }}">
+      <div class="item-img-div">
+        <img class="thumb-img" 
+             src="{{ url_for('static', filename=item.image_path) }}" 
+             alt="{{ item.title }}">
+      </div>
+      <div class="item-body">
+        <div class="title">{{ item.title }}</div>
+        <div class="caption">
+          <div class="price">₩ {{ "{:,.0f}".format(item.price) }}</div> 
+          <div class="views">방문 {{ item_id * 10 + 6 }}</div>
+        </div>
+      </div>
+    </a>
+  </article>
+  {% endfor %}
+  </div>
+
+      <!-- 페이지네이션 -->
+      <nav class="item-pagination" aria-label="페이지 이동">
+        <button class="page-btn" aria-label="맨앞">«</button>
+        <button class="page-btn">‹</button>
+        <button class="page-btn">1</button>
+        <button class="page-btn current" aria-current="page">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">4</button>
+        <button class="page-btn">5</button>
+        <button class="page-btn">›</button>
+        <button class="page-btn" aria-label="맨뒤">»</button>
+      </nav>
+    </section>
+  </main>
+</body>
+<script>
+(() => {
+  const links = document.querySelectorAll('.ctgy-list .ctgy');
+  const items = document.querySelectorAll('.item-list .item');
+
+  // 현재 카테고리 표시 함수
+  const show = cat => {
+    const target = cat.toLowerCase();
+    items.forEach(it => {
+      const cats = (it.dataset.cat || '').toLowerCase().split(/\s*[,\s]\s*/);
+      it.style.display = (target === 'all' || cats.includes(target)) ? '' : 'none';
+    });
+
+    links.forEach(link => {
+      link.classList.toggle('active', link.hash === '#' + target);
+    });
+  };
+
+  // 이벤트 바인딩
+  links.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const cat = link.hash.slice(1).toLowerCase();
+      show(cat);
+      history.replaceState(null, '', link.hash);
+    });
+  });
+
+  // 초기 표시 (주소 해시 기준)
+  show((location.hash || '#all').slice(1));
+})();
+</script>
+</html>
 {% endblock section %}

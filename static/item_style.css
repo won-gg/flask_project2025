@@ -1,0 +1,264 @@
+*{ 
+  box-sizing:border-box; 
+}
+
+.detail-page{ 
+  padding:24px 170px 30px; 
+}
+
+.detail-grid{ 
+  display:grid; 
+  grid-template-columns:minmax(480px, 620px) 1fr; 
+  gap:56px; 
+  align-items:stretch; 
+}
+
+.detail-media{ 
+  position:relative; 
+  background:#fff; 
+  border-radius:17px; 
+  overflow:hidden; 
+  aspect-ratio: 1 / 1;
+  padding: 0;
+}
+
+.detail-img{ 
+  display:block; 
+  width: 100%; 
+  height: 100%;           
+  object-fit: cover;      
+  object-position: center;
+}
+
+.arrow{ 
+  position:absolute; 
+  top:50%; 
+  transform:translateY(-50%); 
+  width: clamp(36px, 4vw, 50px);
+  height: clamp(36px, 4vw, 50px);
+  border:none; 
+  border-radius:50%; 
+  background:rgba(255,255,255); 
+  opacity: 0.5;
+  cursor:pointer; 
+  color : rgba(0,0,0); 
+  font-size: clamp(18px, 2.2vw, 25px);
+}
+
+.arrow.left{ 
+  left:10px; 
+}
+
+.arrow.right{ 
+  right:10px; 
+}
+
+.pager{ 
+  position:absolute; 
+  bottom:10px; 
+  left:50%; 
+  transform:translateX(-50%); 
+  font-size:15px; 
+  font-weight: 400;
+  background:rgba(255,255,255);
+  opacity: 0.5;
+  padding:4px 10px; 
+  border-radius:17px; 
+}
+
+/* 우측 상품 정보 */
+.detail-info{ 
+  display:flex; 
+  flex-direction:column; 
+  gap:10px;
+  flex-grow: 1;
+  max-width: 450px;
+}
+
+.detail-info .category{ 
+  color:#B9B9B9; 
+  font-size:16px; 
+}
+
+.detail-info .title{ 
+  font-size:32px; 
+  margin:0 0 20px 0;
+}
+
+.detail-info .price{ 
+  color:#36AE92; 
+  font-weight:800; 
+  font-size: clamp(20px, 3vw, 30px);  
+  margin-bottom: 10px;
+}
+
+.trade{ 
+  display:flex; 
+  align-items:center; 
+  text-align: left;
+  gap:10px; 
+  margin-bottom: 10px;
+}
+
+.trade .dliv{ 
+  display:inline-block; 
+  padding:4px 8px; 
+  border-radius:6px; 
+  color:#B9B9B9; 
+  font-weight:700; 
+  font-size:24px; 
+  opacity:.4; 
+  line-height: 1;
+}
+
+.trade .dliv.on{ 
+  color: #36AE92;
+  opacity:1; 
+}
+
+.trade .or{ 
+  color:#B9B9B9; 
+  font-weight:700; 
+}
+
+.trade .fee-extra{ 
+  color:#36AE92; 
+  font-size:16px; 
+  font-weight: 600;
+}
+
+.seller-title{
+  font-size: 12px;
+  color:#000;
+  display: flex;
+  flex-direction: column;
+  position:relative;
+  gap: 0;
+}
+.seller-title h3{
+  margin-bottom: 8px;
+  padding-left: 10px;
+  font-weight: 550;
+}
+.seller-card{ 
+  border:1px solid #757575; 
+  border-radius:17px; 
+  background:#f7f7f7; 
+  padding: 12px 12px 0 12px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position:relative; 
+
+}
+
+.seller-row{ 
+  display:flex; 
+  align-items:center; 
+  gap:0;
+  margin-bottom:8px; 
+  flex-shrink: 0;
+
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  margin-right: 20px
+}
+
+.seller{ 
+  width:39px; 
+  height:39px; 
+  border-radius:50%; 
+  background:url('seller.png') center / cover;
+  margin-left: 0;
+}
+
+.seller-name{ 
+  font-weight:400; 
+  font-size: 16px;
+}
+
+.grade{ 
+  margin-left:40px; 
+  color:#36AE92; 
+  font-weight:800; 
+  font-size: 18px;
+}
+
+.eval-btn{ 
+  width: 149.108px;
+  height: 44px;
+  border:1px solid #757575; 
+  background:#f7f7f7; 
+  color:#000; 
+  border-radius:17px; 
+  padding:6px 10px;
+  margin-left: auto;
+  margin-bottom: 5px;
+  cursor:pointer; 
+  font-weight: 400;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.memo {
+  border-top: 1px solid #757575;
+  width: auto;
+  min-height: 133px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  overflow-y: auto;
+  padding: 20px 12px;
+}
+
+/* 총 금액&버튼: detail-info 하단 고정 */
+.total{ 
+  margin-top: auto; 
+  margin-bottom: 20px;
+  display:flex; 
+  align-items:baseline;
+  gap:10px; 
+  font-size: 25px;
+}
+
+.total .label { 
+  font-weight:700;
+  font-size: 25px;
+  color: #000;
+}
+
+.total price {
+  color: #36AE92;
+  font-weight: 800;
+}
+
+.total .hint{ 
+  color:#757575; 
+  font-size:18px; 
+  margin-left: -5px;
+  justify-content: center;
+}
+
+.buy-btn{ 
+  margin-top:10px; 
+  width: 284px;
+  height: 62px;
+  border:none; 
+  border-radius:12px; 
+  cursor:pointer; 
+  background:#155724; 
+  color:#fff; 
+  font-weight:600; 
+  font-size: 20px;
+  margin-bottom: 0;
+  align-items:flex-end;
+}
