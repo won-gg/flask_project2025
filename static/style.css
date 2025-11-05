@@ -25,12 +25,12 @@ a:hover, a:focus {
   justify-content: space-between;
   align-items: center;
   background-color: #F7F7F7;
+  min-width: 900px;
 }
 
 .navbar__left {
   display: flex;
   align-items: center;
-  gap: 40px;
   padding-right: 20px;
 }
 
@@ -64,10 +64,12 @@ a:hover, a:focus {
 }
 
 .navbar__right {
-  display: inline-flex;
-  padding: 20px 10px;
+  display: flex;
   align-items: center;
+  justify-content: flex-end;
+  padding: 20px 10px;
   gap: 20px;
+  
 }
 
 .login_button, .signup_button {
@@ -86,9 +88,15 @@ a:hover, a:focus {
   border-radius: 17px;
   border: 1px solid rgba(21, 87, 36, 0.28);
   background: #FFF;
+  white-space: nowrap;
+}
+
+.login_button {
+  width: 60px;
 }
 
 .signup_button {
+  width: 80px;
   color: #FFF;
   border-radius: 17px;
   background: var(--main, #155724);
@@ -96,6 +104,10 @@ a:hover, a:focus {
 
 .login_button:hover a, .signup_button:hover a {
   text-decoration: none;
+}
+
+.navbar__toogleBtn {
+  display: none;
 }
 
 footer {
@@ -112,7 +124,6 @@ footer {
 footer p {
   color: #B7B7B7;
   text-align: center;
-  font-family: Pretendard;
   font-size: 14px;
   font-weight: 400;
   padding: 0%;
