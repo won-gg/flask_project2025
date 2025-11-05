@@ -47,14 +47,12 @@ def register_user():
     return render_template("signup.html")
 @application.route("/list")
 def view_list():
-  ## 🛠️ 2. list.html에 item_data를 'items'라는 이름으로 전달
   return render_template("list.html", items=item_data)
 
 @application.route("/item_detail")
 def view_item_detail():
-  ## 🛠️ 3. item_detail에 ID를 받아 해당 상품의 상세 정보를 전달
-  item_id = request.args.get('id', 1, type=int) # ID를 받아옴. 기본값은 1
-  item = item_data.get(item_id, item_data[1]) # ID에 해당하는 데이터를 가져옴
+  item_id = request.args.get('id', 1, type=int)
+  item = item_data.get(item_id, item_data[1]) 
 
   return render_template(
     "item_detail.html",

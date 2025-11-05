@@ -112,11 +112,11 @@
 
   const hintEl = document.querySelector('.total .hint');
     if (hintEl) {
-        // feeApplied가 0이면 (즉, 직거래이면) 힌트 숨기기
+        // 직거래이면 힌트 숨기기
         if (feeApplied === 0) {
             hintEl.style.display = 'none';
         } else {
-            hintEl.style.display = 'inline'; // 힌트 다시 표시 (기본값)
+            hintEl.style.display = 'inline';
         }
     }
 

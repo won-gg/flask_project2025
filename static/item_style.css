@@ -66,7 +66,7 @@
   border-radius:17px; 
 }
 
-/* 우측 정보: Flexbox를 사용하여 하단 요소 고정 */
+/* 우측 상품 정보 */
 .detail-info{ 
   display:flex; 
   flex-direction:column; 
@@ -220,7 +220,7 @@
   padding: 20px 12px;
 }
 
-/* 총 금액&버튼: detail-info의 하단에 고정 */
+/* 총 금액&버튼: detail-info 하단 고정 */
 .total{ 
   margin-top: auto; 
   margin-bottom: 20px;
