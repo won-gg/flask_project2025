@@ -1,0 +1,75 @@
+{% extends "index.html" %}
+{% block section %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+<section class="profile-section">
+  <div class="profile-container">
+    <!-- 왼쪽 사용자 정보 -->
+    <div class="user-info">
+      <div class="profile-img"></div>
+      <p class="user-name">김이화</p>
+
+      <div class="user-stats">
+        <div><span>매너 학점</span><strong>B+</strong></div>
+        <div><span>판매 수</span><strong>21개</strong></div>
+        <div><span>리뷰 수</span><strong>17개</strong></div>
+      </div>
+
+      <button class="review-btn">내가 쓴 리뷰 ></button>
+    </div>
+
+    <!-- 오른쪽 상품 정보 -->
+    <div class="product-section">
+      <!-- 내가 판 상품 -->
+      <div class="items-list">
+        <h3>내가 판 상품</h3>
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+          </div>
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+          </div>
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+          </div>
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 내가 산 상품 -->
+      <div class="items-list">
+        <h3>내가 산 상품</h3>
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+            <button class="write-review">리뷰 쓰기</button>
+          </div>
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+            <button class="write-review disabled">리뷰 작성 완료</button>
+          </div>
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+            <button class="write-review">리뷰 쓰기</button>
+          </div>
+          <div class="product-card">
+            <div class="product-img"></div>
+            <p class="product-title">상품 이름</p>
+            <button class="write-review">리뷰 쓰기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

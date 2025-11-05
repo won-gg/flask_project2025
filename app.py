@@ -101,5 +101,9 @@ def reg_item_submit_post():
 
     return render_template("result.html", data= data, img_path = "static/images/{}".format(image_file.filename))
 
+@application.route("/profile")
+def profile():
+  return render_template("profile.html")
+
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
