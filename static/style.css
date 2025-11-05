@@ -98,13 +98,6 @@ a:hover, a:focus {
   text-decoration: none;
 }
 
-/* 본문 내용 */
-section, p {
-  padding: 20px 40px;
-  color: #333;
-  font-size: 18px;
-}
-
 footer {
   display: flex;
   width: 100%;
