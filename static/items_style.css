@@ -1,7 +1,3 @@
-
-*{ box-sizing:border-box;}
-
-
 /*  메인 레이아웃 (왼쪽 카테고리 + 오른쪽 상품 목록)  */
 main{
   max-width: 100%;
