@@ -1,0 +1,142 @@
+
+*{ box-sizing:border-box;}
+
+
+/*  메인 레이아웃 (왼쪽 카테고리 + 오른쪽 상품 목록)  */
+main{
+  max-width: 100%;
+  margin:40px auto 60px;
+  padding:0 170px;
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:32px;
+}
+
+/*  카테고리  */
+.category{
+  position:sticky;
+  top:24px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:20px;
+}
+.newItem-btn{
+  width:205px;
+  height:68px;
+  border:none;
+  border-radius:17px;
+  background:#36AE92;
+  color:#fff;
+  font-size: 20px;
+  font-weight:500;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.newItem-btn .plus{
+  display:inline-grid;
+  place-items:center;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  font-weight:900;
+}
+.ctgy-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.ctgy{
+  font-size:18px;
+  letter-spacing:.2em;
+  padding:8px 6px;
+}
+.ctgy.active{ color:#36AE92; font-weight:700; }
+
+/*  상품 리스트  */
+.item-list{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+  min-height: 65vh;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:24px;
+}
+.item{
+  overflow:hidden;
+}
+.item .item-img-div{
+  width:100%;
+  aspect-ratio:1/1;
+  overflow:hidden;
+  background:#ddd;
+  border-radius:17px;
+
+}
+.item .thumb-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.item .item-body{
+  padding:12px 12px 14px;
+}
+.item .title{
+  font-size:15px;
+  color:#000;
+  font-weight:500;
+  margin-bottom:6px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.item .caption{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.item .price{
+  color:#36AE92;
+  font-size:16px;
+  font-weight:700;
+}
+.item .views{
+  color:#757575;
+  font-size:11px;
+}
+
+/*  페이지네이션  */
+.item-pagination{
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin-top:auto;
+}
+.page-btn{
+  min-width:34px;
+  height:34px;
+  border:1px solid #cfd4d9;
+  background:#fff;
+  border-radius:6px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  font-size:14px;
+  color:#222;
+}
+.page-btn:hover{ background:#f4f6f8; }
+.page-btn.current{
+  background:#D9D9D9;
+  color:#000;
+  border-color:#B9B9B9;
+}

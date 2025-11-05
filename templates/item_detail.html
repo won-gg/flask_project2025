@@ -1,0 +1,126 @@
+{% extends "index.html" %}
+
+{% block section %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>세부 상품 조회</title>
+  <link rel="stylesheet" href="../static/item_style.css" />
+</head>
+<main class="detail-page" 
+      data-price="{{ price|default(30000) }}" 
+      data-fee="{{ fee|default(2500) }}"
+      data-trade="{{ trade|default('delivery') }}">  {# 'direct' or 'delivery' #}
+
+  <div class="detail-grid">
+    <section class="detail-media">
+      <img class="detail-img" 
+           src="{{ url_for('static', filename=image_path|default('images/list/item-img5.jpg')) }}" 
+           alt="{{ title|default('상품 이미지') }}">
+      <button class="arrow left" aria-label="이전">‹</button>
+      <button class="arrow right" aria-label="다음">›</button>
+      <div class="pager">2 / 6</div>
+    </section>
+
+    <aside class="detail-info">
+      <a href="{{ url_for('view_list') }}#{{ category|default('books') }}">
+      <div class="category">{{ category|default('Books') }} &gt;</div>
+      </a>
+      <h1 class="title">{{ title|default('국제법_김영석 저') }}</h1>
+      <div class="price" id="mainPrice" data-price="{{ price|default(30000) }}"></div>
+
+      <div class="trade">
+        <span class="dliv {{ 'on' if trade|default('delivery') == 'direct' else '' }}">직거래</span>
+        <span class="or">/</span>
+        <span class="dliv {{ 'on' if trade|default('delivery') == 'delivery' else '' }}">택배 거래</span>
+        <div class="fee-extra" id="feeExtra"></div>
+      </div>
+      
+      <div class="seller-title"><h3>판매자 정보</h3></div>
+      <div class="seller-card">
+        <div class="seller-row">
+          <div class="seller-info">
+            <div class="seller" aria-hidden="true"></div>
+            <div class="seller-name">{{ seller|default('ewhaosp') }}</div>
+            <div class="grade">A+</div>
+          </div>
+          <button class="eval-btn" type="button">판매자 평가</button>
+        </div>
+        <p class="memo">
+          {{ description|default('작년 수업 시간에 사용한 교재입니다. 필기 하나도 안 되어 있고 거의 새 책입니다.') }}
+        </p>
+      </div>
+
+      <div class="total">
+        <span class="label">총 금액:</span>
+        <price id="totalPrice"></price>
+        <span class="hint">( <span id="rawPrice"></span> + <span id="rawFee"></span> )</span>
+      </div>
+
+      <button class="buy-btn" type="button">구매하기</button>
+    </aside>
+  </div>
+</main>
+
+<script>
+  // 가격 계산(직거래면 배송비(fee) 0)
+  (() => {
+  const $root = document.querySelector('.detail-page');
+  if (!$root) return;
+
+  // 기본 데이터 추출
+  const price = +$root.dataset.price || 0;
+  const fee = +$root.dataset.fee || 0;
+  const trade = ($root.dataset.trade || 'delivery').toLowerCase();
+
+  // 계산
+  const feeApplied = trade === 'delivery' ? fee : 0;
+  const total = price + feeApplied;
+
+  // ₩
+  const fmt = (n, withWon = false) =>
+    (withWon ? '₩ ' : '') + n.toLocaleString('ko-KR');
+
+  // DOM 요소 모음
+  const els = {
+    mainPrice: document.getElementById('mainPrice'),
+    feeExtra: document.getElementById('feeExtra'),
+    rawPrice: document.getElementById('rawPrice'),
+    rawFee: document.getElementById('rawFee'),
+    totalPrice: document.getElementById('totalPrice'),
+  };
+
+  // 메인 가격
+  if (els.mainPrice) els.mainPrice.textContent = fmt(price, true);
+
+  // 배송비 안내
+  if (els.feeExtra) {
+    if (trade === 'delivery') {
+      els.feeExtra.textContent = `(${fmt(fee, true)})`;
+      els.feeExtra.style.display = 'block';
+    } else {
+      els.feeExtra.style.display = 'none';
+    }
+  }
+
+  // 총 금액 관련
+  if (els.rawPrice) els.rawPrice.textContent = fmt(price);
+  if (els.rawFee) els.rawFee.textContent = fmt(feeApplied);
+  if (els.totalPrice) els.totalPrice.textContent = fmt(total, true);
+
+  const hintEl = document.querySelector('.total .hint');
+    if (hintEl) {
+        // feeApplied가 0이면 (즉, 직거래이면) 힌트 숨기기
+        if (feeApplied === 0) {
+            hintEl.style.display = 'none';
+        } else {
+            hintEl.style.display = 'inline'; // 힌트 다시 표시 (기본값)
+        }
+    }
+
+})();
+
+</script>
+{% endblock section %}
