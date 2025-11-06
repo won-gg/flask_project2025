@@ -7,7 +7,6 @@ html{
 .logo {
   text-align: center;
 }
-
 .logo img{
   width: 60px;
   margin-bottom: 10px;
@@ -39,6 +38,7 @@ button:hover,.submit-btn:hover,.login-btn:hover{
 
 .signup-container input[type="text"],
 .signup-container input[type="email"],
+
 .signup-container input[type="password"]{
   width: 100%;
   padding: 10px 14px;
@@ -105,6 +105,7 @@ button:hover,.submit-btn:hover,.login-btn:hover{
   margin-bottom: 4px;
 }
 
+
 .agreements span{
   color: #64b687;
   font-weight: 500;
@@ -113,6 +114,7 @@ button:hover,.submit-btn:hover,.login-btn:hover{
   color: #aaa;
   font-weight: 500;
 }
+
 .login-link{
   text-align: center;
   margin-top: 20px;
@@ -146,6 +148,7 @@ button:hover,.submit-btn:hover,.login-btn:hover{
   padding: 40px 50px;
   text-align: left;
 }
+
 .login-form{
   display: flex;
   flex-direction: column;
@@ -164,6 +167,7 @@ button:hover,.submit-btn:hover,.login-btn:hover{
   font-size: 14px;
   background-color: #fff;
 }
+
 .input-wrapper input:focus{
   outline: none;
   border-color: #64b687;
