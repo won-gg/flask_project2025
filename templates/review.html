@@ -7,7 +7,7 @@
 
 <main class="review-list">
   <div class="review-header">
-    <h2>전체 리뷰 조회 (리뷰 전체 개수)</h2>
+    <h2>전체 리뷰 조회 (8)</h2>
     <div class="filter-title">조건별 필터</div>
   </div>
 
@@ -38,37 +38,45 @@
 </main>
 
 <!-- ==============================
-     리뷰 상세 모달창
+     리뷰 상세 모달창 (새 구조)
 ================================== -->
 <div id="reviewModal" class="modal">
-  <div class="modal-content">
+  <div class="modal-content-box">
     <span class="close">&times;</span>
+    
+    <!-- 상단 이미지 4장 -->
+    <div class="image-row" id="modal-images"></div>
 
-    <div class="modal-header">
-      <img id="modal-image" src="" alt="리뷰 이미지">
-      <div class="modal-info">
-        <p id="modal-item" class="item-name"></p>
-        <p id="modal-rating" class="rating"></p>
-        <p id="modal-title" class="title"></p>
-      </div>
-    </div>
-
-    <div class="modal-body">
-      <p id="modal-content" class="content"></p>
-      <div id="modal-tags" class="tags"></div>
-    </div>
-
-    <div class="modal-footer">
-      <div class="author-section">
-        <div class="author-photo"></div>
-        <div>
-          <p id="modal-author" class="author-name"></p>
-          <p id="modal-author-rating" class="author-rating"></p>
+    <!-- 하단 좌우 영역 -->
+    <div class="bottom-section">
+      <!-- 왼쪽 내용 -->
+      <div class="left-content">
+        <div class="meta-info">
+          <p id="modal-item" class="item-name"></p>
+          <p id="modal-rating" class="rating"></p>
         </div>
+
+        <h2 id="modal-title" class="review-title"></h2>
+
+        <div class="review-content-box">
+          <p id="modal-content"></p>
+        </div>
+
+        <div class="hashtags" id="modal-tags"></div>
+      </div>
+
+      <!-- 오른쪽 작성자 프로필 -->
+      <div class="right-profile">
+        <div class="author-photo"></div>
+        <p id="modal-author" class="author-name"></p>
+        <p id="modal-author-rating" class="author-rating"></p>
       </div>
     </div>
   </div>
 </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='review_detail.css') }}">
+
+
 
 <!-- Flask에서 넘겨주는 데이터 -->
 <script id="reviewData" type="application/json">

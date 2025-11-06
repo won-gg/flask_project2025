@@ -1,49 +1,48 @@
 {% extends "index.html" %}
 
 {% block section %}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ review.title }} - 리뷰 상세보기</title>
-  <link rel="stylesheet" href="../static/review_detail.css" />
-</head>
+<main class="review-detail">
+  <link rel="stylesheet" href="{{ url_for('static', filename='review_detail.css') }}" />
 
-<body>
-  <main class="review-detail">
-    <div class="container">
-      <!-- 리뷰 이미지 -->
-      <div class="image-box">
-        <img src="{{ url_for('static', filename=review.image_path) }}" alt="리뷰 이미지" />
-      </div>
+  <div class="review-container">
 
-      <!-- 리뷰 본문 -->
-      <div class="content-box">
-        <h1 class="review-title">{{ review.title }}</h1>
-        <div class="review-meta">
-          <span class="review-author">작성자: {{ review.author }}</span>
-          <span class="review-rating">⭐ {{ review.rating }}/5</span>
+    <!-- 상단 이미지 4장 -->
+    <div class="image-row">
+      {% for i in range(4) %}
+        <img src="{{ url_for('static', filename=review.image_path) }}" alt="리뷰 이미지 {{ i + 1 }}">
+      {% endfor %}
+    </div>
+
+    <!-- 하단 본문 구역 -->
+    <div class="bottom-section">
+      <!-- 왼쪽: 리뷰 내용 -->
+      <div class="left-content">
+        <div class="meta-info">
+          <p class="item-name">{{ review.item_name }}</p>
+          <p class="rating">매너 학점: {{ review.rating }}</p>
         </div>
 
-        <p class="review-content">{{ review.content }}</p>
+        <h2 class="review-title">{{ review.title }}</h2>
+
+        <div class="review-content-box">
+          <p class="review-content">{{ review.content }}</p>
+        </div>
 
         <div class="hashtags">
           {% for tag in review.tags %}
             <span class="tag">#{{ tag }}</span>
           {% endfor %}
         </div>
+      </div>
 
-        <div class="author-stats">
-          <p>작성자의 평균 별점: ⭐ {{ review.author_avg_rating }}/5</p>
-        </div>
-
-        <div class="btn-area">
-          <a href="/review" class="back-btn">← 리뷰 목록으로</a>
-        </div>
+      <!-- 오른쪽: 작성자 정보 -->
+      <div class="right-profile">
+        <div class="author-photo"></div>
+        <p class="author-name">{{ review.author }}</p>
+        <p class="author-rating">작성자 매너 점수: {{ review.author_avg_rating }}</p>
       </div>
     </div>
-  </main>
-</body>
-</html>
+
+  </div>
+</main>
 {% endblock section %}

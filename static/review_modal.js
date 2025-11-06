@@ -22,15 +22,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const id = card.dataset.id;
         const data = reviewData[id];
         if (!data) return;
-  
-        modalImg.src = `/static/${data.image_path}`;
-        modalItem.textContent = data.item_name;
-        modalRating.textContent = `매너 학점: ${data.rating}`;
-        modalTitle.textContent = data.title;
-        modalContent.textContent = data.content;
-        modalAuthor.textContent = data.author;
-        modalAuthorRating.textContent = `작성자 매너 점수: ${data.author_rating}`;
-  
+    
+        // 이미지 4장 표시
+        const modalImages = document.getElementById("modal-images");
+        modalImages.innerHTML = Array(4).fill(0).map(() =>
+          `<img src="/static/${data.image_path}" alt="리뷰 이미지">`
+        ).join("");
+    
+        document.getElementById("modal-item").textContent = data.item_name;
+        document.getElementById("modal-rating").textContent = `매너 학점: ${data.rating}`;
+        document.getElementById("modal-title").textContent = data.title;
+        document.getElementById("modal-content").textContent = data.content;
+        document.getElementById("modal-author").textContent = data.author;
+        document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.author_rating}`;
+    
+        const modalTags = document.getElementById("modal-tags");
         modalTags.innerHTML = "";
         if (data.tags && data.tags.length > 0) {
           data.tags.forEach(tag => {
@@ -39,11 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
             modalTags.appendChild(span);
           });
         }
-  
-        modal.style.display = "block";
-        document.body.style.overflow = "hidden"; // 스크롤 잠금
+    
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
       });
     });
+    
+    
   
     // 닫기 버튼
     closeBtn.addEventListener("click", () => {
