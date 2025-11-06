@@ -1,0 +1,223 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+.logo {
+  text-align: center;
+}
+
+.logo img {
+  width: 60px;
+  margin-bottom: 10px;
+}
+
+.logo h1 {
+  font-size: 26px;
+  color: #155724;
+  margin: 5px 0;
+}
+.logo p {
+  color: #777;
+  font-size: 14px;
+}
+button,
+.submit-btn,
+.login-btn {
+  width: 100%;
+  background-color: #155724;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover,
+.submit-btn:hover,
+.login-btn:hover {
+  background-color: #0f3d1a;
+}
+
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #cdd0d4;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.signup-container input:focus {
+  outline: none;
+  border-color: #64b687;
+}
+
+/*회원가입 */
+.signup-container {
+  width: 430px;
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 40px auto; 
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.signup-container label, .login-container label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.id-check {
+  display: flex;
+  gap: 10px;
+}
+
+.check-btn {
+  width: auto; 
+  background-color: #64b687;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.check-btn:hover {
+  background-color: #529f73;
+}
+
+.agreements {
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.agreements label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.agreements span {
+  color: #64b687;
+  font-weight: 500;
+}
+.agreements .choice{
+  color: #aaa;
+  font-weight: 500;
+}
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-link a {
+  color: #64b687;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/*로그인 */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 0; 
+}
+
+.login-box {
+  width: 420px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 40px 50px;
+  text-align: left;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 36px 10px 14px; 
+  border: 1px solid #cdd0d4;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #fff;
+}
+.input-wrapper input:focus {
+  outline: none;
+  border-color: #64b687;
+}
+
+.input-wrapper input::placeholder {
+  color: #aaa;
+}
+
+.input-icon {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  color: #aaa; 
+  z-index: 2;
+}
+
+.option-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.find-link {
+  color: #155724;
+  text-decoration: none;
+}
+
+.find-link:hover {
+  text-decoration: underline;
+}
+
+.signup-row {
+  margin-top: 30px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signup-btn {
+  display: inline-block;
+  border: 1.5px solid #155724;
+  border-radius: 10px;
+  color: #155724;
+  padding: 8px 30px;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.signup-btn:hover {
+  background-color: #155724;
+  color: white;
+}
