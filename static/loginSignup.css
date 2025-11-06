@@ -4,12 +4,10 @@ html{
 *, *:before,*:after{
   box-sizing: inherit;
 }
-nav *, 
-.navbar *, 
-footer * {
+.navbar *,footer *{
   box-sizing: content-box !important;
 }
-.logo {
+.logo{
   text-align: center;
 }
 .logo img{
