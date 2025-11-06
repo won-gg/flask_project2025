@@ -1,63 +1,120 @@
  {% extends "index.html" %}
  
  {% block section %}
-<form action="/submit_item_post" method="post" enctype="multipart/form-data">
-<div><br><br>
-  <label for="name">Item name: </label>
-  <input type="text" name="name" id="name" required><br><br>
-</div>
-<div>
-<label for="seller"> Seller ID: </label>
-<input type="text" name="seller" id="seller" required><br><br>
-</div>
-<div>
-<label for="addr"> Address: </label>
-<input type="text" name="addr" id="addr" required><br><br>
-</div>
-<div>
-<label for="tel">Email: </label>
-<input type="text" name="email" id="email" required><br><br>
-</div>
-<div>
-<label for="category">Category: </label>
-<br>
-<select id="category" name="category">
-<option value="Clothes" selected> Clothes </option>
-<option value="Beauty"> Beauty </option>
-<option value="Books"> Books </option>
-<option value="Furniture"> Furniture </option>
-<option value="Electronics"> Electronics </option>
-<option value="ETC"> ETC </option>
-</select><br><br>
-</div>
-<div>
-<label for="card">Credit Card? (Y/N): </label>
-<br>
-<select id="card" name="card">
-<option value="Y" selected>Yes</option>
-<option value="N">No</option>
-</select><br><br>
-</div>
-<div>
-<label for="status">Status? </label>
-<br>
-<select id="status" name="status">
-<option value="new" selected>New</option>
-<option value="lnew">Likely New</option>
-<option value="used">Used</option>
-</select><br><br>
-</div>
-<div>
-<label for="phone">Phone : </label>
-<input type="text" name="phone" id="phone"><br><br>
-</div>
-<div>
-<input type="submit" value="Submit!"><br><br>
-</div>
-<div>
-<label for="img">Representative Image upload : </label>
-<input type="file" name="file" /><br><br>
-</div>
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 등록 화면</title>
+  <link rel="stylesheet" href="../static/reg_items_style.css">
+</head>
 
-</form>
+<body>
+  <main>
+
+    <form action="/submit_item_post" method="post" enctype="multipart/form-data">
+
+    <header class = "header">
+      <h1 class = "title">상품 등록</h1>
+      <p class = "description">판매하실 상품의 정보를 입력해주세요</p>
+    </header>
+
+    <!--판매자 정보-->
+    <section class = "container">
+      <h2 class = "heading">판매자 정보</h2>
+
+      <div class = "input">
+        <label class = "label" for="id">아이디 *</label>
+        <input class = "input_box" type="text" name="id" id="id" placeholder = "홍길동" required>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="tel">연락처 *</label>
+        <input class = "input_box" type="text" name="tel" id="tel" placeholder = "010-0000-0000" required>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="addr">주소 *</label>
+        <input class = "input_box" type="text" name="addr" id="addr" placeholder = "주소를 입력하세요" required>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="type">거래 방식 *</label>
+        <select class = "input_box" id="type" name="type" required>
+        <option value="" disabled selected hidden>원하시는 거래 방식을 선택하세요</option>
+        <option value="contact">직거래</option>
+        <option value="untact">택배거래</option>
+        </select>
+      </div>
+    </section>
+
+    <!--상품 정보-->
+    <section class = "container">
+      <h2 class = "heading">상품 정보</h2>
+
+      <div class = "input">
+        <label class = "label" for="item">상품명 *</label>
+        <input class = "input_box" type="text" name="item" id="item" placeholder = "상품명을 입력하세요" required>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="price">가격 *</label>
+        <input class = "input_box" type="number" name="price" id="price" placeholder = "0" min = "0" required>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="status">상품 상태 *</label>
+        <select class = "input_box" id="status" name="status" required>
+        <option value="" disabled selected hidden>상태를 선택하세요</option>
+        <option value="best">아주 좋음</option>
+        <option value="good">좋음</option>
+        <option value="fair">보통</option>
+        <option value="bad">나쁨</option>
+        <option value="worst">매우 나쁨</option>
+        </select>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="category">카테고리 *</label>
+        <select class = "input_box" id="category" name="category" required>
+        <option value="" disabled selected hidden>카테고리를 선택하세요</option>
+        <option value="Clothes"> Clothes </option>
+        <option value="Books"> Books </option>
+        <option value="Digitals"> Digitals </option>
+        <option value="ETC"> Etc </option>
+        </select>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="explain">상품 설명</label>
+        <textarea class = "input_box" id = "explain" name = "explain" placeholder = "상품에 대한 자세한 설명을 입력해주세요 &#10;&#10;- 구성 세트&#10;- 사용 기간&#10;- 하자 여부&#10;- 기타 특이사항"></textarea>
+      </div>
+    </div>
+
+    <!--상품 사진-->
+    <section class = "container">
+      <h2 class = "heading">상품 사진</h2>
+      <p class = "description small">사진은 최대 5장까지 등록 가능합니다.</p>
+      <div class = "img_upload">
+        <!--실제 파일 입력 버튼은 숨김 처리-->
+        <input type="file" id = "file" name="file" multiple hidden/>
+        <!--사용자에게 보여지는 버튼-->
+        <label for="file" class = "upload_btn">
+          <div class = "icon">📷</div>
+          <div class = "description small">사진 추가</div>
+        </label>
+      </div>
+    </section>
+
+
+    <div class = "btn">
+      <input type="submit" value="상품 등록하기">
+      <input type="reset" value="취소">
+    </div>
+
+    </form>
+  </main>
+</body>
+
+
 {% endblock section %}

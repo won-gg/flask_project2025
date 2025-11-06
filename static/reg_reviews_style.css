@@ -1,0 +1,197 @@
+/*전체 padding*/
+main{
+    max-width: 100%;
+    min-width: 700px;
+    padding: 0 170px;
+}
+
+.header{
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.title{
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.description{
+    color: #717182;
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.description.small{
+    font-size: 16px;
+}
+
+.container{
+    display: flex;
+    width: 100%;
+    padding: 24px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.heading{
+    padding: 0 0 9.5px 0;
+    align-self: stretch;
+    font-size: 20px;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.input{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.label{
+    align-self: stretch;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.input_box{
+    height: 36px;
+    padding: 4px 12px;
+    align-self: stretch;
+    border-radius: 17px;
+    background: #D9D9D9;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.input_box::placeholder{
+    color: #717182;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+button.input_box{
+    height: 110px;
+}
+
+/* 평가 */
+.rating_box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px 320px; 
+}
+
+.circle_btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #D9D9D9;
+  border: none;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.rating_grade {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #155724;
+    font-size: 30px;
+    font-weight: 700;
+    color: #FFFFFF;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -4px rgba(0, 0, 0, 0.10);
+}
+
+textarea.input_box{
+    height: 130px;
+    padding: 8px 12px;
+    resize: none;
+}
+
+.img_upload {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.upload_btn{
+  width: 130px;
+  height: 130px;
+  border-radius: 17px;
+  background-color: #D9D9D9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.upload_btn:hover {
+  background-color: #C0C0C0;
+}
+
+.icon {
+  font-size: 32px; /* 아이콘 크기 */
+  margin-bottom: 6px;
+}
+
+.checkbox{
+    height: 22px;
+    align-self: stretch;
+    border-radius: 17px;
+    background: #D9D9D9;
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000;
+}
+
+.btn{
+    display: flex;
+    width: 100%;
+    padding: 50px 24px;
+    justify-content: space-between;
+}
+
+.btn input[type="submit"]{
+    flex: 1;
+    height: 36px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 17px;
+    background: #155724;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.btn input[type="reset"]{
+    flex: 1;
+    height: 36px;
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 17px;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #FFF;
+}
+
+
+
