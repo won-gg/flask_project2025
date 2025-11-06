@@ -4,6 +4,11 @@ html{
 *, *:before,*:after{
   box-sizing: inherit;
 }
+nav *, 
+.navbar *, 
+footer * {
+  box-sizing: content-box !important;
+}
 .logo {
   text-align: center;
 }
