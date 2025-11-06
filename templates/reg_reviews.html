@@ -1,5 +1,142 @@
 {% extends "index.html" %}
 
 {% block section %}
-  reg_reviews 조회 화면 입니다.
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>리뷰 작성 화면</title>
+  <link rel="stylesheet" href="../static/reg_reviews_style.css">
+</head>
+
+<body>
+  <main>
+    <!--app.py에서 아직 리뷰 정보 처리할 서버가 없어서 일단 주석 처리했습니다
+    <form action="/submit_item_post" method="post" enctype="multipart/form-data">
+    -->
+    <header class = "header">
+      <h1 class = "title">리뷰 작성</h1>
+      <p class = "description">구매하신 상품에 대한 리뷰를 남겨주세요</p>
+    </header>
+
+    <!--구매 상품 정보-->
+    <section class = "container">
+      <h2 class = "heading">구매 상품 *</h2>
+      <!--본인 구매 이력 데이터를 불러와서 선택하는 기능 구현해야함-->
+      <div class = "input">
+        <button class = "input_box" type="button" id = "item_select" name="item_select">
+          <div class = "description small">구매하신 상품을 선택해주세요</div>
+        </button>
+      </div>
+    </section>
+
+    <!--상품 평가(매너 학점)-->
+    <section class = "container">
+      <h2 class = "heading">상품 평가*</h2>
+      <p class = "description small">- 와 + 버튼을 눌러 매너 학점을 선택해주세요</p>
+
+      <div class="rating_box">
+        <button class="circle_btn">−</button>
+        <div class="rating_grade">A+</div>
+        <button class="circle_btn">＋</button>
+      </div>
+    </section>
+
+
+    <!--리뷰 내용-->
+    <section class = "container">
+      <h2 class = "heading">리뷰 내용</h2>
+
+      <div class = "input">
+        <label class = "label" for="review_title">리뷰 제목 *</label>
+        <input class = "input_box" type="text" name="review_title" id="review_title" placeholder = "리뷰 제목을 입력하세요" required>
+      </div>
+
+      <div class = "input">
+        <label class = "label" for="content">리뷰 내용 *</label>
+        <textarea class = "input_box" id = "content" name = "content" placeholder = "상품에 대한 솔직한 리뷰를 작성해주세요 &#10;&#10;예시:&#10;- 상품의 장점과 단점&#10;- 실제 사용 후기&#10;- 다른 구매자들에게도 도움이 될 정보" required></textarea>
+      </div>
+    </section>
+
+    <!--리뷰 사진-->
+    <section class = "container">
+      <h2 class = "heading">리뷰 사진</h2>
+      <p class = "description small">실제 사용 사진을 올려주시면 더욱 유용한 리뷰가 됩니다 (최대 5장)</p>
+
+      <div class = "img_upload">
+        <!--실제 파일 입력 버튼은 숨김 처리-->
+        <input type="file" id = "file" name="file" multiple hidden/>
+        <!--사용자에게 보여지는 버튼-->
+        <label for="file" class = "upload_btn">
+          <div class = "icon">📷</div>
+          <div class = "description small">사진 추가</div>
+        </label>
+      </div>
+    </section>
+
+    <!--작성자 정보-->
+    <section class = "container">
+      <h2 class = "heading">작성자 정보</h2>
+
+      <div class = "input">
+        <label class = "label" for="id">아이디 *</label>
+        <input class = "input_box" type="text" name="id" id="id" placeholder = "아이디를 입력하세요" required>
+      </div>
+    </section>
+
+    <section class = "container">
+      <label class="checkbox">
+        <input type="checkbox" required>
+        리뷰 작성 시 커뮤니티 가이드를 준수하며, 허위 또는 과장된 내용이 포함되지 않았음을 확인합니다. *
+      </label>
+    </section>
+
+
+    <div class = "btn">
+      <input type="submit" value="리뷰 등록하기">
+      <input type="reset" value="취소">
+    </div>
+
+    <!--</form>-->
+  </main>
+  <script>
+    const gradeDisplay = document.querySelector(".rating_grade");
+    const plusBtn = document.querySelectorAll(".circle_btn")[1];
+    const minusBtn = document.querySelectorAll(".circle_btn")[0];
+
+    // 등급 리스트 (A+ → F)
+    const grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
+    let currentIndex = 0; // A+부터 시작
+
+    function updateGrade() {
+      gradeDisplay.textContent = grades[currentIndex];
+
+      // A+이면 + 비활성화, F이면 - 비활성화
+      plusBtn.disabled = currentIndex === 0;
+      minusBtn.disabled = currentIndex === grades.length - 1;
+
+      // 비활성화 상태일 땐 흐리게
+      plusBtn.style.opacity = plusBtn.disabled ? "0.4" : "1";
+      minusBtn.style.opacity = minusBtn.disabled ? "0.4" : "1";
+    }
+
+    plusBtn.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateGrade();
+      }
+    });
+
+    minusBtn.addEventListener("click", () => {
+      if (currentIndex < grades.length - 1) {
+        currentIndex++;
+        updateGrade();
+      }
+    });
+
+    updateGrade(); 
+  </script>
+</body>
+
+
 {% endblock section %}
