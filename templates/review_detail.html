@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+
+{% block section %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ review.title }} - 리뷰 상세보기</title>
+  <link rel="stylesheet" href="../static/review_detail.css" />
+</head>
+
+<body>
+  <main class="review-detail">
+    <div class="container">
+      <!-- 리뷰 이미지 -->
+      <div class="image-box">
+        <img src="{{ url_for('static', filename=review.image_path) }}" alt="리뷰 이미지" />
+      </div>
+
+      <!-- 리뷰 본문 -->
+      <div class="content-box">
+        <h1 class="review-title">{{ review.title }}</h1>
+        <div class="review-meta">
+          <span class="review-author">작성자: {{ review.author }}</span>
+          <span class="review-rating">⭐ {{ review.rating }}/5</span>
+        </div>
+
+        <p class="review-content">{{ review.content }}</p>
+
+        <div class="hashtags">
+          {% for tag in review.tags %}
+            <span class="tag">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="author-stats">
+          <p>작성자의 평균 별점: ⭐ {{ review.author_avg_rating }}/5</p>
+        </div>
+
+        <div class="btn-area">
+          <a href="/review" class="back-btn">← 리뷰 목록으로</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
+{% endblock section %}

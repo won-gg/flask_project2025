@@ -67,7 +67,26 @@ def view_item_detail():
   )
 @application.route("/review")
 def view_review():
-  return render_template("review.html")
+    reviews = {
+        1: {"item_name": "아이폰 5s 16GB", "title": "따뜻한 거래였어요", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "판매자분 너무 친절했어요!", "tags": ["친절", "포장깔끔"], "image_path": "images/item-list/item-img1.jpg"},
+        2: {"item_name": "노트북 파우치", "title": "배송 빨랐어요", "rating": "A", "author": "민서", "author_rating": "A", "content": "상품 상태도 좋고 사진 그대로예요!", "tags": ["빠른배송", "상태좋음"], "image_path": "images/item-list/item-img2.jpg"},
+        3: {"item_name": "LP 턴테이블", "title": "소리가 따뜻해요", "rating": "A+", "author": "세은", "author_rating": "A+", "content": "너무 예쁜 소리예요 🎶", "tags": ["감성", "친절판매"], "image_path": "images/item-list/item-img3.jpg"},
+        4: {"item_name": "도자기 찻잔 세트", "title": "선물용으로 좋아요", "rating": "A", "author": "지수", "author_rating": "A", "content": "포장이 너무 예뻤어요 ☕️", "tags": ["예쁜포장", "선물추천"], "image_path": "images/item-list/item-img4.jpg"},
+        5: {"item_name": "레트로 라디오", "title": "인테리어용 굿!", "rating": "A", "author": "윤아", "author_rating": "A+", "content": "작동도 잘 되고 예뻐요!", "tags": ["만족", "디자인좋음"], "image_path": "images/item-list/item-img1.jpg"},
+        6: {"item_name": "수공예 팔찌", "title": "정성이 느껴져요", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "직접 만드셨다니 대단해요!", "tags": ["친절", "퀄리티굿"], "image_path": "images/item-list/item-img2.jpg"},
+        7: {"item_name": "빈티지 시계", "title": "멋진 아이템이에요", "rating": "A", "author": "세은", "author_rating": "A", "content": "잘 작동하고 고급스러워요!", "tags": ["정확한설명", "좋은거래"], "image_path": "images/item-list/item-img3.jpg"},
+        8: {"item_name": "타자기", "title": "소장 가치 있어요", "rating": "A+", "author": "하늘", "author_rating": "A+", "content": "디자인이 너무 마음에 들어요!", "tags": ["빈티지", "소장추천"], "image_path": "images/item-list/item-img4.jpg"}
+    }
+    return render_template("review.html", reviews=reviews)
+
+@application.route("/review_data/<int:id>")
+def review_data(id):
+    data = {
+        1: {"item_name": "100년 된 헤드셋", "title": "따뜻한 거래였어요", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "판매자분 너무 친절했어요!", "tags": ["친절", "포장깔끔"], "image_path": "images/item-list/item-img1.jpg"},
+        2: {"item_name": "노트북 파우치", "title": "배송 빨랐어요", "rating": "A", "author": "민서", "author_rating": "A", "content": "상품 상태도 좋고 사진 그대로예요!", "tags": ["빠른배송", "상태좋음"], "image_path": "images/item-list/item-img2.jpg"},
+    }
+    return jsonify(data.get(id, {}))
+
 @application.route("/reg_items")
 def reg_item():
   return render_template("reg_items.html")

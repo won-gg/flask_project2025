@@ -1,5 +1,81 @@
 {% extends "index.html" %}
 
 {% block section %}
-  등록된 리뷰 조회 화면 입니다.
+
+<!-- 리뷰 전체 조회 -->
+<link rel="stylesheet" href="{{ url_for('static', filename='reviews.css') }}">
+
+<main class="review-list">
+  <div class="review-header">
+    <h2>전체 리뷰 조회 (리뷰 전체 개수)</h2>
+    <div class="filter-title">조건별 필터</div>
+  </div>
+
+  <!-- 리뷰 카드 리스트 -->
+  <div class="reviews-grid">
+    {% for review_id, review in reviews.items() %}
+    <article class="review-card" data-id="{{ review_id }}">
+      <div class="review-image">
+        <img src="{{ url_for('static', filename=review.image_path) }}" alt="상품 이미지">
+      </div>
+      <div class="review-body">
+        <p class="item-name">{{ review.item_name }}</p>
+        <p class="review-title">{{ review.title }}</p>
+        <p class="review-rating">매너 학점: {{ review.rating }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <!-- 페이지네이션 -->
+  <div class="pagination">
+    <button>&laquo;</button>
+    <button class="active">1</button>
+    <button>2</button>
+    <button>3</button>
+    <button>&raquo;</button>
+  </div>
+</main>
+
+<!-- ==============================
+     리뷰 상세 모달창
+================================== -->
+<div id="reviewModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+    <div class="modal-header">
+      <img id="modal-image" src="" alt="리뷰 이미지">
+      <div class="modal-info">
+        <p id="modal-item" class="item-name"></p>
+        <p id="modal-rating" class="rating"></p>
+        <p id="modal-title" class="title"></p>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <p id="modal-content" class="content"></p>
+      <div id="modal-tags" class="tags"></div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="author-section">
+        <div class="author-photo"></div>
+        <div>
+          <p id="modal-author" class="author-name"></p>
+          <p id="modal-author-rating" class="author-rating"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Flask에서 넘겨주는 데이터 -->
+<script id="reviewData" type="application/json">
+  {{ reviews | tojson }}
+</script>
+
+<!-- 모달 기능 JS -->
+<script src="{{ url_for('static', filename='review_modal.js') }}"></script>
+
 {% endblock section %}
