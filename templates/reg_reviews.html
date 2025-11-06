@@ -1,45 +1,5 @@
 {% extends "index.html" %}
 
 {% block section %}
-<link rel="stylesheet" href="{{ url_for('static', filename='reg_review.css') }}">
-
-<div class="review-form">
-  <h2>리뷰 작성</h2>
-  <p>구매하신 상품에 대한 리뷰를 남겨주세요</p>
-
-  <div class="item-info">
-    <h3>아이폰 5s 16GB</h3>
-    <p>구매일자: 2025.02.05</p>
-  </div>
-
-  <div class="grade-section">
-    <label>상품 평가</label>
-    <div class="grade-buttons">
-      <button>-</button>
-      <span class="grade">A+</span>
-      <button>+</button>
-    </div>
-  </div>
-
-  <div class="text-section">
-    <label>리뷰 제목 *</label>
-    <input type="text" placeholder="리뷰 제목을 입력하세요">
-
-    <label>리뷰 내용 *</label>
-    <textarea placeholder="상품에 대한 솔직한 리뷰를 작성해주세요" rows="6"></textarea>
-  </div>
-
-  <div class="upload-section">
-    <label>리뷰 사진</label>
-    <div class="upload-box">사진 추가</div>
-  </div>
-
-  <div class="submit-section">
-    <input type="checkbox"> 리뷰 작성 시 커뮤니티 가이드라인을 준수합니다.
-    <div class="btn-row">
-      <button class="submit-btn">리뷰 등록하기</button>
-      <button class="cancel-btn">취소</button>
-    </div>
-  </div>
-</div>
+  reg_reviews 조회 화면 입니다.
 {% endblock section %}
