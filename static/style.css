@@ -62,7 +62,11 @@ a:hover, a:focus {
   font-size: 22px;
   transition: color 0.05s;
 }
-
+#resi_rv {
+  font-size: 22px;
+  color: #155724;
+  font-weight: 500;
+}
 .navbar__right {
   display: flex;
   align-items: center;
