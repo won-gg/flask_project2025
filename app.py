@@ -28,10 +28,28 @@ item_data = {
 
 @application.route("/")
 def hello():
-  return render_template("index.html")
-@application.route("/login")
+  return render_template("index.html", user_id=session.get("id"), user_nickname=session.get("nickname"))
+@application.route("/login", methods=['GET', 'POST'])
 def login():
-  return render_template("login.html")
+    if request.method == 'POST':
+        id = request.form['id']
+        pw = request.form['pw']
+        pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+        nickname = DB.find_user(id, pw_hash)
+        
+        if nickname:
+            session['id'] = id
+            session['nickname'] = nickname
+            return redirect(url_for('hello'))
+        else:
+            flash("잘못된 ID, PW")
+            return redirect(url_for('login'))
+
+    return render_template("login.html")
+@application.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('hello'))
 @application.route("/signup")
 def signup():
   return render_template("signup.html")

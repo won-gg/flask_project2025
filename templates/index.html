@@ -22,8 +22,13 @@
     </div>
     <div class="navbar__right">
       <a href="/reg_reviews" id="resi_rv">리뷰 작성하기</a>
-      <div class="login_button"><a href="/login">로그인</a></div>
-      <div class="signup_button"><a href="/signup">회원가입</a></div>
+      {% if session.id %}
+        <div class="navbar-greeting" style="font-size: 20px; color: #117e2a;">{{ session.nickname }}님</div>
+        <div class="logout_button"><a href="/logout">로그아웃</a></div>
+      {% else %}
+        <div class="login_button"><a href="/login">로그인</a></div>
+        <div class="signup_button"><a href="/signup">회원가입</a></div>
+      {% endif %}
     </div>
     <a href="#" class="navbar__toogleBtn">
       <i class="fas fa-bars"></i>
