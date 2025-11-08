@@ -76,7 +76,7 @@ a:hover, a:focus {
   
 }
 
-.login_button, .signup_button {
+.login_button,.logout_button , .signup_button {
   color: var(--main, #155724);
   font-family: Pretendard;
   font-size: 20px;

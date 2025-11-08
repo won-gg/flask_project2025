@@ -23,7 +23,7 @@ class DBhandler:
     def user_duplicate_check(self, id_string):
         users = self.db.child("user").get()
         print("users###",users.val())
-        if str(users.val()) == "None": # first registration
+        if str(users.val()) == "None":
             return True
         else:
             for res in users.each():
@@ -33,9 +33,11 @@ class DBhandler:
             return True
     def insert_user(self, data, pw):
         user_info ={
+            "idNum": data['idNum'],   
+            "email": data['email'],
+            "phoneNum": data['phoneNum'],
             "id": data['id'],
-            "pw": pw,
-            "nickname": data['nickname']
+            "pw": pw
         }
         if self.user_duplicate_check(str(data['id'])):
             self.db.child("user").push(user_info)
@@ -43,3 +45,14 @@ class DBhandler:
             return True
         else:
             return False
+    def find_user(self, id, pw_hash):
+        users = self.db.child("user").get()
+        if str(users.val()) == "None":
+            return False
+
+        for res in users.each():
+            value = res.val()
+            if value['id'] == id and value['pw'] == pw_hash:
+                return value['id']
+        
+        return False
