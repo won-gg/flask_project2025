@@ -114,6 +114,10 @@ a:hover, a:focus {
   display: none;
 }
 
+section {
+  min-height: calc(100vh - 260px);
+}
+
 footer {
   display: flex;
   width: 100%;
