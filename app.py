@@ -37,6 +37,7 @@ item_data = {
 @application.route("/")
 def hello():
   return render_template("index.html", user_id=session.get("id"), user_nickname=session.get("nickname"))
+
 @application.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -54,13 +55,16 @@ def login():
             return redirect(url_for('login'))
 
     return render_template("login.html")
+
 @application.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for('hello'))
+
 @application.route("/signup")
 def signup():
   return render_template("signup.html")
+
 @application.route("/signup_post", methods=['POST'])
 def register_user():
   data=request.form
@@ -71,6 +75,7 @@ def register_user():
   else:
     flash("user id already exist!")
     return render_template("signup.html")
+  
 @application.route("/list")
 def view_list():
   page = request.args.get("page",0,type=int)
@@ -119,6 +124,7 @@ def view_item_detail():
 
   return render_template(
     "item_detail.html",
+    item_id=item_id,
     title=item['title'],
     category=item['category'].capitalize(),
     price=item['price'],
@@ -128,6 +134,16 @@ def view_item_detail():
     description=item['description'],
     seller=item['seller']
   )
+
+@application.route("/reg_review_for/<item_id>/")
+def reg_review_for(item_id):
+    item_id_int = int(item_id)
+    item = item_data.get(item_id_int)
+    
+    item_name = item.get('title')
+    
+    return render_template("reg_reviews.html", item_id=item_id_int, item_name=item_name)
+
 @application.route("/review")
 def view_review():
     reviews = {
@@ -165,9 +181,18 @@ def review_detail(id):
 @application.route("/reg_items")
 def reg_item():
   return render_template("reg_items.html")
+
 @application.route("/reg_reviews")
 def reg_review():
   return render_template("reg_reviews.html")
+
+@application.route("/reg_review_post", methods=['POST'])
+def reg_review_post():
+    data=request.form
+    image_file = request.files["file"]
+    image_file.save("static/images/{}".format(image_file.filename))
+    DB.reg_review(data, image_file.filename)
+    return redirect(url_for('view_review'))
 
 @application.route("/submit_item")
 def reg_item_submit():

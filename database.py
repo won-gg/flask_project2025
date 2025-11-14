@@ -6,6 +6,7 @@ class DBhandler:
             config=json.load(f)
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
+
     def insert_item(self, name, data, img_path):
         item_info ={
         "seller": data['seller'],
@@ -20,6 +21,7 @@ class DBhandler:
         self.db.child("item").child(name).set(item_info)
         print(data,img_path)
         return True
+    
     def user_duplicate_check(self, id_string):
         users = self.db.child("user").get()
         print("users###",users.val())
@@ -31,6 +33,7 @@ class DBhandler:
                 if value['id'] == id_string:
                     return False
             return True
+        
     def insert_user(self, data, pw):
         user_info ={
             "idNum": data['idNum'],   
@@ -45,6 +48,7 @@ class DBhandler:
             return True
         else:
             return False
+        
     def find_user(self, id, pw_hash):
         users = self.db.child("user").get()
         if str(users.val()) == "None":
@@ -56,6 +60,20 @@ class DBhandler:
                 return value['id']
         
         return False
+    
     def get_items(self):
         items = self.db.child("item").get().val()
         return items
+    
+    def reg_review(self, data, img_path):
+        review_info ={
+            "item_id": data['item_id'],
+            "item_name": data['item_name'],
+            "rating": data['rating_input'],
+            "title": data['review_title'],
+            "content": data['content'],
+            "reviewer_id": data['id'],
+            "img_path": img_path
+        }   
+        self.db.child("review").child(data['item_id']).set(review_info)
+        return True
