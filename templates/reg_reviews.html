@@ -6,14 +6,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>리뷰 작성 화면</title>
-  <link rel="stylesheet" href="../static/reg_reviews_style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='reg_reviews_style.css')}}">
 </head>
 
 <body>
   <main>
-    <!--app.py에서 아직 리뷰 정보 처리할 서버가 없어서 일단 주석 처리했습니다
-    <form action="/submit_item_post" method="post" enctype="multipart/form-data">
-    -->
+    <form action="/reg_review_post" method="post" enctype="multipart/form-data">
+  
     <header class = "header">
       <h1 class = "title">리뷰 작성</h1>
       <p class = "description">구매하신 상품에 대한 리뷰를 남겨주세요</p>
@@ -22,24 +21,31 @@
     <!--구매 상품 정보-->
     <section class = "container">
       <h2 class = "heading">구매 상품 *</h2>
-      <!--본인 구매 이력 데이터를 불러와서 선택하는 기능 구현해야함-->
       <div class = "input">
-        <button class = "input_box" type="button" id = "item_select" name="item_select">
-          <div class = "description small">구매하신 상품을 선택해주세요</div>
-        </button>
+        <div class = "item_box">
+          <div>상품명: {{ item_name | default('상품명 없음') }}</div>
+        </div>
       </div>
     </section>
 
+    <!--숨겨진 입력 필드로, 상품 아이디와 이름을 DB로 전송하기 위해-->
+    <input type="hidden" name="item_id" value="{{ item_id | default('') }}">
+    <input type="hidden" name="item_name" value="{{ item_name | default('') }}">
+
     <!--상품 평가(매너 학점)-->
     <section class = "container">
-      <h2 class = "heading">상품 평가*</h2>
+      <h2 class = "heading">상품 평가 *</h2>
       <p class = "description small">- 와 + 버튼을 눌러 매너 학점을 선택해주세요</p>
 
-      <div class="rating_box">
-        <button class="circle_btn">−</button>
-        <div class="rating_grade">A+</div>
-        <button class="circle_btn">＋</button>
+      <div class = "rating_box">
+        <button class = "circle_btn" type = "button">−</button>
+        <div class = "rating_grade">A+</div>
+        <button class = "circle_btn" type = "button">＋</button>
       </div>
+
+      <!--숨겨진 입력 필드로, 매너 학점을 DB로 전송하기 위해-->
+      <input type = "hidden" id = "rating_input" name  ="rating_input" value = "A+">
+
     </section>
 
 
@@ -60,12 +66,12 @@
 
     <!--리뷰 사진-->
     <section class = "container">
-      <h2 class = "heading">리뷰 사진</h2>
+      <h2 class = "heading">리뷰 사진 *</h2>
       <p class = "description small">실제 사용 사진을 올려주시면 더욱 유용한 리뷰가 됩니다 (최대 5장)</p>
 
       <div class = "img_upload">
         <!--실제 파일 입력 버튼은 숨김 처리-->
-        <input type="file" id = "file" name="file" multiple hidden/>
+        <input type="file" id = "file" name="file" multiple hidden required/>
         <!--사용자에게 보여지는 버튼-->
         <label for="file" class = "upload_btn">
           <div class = "icon">📷</div>
@@ -97,19 +103,23 @@
       <input type="reset" value="취소">
     </div>
 
-    <!--</form>-->
+    </form>
   </main>
+
   <script>
     const gradeDisplay = document.querySelector(".rating_grade");
     const plusBtn = document.querySelectorAll(".circle_btn")[1];
     const minusBtn = document.querySelectorAll(".circle_btn")[0];
+    const ratingInput = document.getElementById("rating_input");
 
     // 등급 리스트 (A+ → F)
     const grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
     let currentIndex = 0; // A+부터 시작
 
     function updateGrade() {
-      gradeDisplay.textContent = grades[currentIndex];
+      const currentGrade = grades[currentIndex];
+      gradeDisplay.textContent = currentGrade;
+      ratingInput.value = currentGrade;
 
       // A+이면 + 비활성화, F이면 - 비활성화
       plusBtn.disabled = currentIndex === 0;
