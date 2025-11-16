@@ -77,3 +77,36 @@ class DBhandler:
         }   
         self.db.child("review").child(data['item_id']).set(review_info)
         return True
+    def get_heart_byname(self, uid, name):
+        hearts = self.db.child("heart").child(uid).get()
+        target_value=""
+        if hearts.val() == None:
+            return target_value
+        
+        for res in hearts.each():
+            key_value = res.key()
+            if key_value == name:
+                target_value=res.val()
+                return target_value
+        return target_value
+
+    def update_heart(self, user_id, isHeart, item):
+        heart_info ={
+            "interested": isHeart
+        }
+        self.db.child("heart").child(user_id).child(item).set(heart_info)
+        return True
+    
+    def get_review_byname(self, item_name):
+        reviews = self.db.child("review").get()
+        if reviews.val() == None:
+            return None
+        
+        for res in reviews.each():
+            value = res.val()
+            if value.get("item_name") == item_name:
+                review_data = value.copy()
+                review_data["item_id"] = res.key()
+                return review_data
+        
+        return None

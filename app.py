@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
 from database import DBhandler
 import hashlib
 import sys
@@ -177,6 +177,37 @@ def review_detail(id):
 
     return render_template("review_detail.html", review=review)
 
+@application.route("/review_detail")
+def view_review_detail():
+    item_name = request.args.get('item_name')
+    if not item_name:
+        flash("상품명이 필요합니다.")
+        return redirect(url_for('view_review'))
+    
+    review_data = DB.get_review_byname(item_name)
+    if not review_data:
+        flash("리뷰를 찾을 수 없습니다.")
+        return redirect(url_for('view_review'))
+    
+    # review_detail.html에 필요한 형식으로 데이터 구성
+    img_path = review_data.get("img_path", "")
+    # img_path가 파일명만 있는 경우 "images/" 경로 추가
+    if img_path and not img_path.startswith("images/"):
+        img_path = f"images/{img_path}"
+    
+    review = {
+        "item_name": review_data.get("item_name", ""),
+        "rating": review_data.get("rating", ""),
+        "title": review_data.get("title", ""),
+        "content": review_data.get("content", ""),
+        "tags": [],  # 데이터베이스에 tags 필드가 없으므로 빈 리스트
+        "author": review_data.get("reviewer_id", "익명"),  # reviewer_id를 author로 사용
+        "author_avg_rating": "A",  # 기본값 설정 (나중에 계산 가능)
+        "image_path": img_path
+    }
+    
+    return render_template("review_detail.html", review=review)
+
 
 @application.route("/reg_items")
 def reg_item():
@@ -223,6 +254,33 @@ def reg_item_submit_post():
 @application.route("/profile")
 def profile():
   return render_template("profile.html")
+
+@application.route('/show_heart/<name>/', methods=['GET'])
+def show_heart(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.get_heart_byname(session['id'],name)
+    if not my_heart:
+        my_heart = {"interested": "N"}
+        
+    return jsonify({'my_heart': my_heart})
+
+@application.route('/like/<name>/', methods=['POST'])
+def like(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.update_heart(session['id'],'Y',name)
+    return jsonify({'msg': '좋아요 완료!'})
+
+@application.route('/unlike/<name>/', methods=['POST'])
+def unlike(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.update_heart(session['id'],'N',name)
+    return jsonify({'msg': '안좋아요 완료!'})
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
