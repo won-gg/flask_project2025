@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
 from database import DBhandler
 import hashlib
 import sys
@@ -223,6 +223,33 @@ def reg_item_submit_post():
 @application.route("/profile")
 def profile():
   return render_template("profile.html")
+
+@application.route('/show_heart/<name>/', methods=['GET'])
+def show_heart(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.get_heart_byname(session['id'],name)
+    if not my_heart:
+        my_heart = {"interested": "N"}
+        
+    return jsonify({'my_heart': my_heart})
+
+@application.route('/like/<name>/', methods=['POST'])
+def like(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.update_heart(session['id'],'Y',name)
+    return jsonify({'msg': '좋아요 완료!'})
+
+@application.route('/unlike/<name>/', methods=['POST'])
+def unlike(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.update_heart(session['id'],'N',name)
+    return jsonify({'msg': '안좋아요 완료!'})
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
