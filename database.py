@@ -96,3 +96,17 @@ class DBhandler:
         }
         self.db.child("heart").child(user_id).child(item).set(heart_info)
         return True
+    
+    def get_review_byname(self, item_name):
+        reviews = self.db.child("review").get()
+        if reviews.val() == None:
+            return None
+        
+        for res in reviews.each():
+            value = res.val()
+            if value.get("item_name") == item_name:
+                review_data = value.copy()
+                review_data["item_id"] = res.key()
+                return review_data
+        
+        return None
