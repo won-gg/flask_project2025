@@ -48,6 +48,54 @@ def register_user():
 @application.route("/list")
 def view_list():
   return render_template("list.html", items=item_data)
+  page = request.args.get("page",0,type=int)
+  cat = (request.args.get("cat", "all") or "all").lower().strip()
+  per_page=8
+  per_row=4
+  row_count=int(per_page/per_row)
+  start_idx=per_page*page
+  end_idx=per_page*(page+1)
+  data = item_data
+  #DB.get_items() #read the table
+  all_data_items = list(item_data.items())
+  if cat != "all":
+    # 카테고리가 일치하는 아이템만 필터링
+    filtered_items = [
+    (iid, it) for iid, it in all_data_items 
+      if str(it.get("category", "")).lower().strip() == cat
+    ]
+  else:
+    # 'all'일 경우, 모든 아이템 사용
+    filtered_items = all_data_items
+  filtered_count = len(filtered_items)
+  current_page_items = filtered_items[start_idx:end_idx]
+  data = dict(current_page_items)
+  tot_count = len(data)
+  
+  # 명시적인 딕셔너리로 row 데이터 생성
+  row_data = {}
+  for i in range(row_count):
+    if (i==row_count -1) and (tot_count%per_row != 0):
+        row_data[f'data_{i}'] = dict(list(data.items())[i*per_row:])
+    else:
+       row_data[f'data_{i}'] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+  
+  # data_0과 data_1이 없을 경우 빈 딕셔너리로 초기화
+  if 'data_0' not in row_data:
+    row_data['data_0'] = {}
+  if 'data_1' not in row_data:
+    row_data['data_1'] = {}
+  
+  return render_template(
+     "list.html",
+     datas=data.items(),
+     row1=row_data['data_0'].items(),
+     row2=row_data['data_1'].items(),
+     limit=per_page,
+     page = page,
+     page_count=int((filtered_count/per_page)+1),
+     cat=cat,
+     total=filtered_count)
 
 @application.route("/item_detail")
 def view_item_detail():
