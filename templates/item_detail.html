@@ -1,6 +1,75 @@
 {% extends "index.html" %}
 
 {% block section %}
+<script>
+function showHeart() {
+    var itemTitle = "{{ title }}"; 
+    
+    $.ajax({
+        type: 'GET',
+        url: `/show_heart/${itemTitle}/`,data: {},
+        success: function (response) {
+            if (response.my_heart && response.my_heart['interested'] == 'Y') {
+                $("#heart").css("color","#155724");
+                $("#heart").attr("onclick","unlike()");
+            } else {
+                $("#heart").css("color","grey");
+                $("#heart").attr("onclick","like()");
+            }
+        },
+        error: function(request, status, error) {
+            console.log("Error checking heart status:", error);
+            $("#heart").css("color","grey");
+            $("#heart").attr("onclick","like()");
+        }
+    });
+}
+function like() {
+    var itemTitle = "{{ title }}";
+
+    $.ajax({
+        type: 'POST',
+        url: `/like/${itemTitle}/`,
+        data: { interested : "Y" },
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+        },
+        error: function(request, status, error) {
+            if (request.status === 401) {
+                alert('좋아요를 하려면 로그인이 필요합니다.');
+                window.location.href = '/login';
+            } else {
+                alert('오류가 발생했습니다.');
+            }
+        }
+    });
+}
+function unlike() {
+    var itemTitle = "{{ title }}";
+
+    $.ajax({
+        type: 'POST',
+        url: `/unlike/${itemTitle}/`,
+        data: { interested : "N" },
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+        },
+        error: function(request, status, error) {
+            if (request.status === 401) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login';
+            } else {
+                alert('오류가 발생했습니다.');
+            }
+        }
+    });
+}
+$(document).ready(function () {
+    showHeart();
+});
+</script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -22,6 +91,7 @@
       <button class="arrow left" aria-label="이전">‹</button>
       <button class="arrow right" aria-label="다음">›</button>
       <div class="pager">2 / 6</div>
+      <i class="fa fa-heart" id="heart"></i>
     </section>
 
     <aside class="detail-info">
@@ -59,7 +129,11 @@
         <span class="hint">( <span id="rawPrice"></span> + <span id="rawFee"></span> )</span>
       </div>
 
-      <button class="buy-btn" type="button">구매하기</button>
+      <div class="buttons">
+        <button class="buy-btn" type="button">구매하기</button>
+        <button class="reg_review-btn" type="button" onclick="location.href='/reg_review_for/{{item_id}}/';">+ 리뷰 작성하기</button>
+      </div>
+      
     </aside>
   </div>
 </main>

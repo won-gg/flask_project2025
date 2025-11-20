@@ -1,6 +1,3 @@
-*{ 
-  box-sizing:border-box; 
-}
 
 .detail-page{ 
   padding:24px 170px 30px; 
@@ -248,15 +245,35 @@
   justify-content: center;
 }
 
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
 .buy-btn{ 
   margin-top:10px; 
-  width: 284px;
+  width: 50%;
   height: 62px;
   border:none; 
-  border-radius:12px; 
+  border-radius:17px; 
   cursor:pointer; 
   background:#155724; 
   color:#fff; 
+  font-weight:600; 
+  font-size: 20px;
+  margin-bottom: 0;
+  align-items:flex-end;
+}
+
+.reg_review-btn{ 
+  margin-top:10px; 
+  width: 50%;
+  height: 62px;
+  border:1px solid #757575;
+  border-radius:17px; 
+  cursor:pointer; 
+  background:#fff; 
+  color:#155724; 
   font-weight:600; 
   font-size: 20px;
   margin-bottom: 0;

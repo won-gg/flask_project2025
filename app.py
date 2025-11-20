@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
 from database import DBhandler
 import hashlib
 import sys
@@ -6,7 +6,7 @@ application = Flask(__name__)
 application.config["SECRET_KEY"] = "helloosp"
 DB = DBhandler()
 
-## 상품 임시 데이터 8개 (list.html & item_detail.html 사용)
+## 상품 임시 데이터 12개 (list.html & item_detail.html 사용)
 item_data = {
     1: {'title': '100년 된 헤드셋', 'category': 'digitals', 'price': 10000, 'image_path': 'images/item-list/item-img1.jpg', 'fee': 0, 'trade': 'direct', 
         'description': '100주년 기념으로 기존에 사용하던 제품 싸게 판매합니다. 소리 잘 들리고 상태 좋습니다.', 'seller': 'ewhaosp1'},
@@ -22,19 +22,49 @@ item_data = {
         'description': '새 노트북 구매로 기존 사용하던 노트북 판매합니다. 전원 이상 없고 화면에 키보드 자국 조금 남아있습니다. 카메라도 잘 작동됩니다.', 'seller': 'ewhaosp6'},
     7: {'title': '아이폰 5s', 'category': 'digitals', 'price': 30000, 'image_path': 'images/item-list/item-img7.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description': '배터리 고장으로 전원이 안 들어옵니다. 바로 사용은 어렵고, A/S 후 사용 가능할 듯 싶습니다. 싸게 판매합니다.', 'seller': 'ewhaosp7'},
-    8: {'title': '폴로 랄프 로렌 바람막이', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-list/item-img8.jpg', 'fee': 0, 'trade': 'direct', ''
+    8: {'title': '폴로 랄프 로렌 바람막이', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-list/item-img8.jpg', 'fee': 0, 'trade': 'direct',
         'description': '온라인 구매했는데 제 생각보다 얇아서 판매합니다. 택 붙어있는 거진 새 상품입니다.', 'seller': 'ewhaosp8'},
+    9: {'title': '2p책예시', 'category': 'books', 'price': 30000, 'image_path': 'images/item-list/item-img5.jpg', 'fee': 2500, 'trade': 'delivery', 
+        'description':'가나다라', 'seller': 'ewhaosp9'},
+    10: {'title': '2p노트북예시', 'category': 'digitals', 'price': 200000, 'image_path': 'images/item-list/item-img6.jpg', 'fee': 0, 'trade': 'direct', 
+        'description': '가나다', 'seller': 'ewhaosp10'},
+    11: {'title': '2p핸드폰예시', 'category': 'digitals', 'price': 30000, 'image_path': 'images/item-list/item-img7.jpg', 'fee': 2500, 'trade': 'delivery', 
+        'description': '가나', 'seller': 'ewhaosp11'},
+    12: {'title': '2p의류예시', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-list/item-img8.jpg', 'fee': 0, 'trade': 'direct',
+        'description': '가', 'seller': 'ewhaosp12'}
 }
 
 @application.route("/")
 def hello():
-  return render_template("index.html")
-@application.route("/login")
+  return render_template("index.html", user_id=session.get("id"), user_nickname=session.get("nickname"))
+
+@application.route("/login", methods=['GET', 'POST'])
 def login():
-  return render_template("login.html")
+    if request.method == 'POST':
+        id = request.form['id']
+        pw = request.form['pw']
+        pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+        nickname = DB.find_user(id, pw_hash)
+        
+        if nickname:
+            session['id'] = id
+            session['nickname'] = nickname
+            return redirect(url_for('hello'))
+        else:
+            flash("잘못된 ID, PW")
+            return redirect(url_for('login'))
+
+    return render_template("login.html")
+
+@application.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for('hello'))
+
 @application.route("/signup")
 def signup():
   return render_template("signup.html")
+
 @application.route("/signup_post", methods=['POST'])
 def register_user():
   data=request.form
@@ -45,9 +75,9 @@ def register_user():
   else:
     flash("user id already exist!")
     return render_template("signup.html")
+  
 @application.route("/list")
 def view_list():
-  return render_template("list.html", items=item_data)
   page = request.args.get("page",0,type=int)
   cat = (request.args.get("cat", "all") or "all").lower().strip()
   per_page=8
@@ -71,26 +101,16 @@ def view_list():
   current_page_items = filtered_items[start_idx:end_idx]
   data = dict(current_page_items)
   tot_count = len(data)
-  
-  # 명시적인 딕셔너리로 row 데이터 생성
-  row_data = {}
   for i in range(row_count):
     if (i==row_count -1) and (tot_count%per_row != 0):
-        row_data[f'data_{i}'] = dict(list(data.items())[i*per_row:])
+        locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
     else:
-       row_data[f'data_{i}'] = dict(list(data.items())[i*per_row:(i+1)*per_row])
-  
-  # data_0과 data_1이 없을 경우 빈 딕셔너리로 초기화
-  if 'data_0' not in row_data:
-    row_data['data_0'] = {}
-  if 'data_1' not in row_data:
-    row_data['data_1'] = {}
-  
+       locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
   return render_template(
      "list.html",
      datas=data.items(),
-     row1=row_data['data_0'].items(),
-     row2=row_data['data_1'].items(),
+     row1=locals()['data_0'].items(),
+     row2=locals()['data_1'].items(),
      limit=per_page,
      page = page,
      page_count=int((filtered_count/per_page)+1),
@@ -104,6 +124,7 @@ def view_item_detail():
 
   return render_template(
     "item_detail.html",
+    item_id=item_id,
     title=item['title'],
     category=item['category'].capitalize(),
     price=item['price'],
@@ -113,6 +134,16 @@ def view_item_detail():
     description=item['description'],
     seller=item['seller']
   )
+
+@application.route("/reg_review_for/<item_id>/")
+def reg_review_for(item_id):
+    item_id_int = int(item_id)
+    item = item_data.get(item_id_int)
+    
+    item_name = item.get('title')
+    
+    return render_template("reg_reviews.html", item_id=item_id_int, item_name=item_name)
+
 @application.route("/review")
 def view_review():
     reviews = {
@@ -146,13 +177,53 @@ def review_detail(id):
 
     return render_template("review_detail.html", review=review)
 
+@application.route("/review_detail")
+def view_review_detail():
+    item_name = request.args.get('item_name')
+    if not item_name:
+        flash("상품명이 필요합니다.")
+        return redirect(url_for('view_review'))
+    
+    review_data = DB.get_review_byname(item_name)
+    if not review_data:
+        flash("리뷰를 찾을 수 없습니다.")
+        return redirect(url_for('view_review'))
+    
+    # review_detail.html에 필요한 형식으로 데이터 구성
+    img_path = review_data.get("img_path", "")
+    # img_path가 파일명만 있는 경우 "images/" 경로 추가
+    if img_path and not img_path.startswith("images/"):
+        img_path = f"images/{img_path}"
+    
+    review = {
+        "item_name": review_data.get("item_name", ""),
+        "rating": review_data.get("rating", ""),
+        "title": review_data.get("title", ""),
+        "content": review_data.get("content", ""),
+        "tags": [],  # 데이터베이스에 tags 필드가 없으므로 빈 리스트
+        "author": review_data.get("reviewer_id", "익명"),  # reviewer_id를 author로 사용
+        "author_avg_rating": "A",  # 기본값 설정 (나중에 계산 가능)
+        "image_path": img_path
+    }
+    
+    return render_template("review_detail.html", review=review)
+
 
 @application.route("/reg_items")
 def reg_item():
   return render_template("reg_items.html")
+
 @application.route("/reg_reviews")
 def reg_review():
   return render_template("reg_reviews.html")
+
+@application.route("/reg_review_post", methods=['POST'])
+def reg_review_post():
+    data=request.form
+    image_file = request.files["file"]
+    image_file.save("static/images/{}".format(image_file.filename))
+    DB.reg_review(data, image_file.filename)
+    return redirect(url_for('view_review'))
 
 @application.route("/submit_item")
 def reg_item_submit():
@@ -183,6 +254,33 @@ def reg_item_submit_post():
 @application.route("/profile")
 def profile():
   return render_template("profile.html")
+
+@application.route('/show_heart/<name>/', methods=['GET'])
+def show_heart(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.get_heart_byname(session['id'],name)
+    if not my_heart:
+        my_heart = {"interested": "N"}
+        
+    return jsonify({'my_heart': my_heart})
+
+@application.route('/like/<name>/', methods=['POST'])
+def like(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.update_heart(session['id'],'Y',name)
+    return jsonify({'msg': '좋아요 완료!'})
+
+@application.route('/unlike/<name>/', methods=['POST'])
+def unlike(name):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+        
+    my_heart = DB.update_heart(session['id'],'N',name)
+    return jsonify({'msg': '안좋아요 완료!'})
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
