@@ -40,6 +40,13 @@ def hello():
 
 @application.route("/login", methods=['GET', 'POST'])
 def login():
+    next_page = request.args.get('next') or request.form.get('next')
+    if not next_page or next_page == "None":
+        next_page = url_for('view_list')
+
+    if '/signup' in next_page or '/signup_post' in next_page:
+        next_page = url_for('view_list')
+
     if request.method == 'POST':
         id = request.form['id']
         pw = request.form['pw']
@@ -49,17 +56,17 @@ def login():
         if nickname:
             session['id'] = id
             session['nickname'] = nickname
-            return redirect(url_for('hello'))
+            return redirect(next_page)
         else:
             flash("잘못된 ID, PW")
-            return redirect(url_for('login'))
+            return redirect(url_for('login', next=next_page))
 
-    return render_template("login.html")
-
+    return render_template("login.html", next_page=next_page)
 @application.route("/logout")
 def logout():
+    next_page = request.args.get('next')
     session.clear()
-    return redirect(url_for('hello'))
+    return redirect(next_page or url_for('hello'))
 
 @application.route("/signup")
 def signup():
@@ -67,15 +74,69 @@ def signup():
 
 @application.route("/signup_post", methods=['POST'])
 def register_user():
-  data=request.form
-  pw=request.form['pw']
-  pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-  if DB.insert_user(data,pw_hash):
+    data = request.form
+    pw = data['pw']
+    pw_check = data['pwCheck']
+
+    if pw != pw_check:
+        flash("비밀번호가 일치하지 않습니다.")
+        return redirect(url_for('signup'))
+    
+    if not DB.user_duplicate_check(data['id']):
+        flash("이미 존재하는 아이디입니다.")
+        return redirect(url_for('signup'))
+
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+
+    DB.insert_user(data, pw_hash)
     return render_template("login.html")
-  else:
-    flash("user id already exist!")
-    return render_template("signup.html")
-  
+@application.route("/check_id/<userid>")
+def check_id(userid):
+    available = DB.user_duplicate_check(userid)
+    return jsonify({"available": available})
+
+@application.route("/forgot_password", methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'GET':
+        return render_template("forgot_password.html")
+    
+    user_id = request.form['id']
+    email = request.form['email']
+
+    users = DB.db.child("user").get().val()
+
+    if users is None:
+        flash("가입 정보가 없습니다.")
+        return redirect(url_for('forgot_password'))
+
+    for u in users.values():
+        if u['id'] == user_id and u['email'] == email:
+            return redirect(url_for('reset_password', userid=user_id))
+
+    flash("입력한 정보가 일치하지 않습니다.")
+    return redirect(url_for('forgot_password'))
+@application.route("/reset_password/<userid>", methods=['GET', 'POST'])
+def reset_password(userid):
+    if request.method == 'GET':
+        return render_template("reset_password.html", userid=userid)
+
+    pw = request.form['pw']
+    pwCheck = request.form['pwCheck']
+
+    if pw != pwCheck:
+        flash("비밀번호가 일치하지 않습니다.")
+        return redirect(url_for('reset_password', userid=userid))
+
+    pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
+
+    users = DB.db.child("user").get()
+    for key, value in users.val().items():
+        if value['id'] == userid:
+            DB.db.child("user").child(key).update({"pw": pw_hash})
+
+    flash("비밀번호가 성공적으로 변경되었습니다.")
+    return redirect(url_for('login'))
+
 @application.route("/list")
 def view_list():
   page = request.args.get("page",0,type=int)
@@ -137,6 +198,10 @@ def view_item_detail():
 
 @application.route("/reg_review_for/<item_id>/")
 def reg_review_for(item_id):
+    if 'id' not in session:
+        flash("리뷰를 작성하려면 로그인이 필요합니다.")
+        return redirect(url_for('login'))
+    
     item_id_int = int(item_id)
     item = item_data.get(item_id_int)
     
@@ -211,6 +276,9 @@ def view_review_detail():
 
 @application.route("/reg_items")
 def reg_item():
+  if 'id' not in session:
+        flash("상품을 등록하려면 로그인이 필요합니다.")
+        return redirect(url_for('login'))
   return render_template("reg_items.html")
 
 @application.route("/reg_reviews")
@@ -241,6 +309,9 @@ def reg_item_submit():
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
+    if 'id' not in session:
+        flash("상품을 등록하려면 로그인이 필요합니다.")
+        return redirect(url_for('login'))
     # 파일 받기
     image_file = request.files["file"]
     image_path = f"static/images/{image_file.filename}"
