@@ -37,6 +37,7 @@ main{
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    min-height: 0px;
 }
 
 .heading{
@@ -191,6 +192,17 @@ textarea.input_box{
     border-radius: 17px;
     border: 1px solid rgba(0, 0, 0, 0.10);
     background: #FFF;
+}
+
+.item_box{
+    padding: 14px 18px;
+    align-self: stretch;
+    background-color: #d9d9d9; 
+    border-radius: 17px;
+    font-size: 1.1rem;         
+    color: #495057;           
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10);
+    cursor: default;
 }
 
 

@@ -104,40 +104,10 @@ main{
   font-size:16px;
   font-weight:700;
 }
-.item .views{
+.item .hearts{
   color:#757575;
   font-size:11px;
 }
-
-/*  페이지네이션  */
-/*
-.item-pagination{
-  display:flex;
-  flex-direction:row;
-  justify-content:center;
-  align-items:center;
-  gap:6px;
-  margin-top:auto;
-}
-.page-btn{
-  min-width:34px;
-  height:34px;
-  border:1px solid #cfd4d9;
-  background:#fff;
-  border-radius:6px;
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  font-size:14px;
-  color:#222;
-}
-.page-btn:hover{ background:#f4f6f8; }
-.page-btn.current{
-  background:#D9D9D9;
-  color:#000;
-  border-color:#B9B9B9;
-}
-*/
 
 /* 페이지네이션 */
 .item-pagination {

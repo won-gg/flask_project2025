@@ -1,40 +1,103 @@
 {% extends "index.html" %}
 
 {% block section %}
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>세부 상품 조회</title>
-  <link rel="stylesheet" href="../static/item_style.css" />
-</head>
+<script>
+function showHeart() {
+    var itemTitle = "{{ title }}"; 
+    
+    $.ajax({
+        type: 'GET',
+        url: `/show_heart/${itemTitle}/`,data: {},
+        success: function (response) {
+            if (response.my_heart && response.my_heart['interested'] == 'Y') {
+                $("#heart").css("color","#155724");
+                $("#heart").attr("onclick","unlike()");
+            } else {
+                $("#heart").css("color","grey");
+                $("#heart").attr("onclick","like()");
+            }
+        },
+        error: function(request, status, error) {
+            console.log("Error checking heart status:", error);
+            $("#heart").css("color","grey");
+            $("#heart").attr("onclick","like()");
+        }
+    });
+}
+function like() {
+    var itemTitle = "{{ title }}";
+
+    $.ajax({
+        type: 'POST',
+        url: `/like/${itemTitle}/`,
+        data: { interested : "Y" },
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+        },
+        error: function(request, status, error) {
+            if (request.status === 401) {
+                alert('좋아요를 하려면 로그인이 필요합니다.');
+                window.location.href = '/login';
+            } else {
+                alert('오류가 발생했습니다.');
+            }
+        }
+    });
+}
+function unlike() {
+    var itemTitle = "{{ title }}";
+
+    $.ajax({
+        type: 'POST',
+        url: `/unlike/${itemTitle}/`,
+        data: { interested : "N" },
+        success: function (response) {
+            alert(response['msg']);
+            window.location.reload();
+        },
+        error: function(request, status, error) {
+            if (request.status === 401) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/login';
+            } else {
+                alert('오류가 발생했습니다.');
+            }
+        }
+    });
+}
+$(document).ready(function () {
+    showHeart();
+});
+</script>
+
+<link rel="stylesheet" href="../static/item_style.css" />
 <main class="detail-page" 
-      data-price="{{ price|default(30000) }}" 
-      data-fee="{{ fee|default(2500) }}"
-      data-trade="{{ trade|default('delivery') }}">  {# 'direct' or 'delivery' #}
+      data-price="{{ price }}" 
+      data-fee="{{ fee }}"
+      data-trade="{{ trade }}">  
 
   <div class="detail-grid">
     <section class="detail-media">
       <img class="detail-img" 
-           src="{{ url_for('static', filename=image_path|default('images/list/item-img5.jpg')) }}" 
-           alt="{{ title|default('상품 이미지') }}">
+           src="{{ url_for('static', filename=image_path) }}" 
+           alt="{{ title }}">
       <button class="arrow left" aria-label="이전">‹</button>
       <button class="arrow right" aria-label="다음">›</button>
       <div class="pager">2 / 6</div>
+      <!--<i class="fa fa-heart" id="heart"></i>-->
     </section>
 
     <aside class="detail-info">
-      <a href="{{ url_for('view_list') }}#{{ category|default('books') }}">
-      <div class="category">{{ category|default('Books') }} &gt;</div>
+      <a href="{{ url_for('view_list') }}#{{ category }}">
+      <div class="category">{{ category }} &gt;</div>
       </a>
       <h1 class="title">{{ title|default('국제법_김영석 저') }}</h1>
-      <div class="price" id="mainPrice" data-price="{{ price|default(30000) }}"></div>
-
+      <div class="price" id="mainPrice" data-price="{{ price }}"></div>
       <div class="trade">
-        <span class="dliv {{ 'on' if trade|default('delivery') == 'direct' else '' }}">직거래</span>
+        <span class="dliv {{ 'on' if trade == 'direct' else '' }}">직거래</span>
         <span class="or">/</span>
-        <span class="dliv {{ 'on' if trade|default('delivery') == 'delivery' else '' }}">택배 거래</span>
+        <span class="dliv {{ 'on' if trade == 'delivery' else '' }}">택배 거래</span>
         <div class="fee-extra" id="feeExtra"></div>
       </div>
       
@@ -43,7 +106,7 @@
         <div class="seller-row">
           <div class="seller-info">
             <div class="seller" aria-hidden="true"></div>
-            <div class="seller-name">{{ seller|default('ewhaosp') }}</div>
+            <div class="seller-name">{{ seller }}</div>
             <div class="grade">A+</div>
           </div>
           <button class="eval-btn" type="button">판매자 평가</button>
@@ -59,7 +122,16 @@
         <span class="hint">( <span id="rawPrice"></span> + <span id="rawFee"></span> )</span>
       </div>
 
-      <button class="buy-btn" type="button">구매하기</button>
+      <div class="buttons">
+        <button class="buy-btn" type="button">구매하기</button>
+        <button class="reg_review-btn" type="button" onclick="location.href='/reg_review_for/{{item_id}}/';">+ 리뷰 작성하기</button>
+      </div>
+      <!--좋아요 수-->
+      <div class="heart-box">
+        <i class="fa fa-heart" id="heart"></i>
+        <div class="heart-cnt"> {{ heart_cnt }}</div>
+      </div>
+
     </aside>
   </div>
 </main>

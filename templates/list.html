@@ -43,7 +43,7 @@
         <div class="caption">
           <div class="price">₩ {{ "{:,.0f}".format(item.price) }}</div> 
           <!-- 방문 수 -> 좋아요..? -->
-          <div class="views">방문 {{ item_id * 10 + 6 }}</div>
+          <div class="likes">♡ {{ item.heart_count }}</div>
         </div>
       </div>
     </a>
@@ -61,7 +61,7 @@
         <div class="title">{{ item.title }}</div>
         <div class="caption">
           <div class="price">₩ {{ "{:,.0f}".format(item.price) }}</div> 
-          <div class="views">방문 {{ item_id * 10 + 6 }}</div>
+          <div class="likes">♡ {{ item.heart_count }}</div>
         </div>
       </div>
     </a>

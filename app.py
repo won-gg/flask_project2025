@@ -98,9 +98,15 @@ def view_list():
   tot_count = len(data)
   for i in range(row_count):
     if (i==row_count -1) and (tot_count%per_row != 0):
-        locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+      locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
     else:
-       locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+      locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+  data = {}
+  for iid, it in current_page_items:
+    item_name = it['title']
+    heart_cnt = DB.count_hearts_for_item(item_name)
+    it['heart_count'] = heart_cnt
+    data[iid] = it
   return render_template(
      "list.html",
      datas=data.items(),
@@ -110,12 +116,16 @@ def view_list():
      page = page,
      page_count=int((filtered_count/per_page)+1),
      cat=cat,
-     total=filtered_count)
+     total=filtered_count,
+     heart_cnt=heart_cnt)
+
 
 @application.route("/item_detail")
 def view_item_detail():
   item_id = request.args.get('id', 1, type=int)
   item = item_data.get(item_id, item_data[1]) 
+  item_name = item['title']
+  heart_cnt = DB.count_hearts_for_item(item_name)
 
   return render_template(
     "item_detail.html",
@@ -126,7 +136,8 @@ def view_item_detail():
     fee=item['fee'],
     trade=item['trade'],
     description=item['description'],
-    seller=item['seller']
+    seller=item['seller'],
+    heart_cnt=heart_cnt  
   )
 @application.route("/review")
 def view_review():

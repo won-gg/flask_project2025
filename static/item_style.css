@@ -1,6 +1,5 @@
+
 .detail-page{ 
-  /*padding:24px 170px 30px; */
-  
   max-width: 70%;
   min-width: 700px;
   padding: 30px 170px;
@@ -11,26 +10,22 @@
   display:grid; 
   grid-template-columns: 6fr 4fr; 
   column-gap: 10%;
-  align-items:stretch; 
+  align-items:start; 
 }
 
-.detail-media{ 
-  position: relative;
+.detail-media{
+  display: flex; 
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   background:#fff; 
   border-radius:17px; 
   overflow:hidden; 
-  aspect-ratio: 1 / 1;
   padding: 0;
 }
-
 .detail-img{ 
   display:block;  
   width: 100%;
-  height: 100%;
   object-fit: cover;    
-  object-position: center;
 }
 
 .arrow{ 
@@ -75,8 +70,7 @@
   flex-direction:column; 
   gap:20px;
   flex-grow: 1;
-
-  max-height: 100%;
+  height: auto;
 }
 
 .detail-info .category{ 
@@ -145,7 +139,7 @@
 }
 .seller-card{ 
   position:relative;
-  width: 85%;
+  width: 100%;
   border:1px solid #757575; 
   border-radius:17px; 
   background:#f7f7f7; 
@@ -210,7 +204,7 @@
 .memo {
   border-top: 1px solid #757575;
   width: auto;
-  min-height: clamp(100px, 18vw, 150px);
+  min-height: clamp(70px, 18vw, 120px);
   text-align: left;
   justify-content: center;
   font-size: 16px;
@@ -281,4 +275,32 @@
   font-size: 20px;
   margin-bottom: 0;
   align-items:flex-end;
+}
+.heart-box{
+  margin-top: 5px;   
+  display: inline-flex;      
+  align-items: center;
+}
+#heart {
+    position: static;      
+    color: grey;
+    font-size: 25px;
+    cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+    transition: color 0.2s ease-in-out;  
+    border-radius: 50%;
+    width: 60px; 
+    height: 60px; 
+}
+#heart.red {
+    color: #155724;
+}
+#heart:hover {
+    transform: scale(1.1); 
+}
+.heart-cnt{
+  align-items:end;
+  font-size: 22px;
+  font-weight: 500;
+  color: #757575;
 }
