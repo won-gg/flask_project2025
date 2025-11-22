@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, flash, redirect, url_for, session
 from database import DBhandler
 import hashlib
 import sys
@@ -56,16 +56,13 @@ def login():
             return redirect(url_for('login'))
 
     return render_template("login.html")
-
 @application.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for('hello'))
-
 @application.route("/signup")
 def signup():
   return render_template("signup.html")
-
 @application.route("/signup_post", methods=['POST'])
 def register_user():
   data=request.form
@@ -76,7 +73,6 @@ def register_user():
   else:
     flash("user id already exist!")
     return render_template("signup.html")
-  
 @application.route("/list")
 def view_list():
   page = request.args.get("page",0,type=int)
@@ -104,9 +100,15 @@ def view_list():
   tot_count = len(data)
   for i in range(row_count):
     if (i==row_count -1) and (tot_count%per_row != 0):
-        locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+      locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
     else:
-       locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+      locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+  data = {}
+  for iid, it in current_page_items:
+    item_name = it['title']
+    heart_cnt = DB.count_hearts_for_item(item_name)
+    it['heart_count'] = heart_cnt
+    data[iid] = it
   return render_template(
      "list.html",
      datas=data.items(),
@@ -116,12 +118,17 @@ def view_list():
      page = page,
      page_count=int((filtered_count/per_page)+1),
      cat=cat,
-     total=filtered_count)
+     total=filtered_count,
+     heart_cnt=heart_cnt)
+
 
 @application.route("/item_detail")
 def view_item_detail():
   item_id = request.args.get('id', 1, type=int)
   item = item_data.get(item_id, item_data[1]) 
+
+  item_name = item['title']
+  heart_cnt = DB.count_hearts_for_item(item_name)
 
   return render_template(
     "item_detail.html",
@@ -133,9 +140,9 @@ def view_item_detail():
     fee=item['fee'],
     trade=item['trade'],
     description=item['description'],
-    seller=item['seller']
+    seller=item['seller'],
+    heart_cnt=heart_cnt  
   )
-
 @application.route("/reg_review_for/<item_id>/")
 def reg_review_for(item_id):
     item_id_int = int(item_id)
@@ -178,53 +185,13 @@ def review_detail(id):
 
     return render_template("review_detail.html", review=review)
 
-@application.route("/review_detail")
-def view_review_detail():
-    item_name = request.args.get('item_name')
-    if not item_name:
-        flash("상품명이 필요합니다.")
-        return redirect(url_for('view_review'))
-    
-    review_data = DB.get_review_byname(item_name)
-    if not review_data:
-        flash("리뷰를 찾을 수 없습니다.")
-        return redirect(url_for('view_review'))
-    
-    # review_detail.html에 필요한 형식으로 데이터 구성
-    img_path = review_data.get("img_path", "")
-    # img_path가 파일명만 있는 경우 "images/" 경로 추가
-    if img_path and not img_path.startswith("images/"):
-        img_path = f"images/{img_path}"
-    
-    review = {
-        "item_name": review_data.get("item_name", ""),
-        "rating": review_data.get("rating", ""),
-        "title": review_data.get("title", ""),
-        "content": review_data.get("content", ""),
-        "tags": [],  # 데이터베이스에 tags 필드가 없으므로 빈 리스트
-        "author": review_data.get("reviewer_id", "익명"),  # reviewer_id를 author로 사용
-        "author_avg_rating": "A",  # 기본값 설정 (나중에 계산 가능)
-        "image_path": img_path
-    }
-    
-    return render_template("review_detail.html", review=review)
-
 
 @application.route("/reg_items")
 def reg_item():
   return render_template("reg_items.html")
-
 @application.route("/reg_reviews")
 def reg_review():
   return render_template("reg_reviews.html")
-
-@application.route("/reg_review_post", methods=['POST'])
-def reg_review_post():
-    data=request.form
-    image_file = request.files["file"]
-    image_file.save("static/images/{}".format(image_file.filename))
-    DB.reg_review(data, image_file.filename)
-    return redirect(url_for('view_review'))
 
 @application.route("/submit_item")
 def reg_item_submit():
@@ -255,33 +222,6 @@ def reg_item_submit_post():
 @application.route("/profile")
 def profile():
   return render_template("profile.html")
-
-@application.route('/show_heart/<name>/', methods=['GET'])
-def show_heart(name):
-    if 'id' not in session:
-        return jsonify({'error': '로그인이 필요합니다.'}), 401
-        
-    my_heart = DB.get_heart_byname(session['id'],name)
-    if not my_heart:
-        my_heart = {"interested": "N"}
-        
-    return jsonify({'my_heart': my_heart})
-
-@application.route('/like/<name>/', methods=['POST'])
-def like(name):
-    if 'id' not in session:
-        return jsonify({'error': '로그인이 필요합니다.'}), 401
-        
-    my_heart = DB.update_heart(session['id'],'Y',name)
-    return jsonify({'msg': '좋아요 완료!'})
-
-@application.route('/unlike/<name>/', methods=['POST'])
-def unlike(name):
-    if 'id' not in session:
-        return jsonify({'error': '로그인이 필요합니다.'}), 401
-        
-    my_heart = DB.update_heart(session['id'],'N',name)
-    return jsonify({'msg': '안좋아요 완료!'})
 
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)

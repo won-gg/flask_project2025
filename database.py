@@ -110,3 +110,18 @@ class DBhandler:
                 return review_data
         
         return None
+    def count_hearts_for_item(self, item_name):
+        hearts_root = self.db.child("heart").get()
+        if hearts_root.val() is None:
+            return 0
+
+        count = 0
+        for user_node in hearts_root.each():
+            user_hearts = user_node.val()
+            if user_hearts is None:
+                continue
+
+            heart_info = user_hearts.get(item_name)
+            if heart_info and heart_info.get("interested") == "Y":
+                count += 1
+        return count

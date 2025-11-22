@@ -42,7 +42,8 @@
         <div class="title">{{ item.title }}</div>
         <div class="caption">
           <div class="price">₩ {{ "{:,.0f}".format(item.price) }}</div> 
-          <div class="views">방문 {{ item_id * 10 + 6 }}</div>
+          <!-- 방문 수 -> 좋아요..? -->
+          <div class="likes">♡ {{ item.heart_count }}</div>
         </div>
       </div>
     </a>
@@ -60,7 +61,7 @@
         <div class="title">{{ item.title }}</div>
         <div class="caption">
           <div class="price">₩ {{ "{:,.0f}".format(item.price) }}</div> 
-          <div class="views">방문 {{ item_id * 10 + 6 }}</div>
+          <div class="likes">♡ {{ item.heart_count }}</div>
         </div>
       </div>
     </a>
@@ -70,11 +71,14 @@
 
       <!-- 페이지네이션 -->
       <nav class ="item-pagination">
+        <button class="page-btn">&laquo;</button>
         {% for i in range(page_count)%}
-        <button class="page-btn {% if i == page %}active{% endif %}" type="button">
-          <a href="{{url_for('view_list', page=i, cat=cat)}}">{{i+1}}</a> 
+        <button class="page-btn {% if i == page %}active{% endif %}" type="button"
+          onclick="window.location.href ='{{url_for('view_list', page=i, cat=cat) }}'">
+          {{i+1}}
         </button>
         {% endfor %}
+        <button class="page-btn">&raquo;</button>
       </nav>
       {% else %}
       <p>등록된 상품이 없습니다.</p>
