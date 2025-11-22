@@ -124,11 +124,13 @@ def view_list():
 def view_item_detail():
   item_id = request.args.get('id', 1, type=int)
   item = item_data.get(item_id, item_data[1]) 
+
   item_name = item['title']
   heart_cnt = DB.count_hearts_for_item(item_name)
 
   return render_template(
     "item_detail.html",
+    item_id=item_id,
     title=item['title'],
     category=item['category'].capitalize(),
     price=item['price'],
@@ -139,6 +141,15 @@ def view_item_detail():
     seller=item['seller'],
     heart_cnt=heart_cnt  
   )
+@application.route("/reg_review_for/<item_id>/")
+def reg_review_for(item_id):
+    item_id_int = int(item_id)
+    item = item_data.get(item_id_int)
+    
+    item_name = item.get('title')
+    
+    return render_template("reg_reviews.html", item_id=item_id_int, item_name=item_name)
+
 @application.route("/review")
 def view_review():
     reviews = {
