@@ -1,20 +1,23 @@
-*{ 
-  box-sizing:border-box; 
-}
-
 .detail-page{ 
-  padding:24px 170px 30px; 
+  /*padding:24px 170px 30px; */
+  
+  max-width: 70%;
+  min-width: 700px;
+  padding: 30px 170px;
+  margin: 0 auto;
 }
 
 .detail-grid{ 
   display:grid; 
-  grid-template-columns:minmax(480px, 620px) 1fr; 
-  gap:56px; 
+  grid-template-columns: 6fr 4fr; 
+  column-gap: 10%;
   align-items:stretch; 
 }
 
 .detail-media{ 
-  position:relative; 
+  position: relative;
+  width: 100%;
+  height: 100%;
   background:#fff; 
   border-radius:17px; 
   overflow:hidden; 
@@ -23,10 +26,10 @@
 }
 
 .detail-img{ 
-  display:block; 
-  width: 100%; 
-  height: 100%;           
-  object-fit: cover;      
+  display:block;  
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    
   object-position: center;
 }
 
@@ -68,11 +71,12 @@
 
 /* 우측 상품 정보 */
 .detail-info{ 
-  display:flex; 
+  display:flex;
   flex-direction:column; 
-  gap:10px;
+  gap:20px;
   flex-grow: 1;
-  max-width: 450px;
+
+  max-height: 100%;
 }
 
 .detail-info .category{ 
@@ -128,7 +132,7 @@
 }
 
 .seller-title{
-  font-size: 12px;
+  font-size: 15px;
   color:#000;
   display: flex;
   flex-direction: column;
@@ -136,11 +140,12 @@
   gap: 0;
 }
 .seller-title h3{
-  margin-bottom: 8px;
   padding-left: 10px;
   font-weight: 550;
 }
 .seller-card{ 
+  position:relative;
+  width: 85%;
   border:1px solid #757575; 
   border-radius:17px; 
   background:#f7f7f7; 
@@ -150,8 +155,6 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  position:relative; 
-
 }
 
 .seller-row{ 
@@ -160,7 +163,6 @@
   gap:0;
   margin-bottom:8px; 
   flex-shrink: 0;
-
 }
 
 .seller-info {
@@ -192,15 +194,13 @@
 }
 
 .eval-btn{ 
-  width: 149.108px;
-  height: 44px;
+  width: 30%;
   border:1px solid #757575; 
   background:#f7f7f7; 
   color:#000; 
   border-radius:17px; 
   padding:6px 10px;
-  margin-left: auto;
-  margin-bottom: 5px;
+  margin: 0 5px 5px auto;
   cursor:pointer; 
   font-weight: 400;
   font-size: 16px;
@@ -210,7 +210,7 @@
 .memo {
   border-top: 1px solid #757575;
   width: auto;
-  min-height: 133px;
+  min-height: clamp(100px, 18vw, 150px);
   text-align: left;
   justify-content: center;
   font-size: 16px;
@@ -248,15 +248,35 @@
   justify-content: center;
 }
 
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
 .buy-btn{ 
   margin-top:10px; 
-  width: 284px;
+  width: 50%;
   height: 62px;
   border:none; 
-  border-radius:12px; 
+  border-radius:17px; 
   cursor:pointer; 
   background:#155724; 
   color:#fff; 
+  font-weight:600; 
+  font-size: 20px;
+  margin-bottom: 0;
+  align-items:flex-end;
+}
+
+.reg_review-btn{ 
+  margin-top:10px; 
+  width: 50%;
+  height: 62px;
+  border:1px solid #757575;
+  border-radius:17px; 
+  cursor:pointer; 
+  background:#fff; 
+  color:#155724; 
   font-weight:600; 
   font-size: 20px;
   margin-bottom: 0;
