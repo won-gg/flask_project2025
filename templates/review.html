@@ -51,14 +51,14 @@
     <div class="bottom-section">
       <!-- 왼쪽 내용 -->
       <div class="left-content">
-        <div class="meta-info">
+        <div class="meta-info" style="height:30px;">
           <p id="modal-item" class="item-name"></p>
           <p id="modal-rating" class="rating"></p>
         </div>
 
         <h2 id="modal-title" class="review-title"></h2>
 
-        <div class="review-content-box">
+        <div class="review-content-box" style="height:150px;">
           <p id="modal-content"></p>
         </div>
 
@@ -67,7 +67,9 @@
 
       <!-- 오른쪽 작성자 프로필 -->
       <div class="right-profile">
-        <div class="author-photo"></div>
+        <div class="author-photo">
+          <img src="{{ url_for('static', filename='seller.png') }}" alt="작성자 프로필 사진">
+        </div>
         <p id="modal-author" class="author-name"></p>
         <p id="modal-author-rating" class="author-rating"></p>
       </div>
