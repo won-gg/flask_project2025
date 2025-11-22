@@ -36,7 +36,8 @@ item_data = {
 
 @application.route("/")
 def hello():
-  return render_template("index.html", user_id=session.get("id"), user_nickname=session.get("nickname"))
+  render_template("index.html", user_id=session.get("id"), user_nickname=session.get("nickname"))
+  return view_list()
 
 @application.route("/login", methods=['GET', 'POST'])
 def login():
