@@ -37,7 +37,9 @@
 
       <!-- 오른쪽: 작성자 정보 -->
       <div class="right-profile">
-        <div class="author-photo"></div>
+        <div class="author-photo">
+          <img src="{{ url_for('static', filename='seller.png') }}" alt="작성자 프로필 사진">
+        </div>
         <p class="author-name">{{ review.author }}</p>
         <p class="author-rating">작성자 매너 점수: {{ review.author_avg_rating }}</p>
       </div>
