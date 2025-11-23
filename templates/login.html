@@ -15,7 +15,8 @@
       <h1>오e 마켓</h1>
       <p>이화여대 학생 전용 마켓플레이스</p>
     </div>
-    <form action="/login" method="post" class="login-form">
+    <form action="{{ url_for('login') }}" method="post" class="login-form">
+      <input type="hidden" name="next" value="{{ next_page if next_page else '' }}">
       <label for="id">아이디</label>
       <div class="input-wrapper">
         <input type="text" id="id" name="id" placeholder="아이디를 입력하세요" required>
@@ -29,7 +30,7 @@
 
       <div class="option-row">
         <label><input type="checkbox" name="keep_login"> 로그인 상태 유지</label>
-        <a href="#" class="find-link">비밀번호를 잊으셨나요?</a>
+        <a href="{{ url_for('forgot_password') }}" class="find-link">비밀번호를 잊으셨나요?</a>
       </div>
 
       <button type="submit" class="login-btn">로그인</button>
