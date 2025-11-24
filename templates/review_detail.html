@@ -9,7 +9,7 @@
     <!-- 상단 이미지 4장 -->
     <div class="image-row">
       {% for i in range(4) %}
-        <img src="{{ url_for('static', filename=review.image_path) }}" alt="리뷰 이미지 {{ i + 1 }}">
+        <img src="{{ url_for('static', filename = 'images/' + review.img_path) }}" alt="리뷰 이미지 {{ i + 1 }}">
       {% endfor %}
     </div>
 

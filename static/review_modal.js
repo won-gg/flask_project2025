@@ -26,14 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // 이미지 4장 표시
         const modalImages = document.getElementById("modal-images");
         modalImages.innerHTML = Array(4).fill(0).map(() =>
-          `<img src="/static/${data.image_path}" alt="리뷰 이미지">`
+          `<img src="/static/images/${data.img_path}" alt="리뷰 이미지">`
         ).join("");
     
         document.getElementById("modal-item").textContent = data.item_name;
         document.getElementById("modal-rating").textContent = `매너 학점: ${data.rating}`;
         document.getElementById("modal-title").textContent = data.title;
         document.getElementById("modal-content").textContent = data.content;
-        document.getElementById("modal-author").textContent = data.author;
+        document.getElementById("modal-author").textContent = data.reviewer_id;
         document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.author_rating}`;
     
         const modalTags = document.getElementById("modal-tags");
