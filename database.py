@@ -77,6 +77,17 @@ class DBhandler:
         }   
         self.db.child("review").child(data['item_id']).set(review_info)
         return True
+    
+    def get_reviews(self):
+        reviews = self.db.child("review").get().val()
+        if reviews is None:
+            return {}
+        return reviews
+    
+    def get_review_by_id(self, item_id):
+        review = self.db.child("review").child(item_id).get().val()
+        return review
+    
     def get_heart_byname(self, uid, name):
         hearts = self.db.child("heart").child(uid).get()
         target_value=""
@@ -97,19 +108,6 @@ class DBhandler:
         self.db.child("heart").child(user_id).child(item).set(heart_info)
         return True
     
-    def get_review_byname(self, item_name):
-        reviews = self.db.child("review").get()
-        if reviews.val() == None:
-            return None
-        
-        for res in reviews.each():
-            value = res.val()
-            if value.get("item_name") == item_name:
-                review_data = value.copy()
-                review_data["item_id"] = res.key()
-                return review_data
-        
-        return None
     def count_hearts_for_item(self, item_name):
         hearts_root = self.db.child("heart").get()
         if hearts_root.val() is None:

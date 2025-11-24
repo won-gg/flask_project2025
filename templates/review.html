@@ -7,7 +7,7 @@
 
 <main class="review-list">
   <div class="review-header">
-    <h2>전체 리뷰 조회 (8)</h2>
+    <h2>전체 리뷰 조회 ({{total}})</h2>
     <div class="filter-title">조건별 필터</div>
   </div>
 
@@ -16,7 +16,7 @@
     {% for review_id, review in reviews.items() %}
     <article class="review-card" data-id="{{ review_id }}">
       <div class="review-image">
-        <img src="{{ url_for('static', filename=review.image_path) }}" alt="상품 이미지">
+        <img src="{{ url_for('static', filename = 'images/' + review.img_path) }}" alt="상품 이미지">
       </div>
       <div class="review-body">
         <p class="item-name">{{ review.item_name }}</p>

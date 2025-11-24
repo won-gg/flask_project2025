@@ -8,29 +8,29 @@ DB = DBhandler()
 
 ## 상품 임시 데이터 12개 (list.html & item_detail.html 사용)
 item_data = {
-    1: {'title': '100년 된 헤드셋', 'category': 'digitals', 'price': 10000, 'image_path': 'images/item-list/item-img1.jpg', 'fee': 0, 'trade': 'direct', 
+    1: {'title': '100년 된 헤드셋', 'category': 'digitals', 'price': 10000, 'image_path': 'images/item-img1.jpg', 'fee': 0, 'trade': 'direct', 
         'description': '100주년 기념으로 기존에 사용하던 제품 싸게 판매합니다. 소리 잘 들리고 상태 좋습니다.', 'seller': 'ewhaosp1'},
-    2: {'title': 'WONDER', 'category': 'books', 'price': 5000, 'image_path': 'images/item-list/item-img2.jpg', 'fee': 2500, 'trade': 'delivery', 
+    2: {'title': 'WONDER', 'category': 'books', 'price': 5000, 'image_path': 'images/item-img2.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description': '읽으려고 샀는데 손이 안 가서 판매합니다. 거의 새 책입니다.', 'seller': 'ewhaosp2'},
-    3: {'title': '검은색 버뮤다 팬츠', 'category': 'clothes', 'price': 10000, 'image_path': 'images/item-list/item-img3.jpg', 'fee': 0, 'trade': 'direct', 
+    3: {'title': '검은색 버뮤다 팬츠', 'category': 'clothes', 'price': 10000, 'image_path': 'images/item-img3.jpg', 'fee': 0, 'trade': 'direct', 
         'description': '한두 번 입은 바지입니다. 상태 아주 좋습니다.', 'seller': 'ewhaosp3'},
-    4: {'title': '고양이 마스킹 테이프', 'category': 'etc', 'price': 4000, 'image_path': 'images/item-list/item-img4.jpg', 'fee': 2500, 'trade': 'delivery', 
+    4: {'title': '고양이 마스킹 테이프', 'category': 'etc', 'price': 4000, 'image_path': 'images/item-img4.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description': '처분하려고 팝니다. 마스킹 테이프 걸어둔 것까지 통째로 판매합니다. 반 정도 사용했습니다.', 'seller': 'ewhaosp4'},
-    5: {'title': '국제법_김영석 저', 'category': 'books', 'price': 30000, 'image_path': 'images/item-list/item-img5.jpg', 'fee': 2500, 'trade': 'delivery', 
+    5: {'title': '국제법_김영석 저', 'category': 'books', 'price': 30000, 'image_path': 'images/item-img5.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description': '작년 수업 시간에 사용한 교재입니다. 중요한 부분에 필기 있습니다. 오히려 도움이 될 수도 있습니다.', 'seller': 'ewhaosp5'},
-    6: {'title': 'LG GRAM', 'category': 'digitals', 'price': 200000, 'image_path': 'images/item-list/item-img6.jpg', 'fee': 0, 'trade': 'direct', 
+    6: {'title': 'LG GRAM', 'category': 'digitals', 'price': 200000, 'image_path': 'images/item-img6.jpg', 'fee': 0, 'trade': 'direct', 
         'description': '새 노트북 구매로 기존 사용하던 노트북 판매합니다. 전원 이상 없고 화면에 키보드 자국 조금 남아있습니다. 카메라도 잘 작동됩니다.', 'seller': 'ewhaosp6'},
-    7: {'title': '아이폰 5s', 'category': 'digitals', 'price': 30000, 'image_path': 'images/item-list/item-img7.jpg', 'fee': 2500, 'trade': 'delivery', 
+    7: {'title': '아이폰 5s', 'category': 'digitals', 'price': 30000, 'image_path': 'images/item-img7.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description': '배터리 고장으로 전원이 안 들어옵니다. 바로 사용은 어렵고, A/S 후 사용 가능할 듯 싶습니다. 싸게 판매합니다.', 'seller': 'ewhaosp7'},
-    8: {'title': '폴로 랄프 로렌 바람막이', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-list/item-img8.jpg', 'fee': 0, 'trade': 'direct',
+    8: {'title': '폴로 랄프 로렌 바람막이', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-img8.jpg', 'fee': 0, 'trade': 'direct',
         'description': '온라인 구매했는데 제 생각보다 얇아서 판매합니다. 택 붙어있는 거진 새 상품입니다.', 'seller': 'ewhaosp8'},
-    9: {'title': '2p책예시', 'category': 'books', 'price': 30000, 'image_path': 'images/item-list/item-img5.jpg', 'fee': 2500, 'trade': 'delivery', 
+    9: {'title': '2p책예시', 'category': 'books', 'price': 30000, 'image_path': 'images/item-img5.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description':'가나다라', 'seller': 'ewhaosp9'},
-    10: {'title': '2p노트북예시', 'category': 'digitals', 'price': 200000, 'image_path': 'images/item-list/item-img6.jpg', 'fee': 0, 'trade': 'direct', 
+    10: {'title': '2p노트북예시', 'category': 'digitals', 'price': 200000, 'image_path': 'images/item-img6.jpg', 'fee': 0, 'trade': 'direct', 
         'description': '가나다', 'seller': 'ewhaosp10'},
-    11: {'title': '2p핸드폰예시', 'category': 'digitals', 'price': 30000, 'image_path': 'images/item-list/item-img7.jpg', 'fee': 2500, 'trade': 'delivery', 
+    11: {'title': '2p핸드폰예시', 'category': 'digitals', 'price': 30000, 'image_path': 'images/item-img7.jpg', 'fee': 2500, 'trade': 'delivery', 
         'description': '가나', 'seller': 'ewhaosp11'},
-    12: {'title': '2p의류예시', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-list/item-img8.jpg', 'fee': 0, 'trade': 'direct',
+    12: {'title': '2p의류예시', 'category': 'clothes', 'price': 120000, 'image_path': 'images/item-img8.jpg', 'fee': 0, 'trade': 'direct',
         'description': '가', 'seller': 'ewhaosp12'}
 }
 
@@ -207,6 +207,12 @@ def view_item_detail():
     seller=item['seller'],
     heart_cnt=heart_cnt  
   )
+
+
+@application.route("/reg_reviews")
+def reg_review():
+  return render_template("reg_reviews.html")
+
 @application.route("/reg_review_for/<item_id>/")
 def reg_review_for(item_id):
     if 'id' not in session:
@@ -220,56 +226,45 @@ def reg_review_for(item_id):
     
     return render_template("reg_reviews.html", item_id=item_id_int, item_name=item_name)
 
+@application.route("/reg_review_post", methods=['POST'])
+def reg_review_post():
+    data=request.form
+    image_file = request.files["file"]
+    image_file.save("static/images/{}".format(image_file.filename))
+
+    DB.reg_review(data, image_file.filename)
+
+    return redirect(url_for('view_review'))
+
 @application.route("/review")
 def view_review():
-    reviews = {
-        1: {"item_name": "100년 된 헤드셋", "title": "따뜻한 거래였어요", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "판매자분 너무 친절했어요!", "tags": ["친절", "포장깔끔"], "image_path": "images/item-list/item-img1.jpg"},
-        2: {"item_name": "WONDEr", "title": "배송 빨랐어요", "rating": "A", "author": "민서", "author_rating": "A", "content": "상품 상태도 좋고 사진 그대로예요!", "tags": ["빠른배송", "상태좋음"], "image_path": "images/item-list/item-img2.jpg"},
-        3: {"item_name": "검은색 버뮤다 팬츠", "title": "편하게 입기 좋아요", "rating": "A+", "author": "세은", "author_rating": "A+", "content": "너무 예쁜 소리예요 🎶", "tags": ["감성", "친절판매"], "image_path": "images/item-list/item-img3.jpg"},
-        4: {"item_name": "고양이 마스킹 테이프", "title": "디자인이 귀여워서 자주 써요", "rating": "A", "author": "지수", "author_rating": "A", "content": "포장이 너무 예뻤어요 ☕️", "tags": ["예쁜포장", "선물추천"], "image_path": "images/item-list/item-img4.jpg"},
-        5: {"item_name": "국제법-김영석 저", "title": "상태 좋아서 거래 만족스러워요 ", "rating": "A", "author": "윤아", "author_rating": "A+", "content": "작동도 잘 되고 예뻐요!", "tags": ["만족", "디자인좋음"], "image_path": "images/item-list/item-img5.jpg"},
-        6: {"item_name": "엘지 그램", "title": "좋은 가격에 구매해서 만족스럽습니다.", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "직접 만드셨다니 대단해요!", "tags": ["친절", "퀄리티굿"], "image_path": "images/item-list/item-img6.jpg"},
-        7: {"item_name": "아이폰 5s", "title": "찾던 매물인데 찾아서 기뻐요.", "rating": "A", "author": "세은", "author_rating": "A", "content": "잘 작동하고 고급스러워요!", "tags": ["정확한설명", "좋은거래"], "image_path": "images/item-list/item-img7.jpg"},
-        8: {"item_name": "랄프로렌 바람막이", "title": "소장 가치 있어요", "rating": "A+", "author": "하늘", "author_rating": "A+", "content": "디자인이 너무 마음에 들어요!", "tags": ["빈티지", "소장추천"], "image_path": "images/item-list/item-img8.jpg"}
-    }
-    return render_template("review.html", reviews=reviews)
+    reviews_data = DB.get_reviews()
 
-@application.route("/review/<int:id>")
-def review_detail(id):
-    data = {
-        1: {"item_name": "100년 된 헤드셋", "title": "따뜻한 거래였어요", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "판매자분 너무 친절했어요!", "tags": ["친절", "포장깔끔"], "image_path": "images/item-list/item-img1.jpg"},
-        2: {"item_name": "WONDEr", "title": "배송 빨랐어요", "rating": "A", "author": "민서", "author_rating": "A", "content": "상품 상태도 좋고 사진 그대로예요!", "tags": ["빠른배송", "상태좋음"], "image_path": "images/item-list/item-img2.jpg"},
-        3: {"item_name": "검은색 버뮤다 팬츠", "title": "편하게 입기 좋아요", "rating": "A+", "author": "세은", "author_rating": "A+", "content": "너무 예쁜 소리예요 🎶", "tags": ["감성", "친절판매"], "image_path": "images/item-list/item-img3.jpg"},
-        4: {"item_name": "고양이 마스킹 테이프", "title": "디자인이 귀여워서 자주 써요", "rating": "A", "author": "지수", "author_rating": "A", "content": "포장이 너무 예뻤어요 ☕️", "tags": ["예쁜포장", "선물추천"], "image_path": "images/item-list/item-img4.jpg"},
-        5: {"item_name": "국제법-김영석 저", "title": "상태 좋아서 거래 만족스러워요 ", "rating": "A", "author": "윤아", "author_rating": "A+", "content": "작동도 잘 되고 예뻐요!", "tags": ["만족", "디자인좋음"], "image_path": "images/item-list/item-img5.jpg"},
-        6: {"item_name": "엘지 그램", "title": "좋은 가격에 구매해서 만족스럽습니다.", "rating": "A+", "author": "윤아", "author_rating": "A+", "content": "직접 만드셨다니 대단해요!", "tags": ["친절", "퀄리티굿"], "image_path": "images/item-list/item-img6.jpg"},
-        7: {"item_name": "아이폰 5s", "title": "찾던 매물인데 찾아서 기뻐요.", "rating": "A", "author": "세은", "author_rating": "A", "content": "잘 작동하고 고급스러워요!", "tags": ["정확한설명", "좋은거래"], "image_path": "images/item-list/item-img7.jpg"},
-        8: {"item_name": "랄프로렌 바람막이", "title": "소장 가치 있어요", "rating": "A+", "author": "하늘", "author_rating": "A+", "content": "디자인이 너무 마음에 들어요!", "tags": ["빈티지", "소장추천"], "image_path": "images/item-list/item-img8.jpg"}
-    }
+    if not reviews_data:
+        reviews_data = {}
 
-    review = data.get(id)
-    if not review:
+    # Firebase에서 단일 리뷰가 dict가 아닌 list로 반환되는 경우 처리
+    elif isinstance(reviews_data, list):
+        clean_reviews = {}
+        for i, item in enumerate(reviews_data):
+            if item is not None:
+                clean_reviews[str(i)] = item
+        reviews_data = clean_reviews
+
+    item_counts = len(reviews_data)
+
+    return render_template("review.html", reviews=reviews_data, total = item_counts)
+
+
+@application.route("/review_detail/<item_id>")
+def view_review_detail(item_id):
+
+    review_data = DB.get_review_by_id(item_id)
+
+    if not review_data:
         abort(404)
 
-    return render_template("review_detail.html", review=review)
-
-@application.route("/review_detail")
-def view_review_detail():
-    item_name = request.args.get('item_name')
-    if not item_name:
-        flash("상품명이 필요합니다.")
-        return redirect(url_for('view_review'))
-
-    review_data = DB.get_review_byname(item_name)
-    if not review_data:
-        flash("리뷰를 찾을 수 없습니다.")
-        return redirect(url_for('view_review'))
-
-    # review_detail.html에 필요한 형식으로 데이터 구성
     img_path = review_data.get("img_path", "")
-    # img_path가 파일명만 있는 경우 "images/" 경로 추가
-    if img_path and not img_path.startswith("images/"):
-        img_path = f"images/{img_path}"
 
     review = {
         "item_name": review_data.get("item_name", ""),
@@ -279,10 +274,10 @@ def view_review_detail():
         "tags": [],  # 데이터베이스에 tags 필드가 없으므로 빈 리스트
         "author": review_data.get("reviewer_id", "익명"),  # reviewer_id를 author로 사용
         "author_avg_rating": "A",  # 기본값 설정 (나중에 계산 가능)
-        "image_path": img_path
+        "img_path": img_path
     }
 
-    return render_template("review_detail.html", review=review)
+    return render_template("review_detail.html", review = review)
 
 @application.route("/reg_items")
 def reg_item():
@@ -290,9 +285,7 @@ def reg_item():
         flash("상품을 등록하려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
   return render_template("reg_items.html")
-@application.route("/reg_reviews")
-def reg_review():
-  return render_template("reg_reviews.html")
+
 
 @application.route("/submit_item")
 def reg_item_submit():
