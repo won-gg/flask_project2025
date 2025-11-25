@@ -332,13 +332,18 @@ def profile(user_id):
 
     user_items = DB.get_items_by_user_id(user_id)
     user_reviews = DB.get_reviews_by_user(user_id)
+
+    user_items_count = len(user_items) if user_items else 0
+    user_reviews_count = len(user_reviews) if user_reviews else 0
     
     return render_template(
         "profile.html",
         user_id=user_id,
         liked_items=liked_items,
         user_items=user_items,
-        user_reviews=user_reviews
+        user_reviews=user_reviews,
+        user_items_count=user_items_count,
+        user_reviews_count=user_reviews_count
     )
 
 ## 좋아요 상태 조회
