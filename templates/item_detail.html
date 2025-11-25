@@ -4,10 +4,11 @@
 <script>
 function showHeart() {
     var itemTitle = "{{ title }}"; 
+    var itemId = "{{ item_id }}";
     
     $.ajax({
         type: 'GET',
-        url: `/show_heart/${itemTitle}/`,data: {},
+        url: `/show_heart/${itemId}/`,data: {},
         success: function (response) {
             if (response.my_heart && response.my_heart['interested'] == 'Y') {
                 $("#heart").css("color","#155724");
@@ -26,10 +27,11 @@ function showHeart() {
 }
 function like() {
     var itemTitle = "{{ title }}";
+    var itemId = "{{ item_id }}";
 
     $.ajax({
         type: 'POST',
-        url: `/like/${itemTitle}/`,
+        url: `/like/${itemId}/`,
         data: { interested : "Y" },
         success: function (response) {
             alert(response['msg']);
@@ -47,10 +49,11 @@ function like() {
 }
 function unlike() {
     var itemTitle = "{{ title }}";
+    var itemId = "{{ item_id }}";
 
     $.ajax({
         type: 'POST',
-        url: `/unlike/${itemTitle}/`,
+        url: `/unlike/${itemId}/`,
         data: { interested : "N" },
         success: function (response) {
             alert(response['msg']);

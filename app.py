@@ -183,8 +183,7 @@ def view_list():
 
   data = {}
   for iid, it in current_page_items:
-    item_name = it['title']
-    heart_cnt = DB.count_hearts_for_item(item_name)
+    heart_cnt = DB.count_hearts_for_item(iid)
     it['heart_count'] = heart_cnt
     data[iid] = it
 
@@ -207,8 +206,7 @@ def view_item_detail():
 
   item = DB.get_item_by_id(item_id) 
 
-  item_name = item['title']
-  heart_cnt = DB.count_hearts_for_item(item_name)
+  heart_cnt = DB.count_hearts_for_item(str(item_id))
 
   return render_template(
     "item_detail.html",
@@ -320,31 +318,51 @@ def view_review_detail(item_id):
 @application.route("/profile")
 def profile():
   return render_template("profile.html")
-@application.route('/show_heart/<name>/', methods=['GET'])
-def show_heart(name):
+
+## 좋아요 상태 조회
+@application.route('/show_heart/<item_id>/', methods=['GET'])
+def show_heart(item_id):
     if 'id' not in session:
         return jsonify({'error': '로그인이 필요합니다.'}), 401
 
-    my_heart = DB.get_heart_byname(session['id'],name)
+    my_heart = DB.get_heart_byname(session['id'],item_id)
     if not my_heart:
         my_heart = {"interested": "N"}
 
     return jsonify({'my_heart': my_heart})
 
-@application.route('/like/<name>/', methods=['POST'])
-def like(name):
+## 좋아요 / 좋아요취소 처리
+@application.route('/like/<item_id>/', methods=['POST'])
+def like(item_id):
     if 'id' not in session:
         return jsonify({'error': '로그인이 필요합니다.'}), 401
+    
+    item = DB.get_item_by_id(item_id)
 
-    my_heart = DB.update_heart(session['id'],'Y',name)
+    DB.update_heart (
+        session['id'],
+        'Y',
+        item_id, 
+        item['title'],
+        item['img_path']
+    )
     return jsonify({'msg': '좋아요 완료!'})
 
-@application.route('/unlike/<name>/', methods=['POST'])
-def unlike(name):
+@application.route('/unlike/<item_id>/', methods=['POST'])
+def unlike(item_id):
     if 'id' not in session:
         return jsonify({'error': '로그인이 필요합니다.'}), 401
+    
+    item = DB.get_item_by_id(item_id)
 
-    my_heart = DB.update_heart(session['id'],'N',name)
+    DB.update_heart (
+        session['id'],
+        'N',
+        item_id, 
+        item['title'],
+        item['img_path']
+    )
+
     return jsonify({'msg': '안좋아요 완료!'})
 
 if __name__ == "__main__":
