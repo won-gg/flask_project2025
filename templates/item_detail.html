@@ -109,7 +109,7 @@ $(document).ready(function () {
         <div class="seller-row">
           <div class="seller-info">
             <div class="seller" aria-hidden="true"></div>
-            <div class="seller-name">{{ seller }}</div>
+            <div class="seller-name"><a href="{{ url_for('profile', user_id=seller) }}">{{ seller }}</a></div>
             <div class="grade">A+</div>
           </div>
           <button class="eval-btn" type="button">판매자 평가</button>

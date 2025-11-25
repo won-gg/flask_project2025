@@ -323,17 +323,26 @@ def view_review_detail(item_id):
 
 
 ## 프로필 페이지
-@application.route("/profile")
-def profile():
+@application.route("/profile/<user_id>")
+def profile(user_id):
     if 'id' not in session:
         flash("프로필을 보려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
     
-    liked_items = DB.get_liked_items_by_user(session['id'])
+    if session['id'] == user_id:
+        liked_items = DB.get_liked_items_by_user(user_id)
+    else:
+        liked_items = {}
+
+    user_items = DB.get_items_by_user_id(user_id)
+    user_reviews = DB.get_reviews_by_user(user_id)
     
     return render_template(
         "profile.html",
+        user_id=user_id,
         liked_items=liked_items,
+        user_items=user_items,
+        user_reviews=user_reviews
     )
 
 ## 좋아요 상태 조회
