@@ -28,7 +28,8 @@ class DBhandler:
         "status": data['status'],
         "category": data['category'],
         "explain": data['explain'],
-        "img_path": img_path
+        "img_path": img_path,
+        "sale": "Y"
         }
 
         self.db.child("item").child(item_id).set(item_info)
@@ -169,6 +170,9 @@ class DBhandler:
             liked_items[item.key()] = item.val()
         
         return liked_items
+    def update_item_sale(self, item_id, sale):
+        self.db.child("item").child(str(item_id)).update({"sale":sale})
+        return True
     
     ## 특정 사용자가 판매한 아이템 목록 조회
     def get_items_by_user_id(self, user_id):

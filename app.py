@@ -226,7 +226,8 @@ def view_item_detail():
     trade=item['trade'],
     description=item['explain'],
     seller=item['seller'],
-    heart_cnt=heart_cnt  
+    heart_cnt=heart_cnt,
+    sale=item.get('sale', 'Y') 
   )
 
 
@@ -390,7 +391,17 @@ def unlike(item_id):
         item['img_path']
     )
 
-    return jsonify({'msg': '안좋아요 완료!'})
+    return jsonify({'msg': '좋아요 취소 완료!'}) # "안 좋아요" -> "좋아요 취소" 문구 변경
+# 판매 완료 기능
+@application.route("/purchase/<item_id>/", methods=['POST'])
+def purchase_item(item_id):
+    if 'id' not in session:
+        return jsonify({'error': '로그인이 필요합니다.'}), 401
+    item = DB.get_item_by_id(item_id)
+    if item.get("sale") == "N":
+        return jsonify({'error': '이미 판매 완료된 상품입니다.'}), 400
+    DB.update_item_sale(item_id, "N")
 
+    return jsonify({'msg': '구매 완료!'})
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
