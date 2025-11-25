@@ -325,11 +325,7 @@ def view_review_detail(item_id):
 ## 프로필 페이지
 @application.route("/profile/<user_id>")
 def profile(user_id):
-    if 'id' not in session:
-        flash("프로필을 보려면 로그인이 필요합니다.")
-        return redirect(url_for('login'))
-    
-    if session['id'] == user_id:
+    if session and session['id'] == user_id:
         liked_items = DB.get_liked_items_by_user(user_id)
     else:
         liked_items = {}
