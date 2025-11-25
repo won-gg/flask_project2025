@@ -292,36 +292,3 @@ body {
 
 
 
-/* ===============================
-   반응형 조정
-================================ */
-@media (max-width: 1600px) {
-  .review-list {
-    padding: 40px 100px;
-  }
-
-  .reviews-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 1200px) {
-  .reviews-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 800px) {
-  .review-list {
-    padding: 5px 40px;
-  }
-
-  .reviews-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .review-card {
-    width: 100%;
-    height: auto;
-  }
-}
