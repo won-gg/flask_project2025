@@ -38,8 +38,7 @@
             src="{{ url_for('static', filename = 'images/' + item.img_path) }}" 
             alt="{{ item.title }}">
       </div>
-      <!-- 판매중/판매완료 배지 (DB의 sale값 받아와야 함)-->
-       <div class="sales">{{ item.sale }}</div>
+      <!--판매 완료 뱃지 한다면-->
       <div class="item-body">
         <div class="title">{{ item.title }}</div>
         <div class="caption">
