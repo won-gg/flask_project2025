@@ -7,20 +7,41 @@ class DBhandler:
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
 
-    def insert_item(self, name, data, img_path):
+    def insert_item(self, data, img_path):
+
+        items = self.db.child("item").get().val()
+
+        if not items:
+            item_id = "1"
+        elif isinstance(items, list):
+            item_id = str(len(items))
+        else:
+            item_id = str(len(items.key()) + 1)
+
         item_info ={
-        "seller": data['seller'],
+        "seller": data['id'],
+        "phone": data['tel'],
         "addr": data['addr'],
-        "email": data['email'],
-        "category": data['category'],
-        "card": data['card'],
+        "trade": data['type'],
+        "title": data['item'],
+        "price": data['price'],
         "status": data['status'],
-        "phone": data['phone'],
+        "category": data['category'],
+        "explain": data['explain'],
         "img_path": img_path
         }
-        self.db.child("item").child(name).set(item_info)
-        print(data,img_path)
+
+        self.db.child("item").child(item_id).set(item_info)
+    
         return True
+    
+    def get_items(self):
+        items = self.db.child("item").get().val()
+        return items
+    
+    def get_item_by_id(self, item_id):
+        item = self.db.child("item").child(item_id).get().val()
+        return item
     
     def user_duplicate_check(self, id_string):
         users = self.db.child("user").get()
@@ -61,9 +82,6 @@ class DBhandler:
         
         return False
     
-    def get_items(self):
-        items = self.db.child("item").get().val()
-        return items
     
     def reg_review(self, data, img_path):
         review_info ={
