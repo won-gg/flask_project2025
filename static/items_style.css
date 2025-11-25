@@ -1,10 +1,19 @@
-/*  메인 레이아웃 (왼쪽 카테고리 + 오른쪽 상품 목록)  */
-main{
-  max-width: 100%;
-  margin:40px auto 60px;
-  padding:0 170px;
-  display:grid;
+/*  메인 레이아웃 (상단 검색결과 + 왼쪽 카테고리 + 오른쪽 상품 목록)  */
+main {
+  width: 80%;
   grid-template-columns:220px 1fr;
+  margin: 0 auto 80px;
+}
+
+main h2{
+  font-size:24px;
+  font-weight:600;
+  margin-bottom:40px;
+}
+
+/* 왼쪽 카테고리 + 오른쪽 상품 목록 */
+.main{
+  display:flex;
   gap:32px;
 }
 
@@ -59,6 +68,7 @@ main{
   flex-direction:column;
   gap:24px;
   min-height: 65vh;
+  min-width: 700px;
 }
 .grid{
   display:grid;

@@ -23,15 +23,19 @@
     </div>
     </div>
       <div class="navbar__right">
+        <!--검색창-->
         <div class="navbar__searchContainer">
-          <input type="text" class="navbar__search" />
-          <a><img src="{{ url_for('static', filename = 'assets/search_icon.svg') }}" alt="search SVG" /></a>
+          <form action ="/list" method="get">
+            <input type="text" name="q" class="navbar__search" placeholder="검색어를 입력하세요" />
+            <input type="hidden" name="cat" value="{{ cat|default('all') }}" />
+            <button type="submit"><img src="{{ url_for('static', filename = 'assets/search_icon.svg') }}" alt="search SVG" /></button>
+          </form>
         </div>
         {% if session.id %}
-        <div class="profile__container">
+        <a class="profile__container" href="/profile">
           <div class="navbar-greeting" style="font-size: 20px; color: #117e2a;">{{ session.nickname }}님</div>
-          <a href="/profile"><img src="../static/assets/profile_default.svg" alt="profile SVG" /></a>
-        </div>
+          <img src="{{ url_for('static', filename = 'assets/profile_default.svg') }}" alt="profile SVG" />
+        </a>
         <div class="logout_button"><a href="{{ url_for('logout', next=request.full_path.rstrip('?')) }}">로그아웃</a></div>
         {% else %}
         <div class="login_button"><a href="{{ url_for('login', next=request.full_path.rstrip('?')) }}">로그인</a></div>

@@ -136,68 +136,75 @@ def reg_item_submit_post():
 
     return redirect(url_for('view_list'))
 
-
+## 상품 리스트 페이지 + 검색 기능 추가
 @application.route("/list")
 def view_list():
-  page = request.args.get("page",0,type=int)
-  cat = (request.args.get("cat", "all") or "all").lower().strip()
-  per_page=8
-  per_row=4
-  row_count=int(per_page/per_row)
-  start_idx=per_page*page
-  end_idx=per_page*(page+1)
+    page = request.args.get("page",0,type=int)
+    cat = (request.args.get("cat", "all") or "all").lower().strip()
+    q = (request.args.get("q", "") or "").lower().strip()
+    per_page=8
+    per_row=4
+    row_count=int(per_page/per_row)
+    start_idx=per_page*page
+    end_idx=per_page*(page+1)
 
-  data = DB.get_items()
+    data = DB.get_items()
 
-  if data is None:
-      data = {}
-  elif isinstance(data, list):
-        new_data = {}
-        for i, item in enumerate(data):
-            if item is not None:
-                new_data[str(i)] = item
-        data = new_data
-  
-  all_data_items = list(data.items())
+    if data is None:
+        data = {}
+    elif isinstance(data, list):
+            new_data = {}
+            for i, item in enumerate(data):
+                if item is not None:
+                    new_data[str(i)] = item
+            data = new_data
+    
+    all_data_items = list(data.items())
 
-  if cat != "all":
-    # 카테고리가 일치하는 아이템만 필터링
-    filtered_items = [
-    (iid, it) for iid, it in all_data_items 
-      if str(it.get("category", "")).lower().strip() == cat
-    ]
-  else:
-    # 'all'일 경우, 모든 아이템 사용
-    filtered_items = all_data_items
+    # 필터링: 카테고리 및 검색어
+    if cat != "all" or q != "":
+        filtered_items = []
+        for iid, it in all_data_items:
+            item_cat = str(it.get("category", "")).lower().strip()
+            item_name = str(it.get("title", "")).lower()
+            item_desc = str(it.get("explain", "")).lower()
 
-  filtered_count = len(filtered_items)
-  current_page_items = filtered_items[start_idx:end_idx]
-
-  data = dict(current_page_items)
-  tot_count = len(data)
-  for i in range(row_count):
-    if (i==row_count -1) and (tot_count%per_row != 0):
-      locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+            if (cat == "all" or item_cat == cat):   # 카테고리 조건
+                if (q == "" or q in item_name or q in item_desc):  # 검색 조건
+                    filtered_items.append((iid, it))
     else:
-      locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+        filtered_items = all_data_items
 
-  data = {}
-  for iid, it in current_page_items:
-    heart_cnt = DB.count_hearts_for_item(iid)
-    it['heart_count'] = heart_cnt
-    data[iid] = it
+    filtered_count = len(filtered_items)
+    current_page_items = filtered_items[start_idx:end_idx]
+
+    data = dict(current_page_items)
+    tot_count = len(data)
+    for i in range(row_count):
+        if (i==row_count -1) and (tot_count%per_row != 0):
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:])
+        else:
+            locals()['data_{}'.format(i)] = dict(list(data.items())[i*per_row:(i+1)*per_row])
+
+    data = {}
+    for iid, it in current_page_items:
+        heart_cnt = DB.count_hearts_for_item(iid)
+        it['heart_count'] = heart_cnt
+        data[iid] = it
 
 
-  return render_template(
-     "list.html",
-     datas=data.items(),
-     row1=locals()['data_0'].items(),
-     row2=locals()['data_1'].items(),
-     limit=per_page,
-     page = page,
-     page_count=int((filtered_count/per_page)+1),
-     cat=cat,
-     total=filtered_count)
+    return render_template(
+        "list.html",
+        datas=data.items(),
+        row1=locals()['data_0'].items(),
+        row2=locals()['data_1'].items(),
+        limit=per_page,
+        page = page,
+        page_count=int((filtered_count/per_page)+1),
+        cat=cat,
+        total=filtered_count,
+        q=q,
+    )
 
 
 @application.route("/item_detail")
