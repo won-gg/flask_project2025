@@ -106,27 +106,34 @@ class DBhandler:
         review = self.db.child("review").child(item_id).get().val()
         return review
     
-    def get_heart_byname(self, uid, name):
-        hearts = self.db.child("heart").child(uid).get()
-        target_value=""
-        if hearts.val() == None:
-            return target_value
-        
-        for res in hearts.each():
-            key_value = res.key()
-            if key_value == name:
-                target_value=res.val()
-                return target_value
-        return target_value
+    ## 좋아요 상태 조회
+    def get_heart_byname(self, uid, item_id):
+        # heart/{uid}/{item_id} 전체를 가져옴
+        res = self.db.child("heart").child(uid).child(item_id).get()
 
-    def update_heart(self, user_id, isHeart, item):
-        heart_info ={
-            "interested": isHeart
+        if res.val() is None:
+            return ""
+
+        return res.val()
+
+    ## 좋아요 추가/취소 : 좋아요 취소 시 데이터베이스에서 해당 항목 제거
+    def update_heart(self, user_id, isHeart, item_id, item_title, item_img_path):
+        heart_ref = self.db.child("heart").child(user_id).child(item_id)
+
+        if isHeart == "N":
+            heart_ref.remove()
+            return True
+
+        heart_info = {
+            "interested": "Y",
+            "title": item_title,
+            "img_path": item_img_path
         }
-        self.db.child("heart").child(user_id).child(item).set(heart_info)
+        heart_ref.set(heart_info)
         return True
     
-    def count_hearts_for_item(self, item_name):
+    ## 특정 아이템에 대한 좋아요 수 집계
+    def count_hearts_for_item(self, item_id):
         hearts_root = self.db.child("heart").get()
         if hearts_root.val() is None:
             return 0
@@ -137,7 +144,29 @@ class DBhandler:
             if user_hearts is None:
                 continue
 
-            heart_info = user_hearts.get(item_name)
+            # user_hearts가 list면 dict로 변환
+            if isinstance(user_hearts, list):
+                # list 안에 dict가 들어있다고 가정
+                user_hearts_dict = {str(i): v for i, v in enumerate(user_hearts) if v}
+            else:
+                user_hearts_dict = user_hearts
+
+            # item_id에 해당하는 좋아요 정보 가져오기
+            heart_info = user_hearts_dict.get(str(item_id))
             if heart_info and heart_info.get("interested") == "Y":
                 count += 1
+                
         return count
+    
+    ## 특정 사용자가 좋아요한 아이템 목록 조회
+    def get_liked_items_by_user(self, user_id):
+        hearts = self.db.child("heart").child(user_id).get()
+        if hearts.val() is None:
+            return {}
+
+        liked_items = {}
+        for item in hearts.each():
+            liked_items[item.key()] = item.val()
+        
+        print("liked_items###", liked_items)
+        return liked_items

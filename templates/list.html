@@ -3,7 +3,11 @@
 {% block section %}
 <link rel="stylesheet" href="../static/items_style.css" />
   <main>
+    {% if q %}
+      <h2>검색 결과: "{{ q }}" ({{ total }}개)</h2>
+    {% endif %}
     <!-- 좌측 카테고리 -->
+    <div class="main">
     <aside class="category">
       <a href="{{ url_for('reg_item') }}">
         <button class="newItem-btn" type="button">
@@ -14,15 +18,15 @@
 
       <nav class="ctgy-list">
         <a class="ctgy {% if cat == 'all' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='all', page=0) }}">All</a>
+          href="{{ url_for('view_list', cat='all', page=0, q=q) }}">All</a>
         <a class="ctgy {% if cat == 'clothes' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='clothes', page=0) }}">Clothes</a>
+          href="{{ url_for('view_list', cat='clothes', page=0, q=q) }}">Clothes</a>
         <a class="ctgy {% if cat == 'books' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='books', page=0) }}">Books</a>
+          href="{{ url_for('view_list', cat='books', page=0, q=q ) }}">Books</a>
         <a class="ctgy {% if cat == 'digitals' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='digitals', page=0) }}">Digitals</a>
+          href="{{ url_for('view_list', cat='digitals', page=0, q=q) }}">Digitals</a>
         <a class="ctgy {% if cat == 'etc' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='etc', page=0) }}">Etc</a>
+          href="{{ url_for('view_list', cat='etc', page=0, q=q) }}">Etc</a>
       </nav>
     </aside>
 
@@ -92,5 +96,6 @@
       {% endif %}
 
     </section>
+    </div>
 </main>
 {% endblock section %}

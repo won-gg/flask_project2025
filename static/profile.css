@@ -171,3 +171,8 @@
 .write-review:not(.disabled):hover {
   background-color: #2b513f;
 }
+
+p {
+  margin: 20px;
+  color: #9d9d9d;
+}

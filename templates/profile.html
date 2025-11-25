@@ -19,6 +19,26 @@
 
       <!-- 오른쪽 상품 정보 -->
       <div class="product-section">
+        <!-- 내가 좋아요한 상품 -->
+        <div class="items-list">
+          <h3>내가 좋아요한 상품</h3>
+          <div class="product-grid">
+          {% for item_id, item_info in liked_items.items() %}
+          {% if item_info %}
+          <article class="product-card">
+            <a href="/item_detail?id={{ item_id }}">
+              <img class="product-img" 
+                  src="{{ url_for('static', filename = 'images/' + item_info.img_path) }}" 
+                  alt="{{ item_info.title }}">
+              <div class="product-title">{{ item_info.title }}</div>
+            </a>
+          </article>
+          {% endif %}
+          {% else %}
+          <p>좋아요한 상품이 없습니다.</p>
+          {% endfor %}
+        </div>
+
         <!-- 내가 판 상품 -->
         <div class="items-list">
           <h3>내가 판 상품</h3>
@@ -70,8 +90,6 @@
         </div>
       </div>
     </div>
-  {% else %}
-    <p class="login-prompt">프로필을 보려면 <a href="/login">로그인</a> 해주세요.</p>
   {% endif %}
 </section>
 
