@@ -277,13 +277,13 @@
   align-items:flex-end;
 }
 .heart-box{
-  margin-top: 5px;   
+  gap: -10px; 
   display: inline-flex;      
   align-items: center;
 }
 #heart {
     position: static;      
-    color: grey;
+    color: #757575;
     font-size: 25px;
     cursor: pointer;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 

@@ -28,7 +28,8 @@ class DBhandler:
         "status": data['status'],
         "category": data['category'],
         "explain": data['explain'],
-        "img_path": img_path
+        "img_path": img_path,
+        "sale": "Y"
         }
 
         self.db.child("item").child(item_id).set(item_info)
@@ -170,3 +171,6 @@ class DBhandler:
         
         print("liked_items###", liked_items)
         return liked_items
+    def update_item_sale(self, item_id, sale):
+        self.db.child("item").child(str(item_id)).update({"sale":sale})
+        return True
