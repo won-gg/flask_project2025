@@ -144,7 +144,29 @@ class DBhandler:
             if user_hearts is None:
                 continue
 
-            heart_info = user_hearts.get(item_id)
+            # user_hearts가 list면 dict로 변환
+            if isinstance(user_hearts, list):
+                # list 안에 dict가 들어있다고 가정
+                user_hearts_dict = {str(i): v for i, v in enumerate(user_hearts) if v}
+            else:
+                user_hearts_dict = user_hearts
+
+            # item_id에 해당하는 좋아요 정보 가져오기
+            heart_info = user_hearts_dict.get(str(item_id))
             if heart_info and heart_info.get("interested") == "Y":
                 count += 1
+                
         return count
+    
+    ## 특정 사용자가 좋아요한 아이템 목록 조회
+    def get_liked_items_by_user(self, user_id):
+        hearts = self.db.child("heart").child(user_id).get()
+        if hearts.val() is None:
+            return {}
+
+        liked_items = {}
+        for item in hearts.each():
+            liked_items[item.key()] = item.val()
+        
+        print("liked_items###", liked_items)
+        return liked_items

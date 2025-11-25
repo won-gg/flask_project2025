@@ -315,9 +315,19 @@ def view_review_detail(item_id):
     return render_template("review_detail.html", review = review)
 
 
+## 프로필 페이지
 @application.route("/profile")
 def profile():
-  return render_template("profile.html")
+    if 'id' not in session:
+        flash("프로필을 보려면 로그인이 필요합니다.")
+        return redirect(url_for('login'))
+    
+    liked_items = DB.get_liked_items_by_user(session['id'])
+    
+    return render_template(
+        "profile.html",
+        liked_items=liked_items,
+    )
 
 ## 좋아요 상태 조회
 @application.route('/show_heart/<item_id>/', methods=['GET'])
