@@ -42,6 +42,7 @@
             src="{{ url_for('static', filename = 'images/' + item.img_path) }}" 
             alt="{{ item.title }}">
       </div>
+      <!--판매 완료 뱃지 한다면-->
       <div class="item-body">
         <div class="title">{{ item.title }}</div>
         <div class="caption">
@@ -75,14 +76,20 @@
 
       <!-- 페이지네이션 -->
       <nav class ="item-pagination">
-        <button class="page-btn">&laquo;</button>
+        <button class="page-btn"
+        onclick="window.location.href='{{ url_for('view_list', page=(page-1 if page > 0 else 0)) }}'"
+        {% if page == 0 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+        &laquo;</button>
         {% for i in range(page_count)%}
         <button class="page-btn {% if i == page %}active{% endif %}" type="button"
-          onclick="window.location.href ='{{url_for('view_list', page=i, cat=cat) }}'">
+          onclick="window.location.href ='{{ url_for('view_list', page=i, cat=cat) }}'">
           {{i+1}}
         </button>
         {% endfor %}
-        <button class="page-btn">&raquo;</button>
+        <button class="page-btn"
+        onclick="window.location.href='{{ url_for('view_list', page=(page+1 if page < page_count-1 else page_count-1)) }}'"
+        {% if page >= page_count - 1 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+        &raquo;</button>
       </nav>
       {% else %}
       <p>등록된 상품이 없습니다.</p>
