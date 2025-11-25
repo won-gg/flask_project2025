@@ -28,13 +28,27 @@
   </div>
 
   <!-- 페이지네이션 -->
+  {% if total > 0 %}
   <div class="pagination">
-    <button>&laquo;</button>
-    <button class="active">1</button>
-    <button>2</button>
-    <button>3</button>
-    <button>&raquo;</button>
+    <button type="button" 
+      onclick="window.location.href='{{ url_for('view_review', page=(page-1 if page > 0 else 0)) }}'"
+      {% if page == 0 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+      &laquo;
+    </button>
+    {% for i in range(page_count) %}
+    <button type="button" 
+      class="{% if i == page %}active{% endif %}"
+      onclick="window.location.href='{{ url_for('view_review', page=i) }}'">
+      {{ i + 1 }}
+    </button>
+    {% endfor %}
+    <button type="button" 
+      onclick="window.location.href='{{ url_for('view_review', page=(page+1 if page < page_count-1 else page_count-1)) }}'"
+      {% if page >= page_count - 1 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+      &raquo;
+    </button>
   </div>
+  {% endif %}
 </main>
 
 <!-- ==============================

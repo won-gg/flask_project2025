@@ -253,6 +253,11 @@ def reg_review_post():
 
 @application.route("/review")
 def view_review():
+    page = request.args.get("page", 0, type=int)
+    per_page = 8
+    start_idx = per_page * page
+    end_idx = per_page * (page + 1)
+
     reviews_data = DB.get_reviews()
 
     if not reviews_data:
@@ -266,9 +271,26 @@ def view_review():
                 clean_reviews[str(i)] = item
         reviews_data = clean_reviews
 
-    item_counts = len(reviews_data)
+    # 전체 리뷰 개수
+    total_count = len(reviews_data)
+    
+    # 페이지네이션을 위한 리뷰 리스트 생성
+    all_reviews_items = list(reviews_data.items())
+    
+    # 현재 페이지에 표시할 리뷰만 선택
+    current_page_reviews = all_reviews_items[start_idx:end_idx]
+    current_reviews = dict(current_page_reviews)
+    
+    # 전체 페이지 수 계산
+    page_count = int((total_count / per_page) + 1) if total_count > 0 else 1
 
-    return render_template("review.html", reviews=reviews_data, total = item_counts)
+    return render_template(
+        "review.html", 
+        reviews=current_reviews, 
+        total=total_count,
+        page=page,
+        page_count=page_count
+    )
 
 
 @application.route("/review_detail/<item_id>")
