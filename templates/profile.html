@@ -1,96 +1,138 @@
 {% extends "index.html" %}
 {% block section %}
+<link rel="stylesheet" href="{{ url_for('static', filename='reviews.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 <section class="profile-section">
-  {% if session.id %}
     <div class="profile-container">
       <!-- 왼쪽 사용자 정보 -->
       <div class="user-info">
         <img class="profile-img" src="../static/assets/profile_default.svg" alt="profile SVG" />
-        <p class="user-name">{{ session.nickname }}</p>
+        <p class="user-name">{{ user_id }}</p>
         <div class="user-stats">
           <div><span>매너 학점</span><strong>B+</strong></div>
-          <div><span>판매 수</span><strong>21개</strong></div>
-          <div><span>리뷰 수</span><strong>17개</strong></div>
+          <div><span>판매 수</span><strong>{{ user_items_count }}개</strong></div>
+          <div><span>리뷰 수</span><strong>{{ user_reviews_count }}개</strong></div>
         </div>
-
-        <button class="review-btn">내가 쓴 리뷰 ></button>
       </div>
 
       <!-- 오른쪽 상품 정보 -->
       <div class="product-section">
-        <!-- 내가 좋아요한 상품 -->
-        <div class="items-list">
-          <h3>내가 좋아요한 상품</h3>
-          <div class="product-grid">
-          {% for item_id, item_info in liked_items.items() %}
-          {% if item_info %}
-          <article class="product-card">
-            <a href="/item_detail?id={{ item_id }}">
-              <img class="product-img" 
-                  src="{{ url_for('static', filename = 'images/' + item_info.img_path) }}" 
-                  alt="{{ item_info.title }}">
-              <div class="product-title">{{ item_info.title }}</div>
-            </a>
-          </article>
-          {% endif %}
-          {% else %}
-          <p>좋아요한 상품이 없습니다.</p>
-          {% endfor %}
-        </div>
+        {% if session.id == user_id %}
+          <!-- 내가 좋아요한 상품 -->
+          <div class="items-list">
+            <h3>내가 좋아요한 상품</h3>
+            <div class="product-grid">
+              {% for item_id, item_info in liked_items.items() %}
+              {% if item_info %}
+              <article class="product-card">
+                <a href="/item_detail?id={{ item_id }}">
+                  <img class="product-img" 
+                      src="{{ url_for('static', filename = 'images/' + item_info.img_path) }}" 
+                      alt="{{ item_info.title }}" />
+                  <div class="product-title">{{ item_info.title }}</div>
+                </a>
+              </article>
+              {% else %}
+              <p>좋아요한 상품이 없습니다.</p>
+              {% endif %}
+              {% endfor %}
+          </div>
+          </div>
+        {% endif %}
 
         <!-- 내가 판 상품 -->
         <div class="items-list">
-          <h3>내가 판 상품</h3>
+          <h3>판매하는 상품</h3>
           <div class="product-grid">
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-            </div>
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-            </div>
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-            </div>
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-            </div>
+            {% for item_id, item_info in user_items.items() %}
+            {% if item_info %}
+            <article class="product-card">
+              <a href="/item_detail?id={{ item_id }}">
+                <img class="product-img" 
+                    src="{{ url_for('static', filename = 'images/' + item_info.img_path) }}" 
+                    alt="{{ item_info.title }}">
+                <div class="product-title">{{ item_info.title }}</div>
+              </a>
+            </article>
+            {% endif %}
+            {% else %}
+            <p>판매하는 상품이 없습니다.</p>
+            {% endfor %}
           </div>
         </div>
 
-        <!-- 내가 산 상품 -->
+        <!-- 내가 작성한 리뷰 -->
         <div class="items-list">
-          <h3>내가 산 상품</h3>
+          <h3>작성한 리뷰</h3>
           <div class="product-grid">
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-              <button class="write-review">리뷰 쓰기</button>
-            </div>
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-              <button class="write-review disabled">리뷰 작성 완료</button>
-            </div>
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-              <button class="write-review">리뷰 쓰기</button>
-            </div>
-            <div class="product-card">
-              <div class="product-img"></div>
-              <p class="product-title">상품 이름</p>
-              <button class="write-review">리뷰 쓰기</button>
-            </div>
+            {% for review_id, review_info in user_reviews.items() %}
+            {% if review_info %}
+            <article class="review-card" data-id="{{ review_id }}">
+                <img class="product-img" 
+                    src="{{ url_for('static', filename = 'images/' + review_info.img_path) }}" 
+                    alt="{{ review_info.title }}">
+                <div class="product-title"><strong>{{ review_info.item_name }}</strong></div>
+                <div class="product-title">{{ review_info.title }}</div>
+            </article>
+            {% endif %}
+            {% else %}
+            <p>작성한 리뷰가 없습니다.</p>
+            {% endfor %}
           </div>
         </div>
       </div>
     </div>
-  {% endif %}
 </section>
+
+<!-- ==============================
+     리뷰 상세 모달창 (새 구조)
+================================== -->
+<div id="reviewModal" class="modal">
+  <div class="modal-content-box">
+    <span class="close">&times;</span>
+    
+    <!-- 상단 이미지 4장 -->
+    <div class="image-row" id="modal-images"></div>
+
+    <!-- 하단 좌우 영역 -->
+    <div class="bottom-section">
+      <!-- 왼쪽 내용 -->
+      <div class="left-content">
+        <div class="meta-info" style="height:30px;">
+          <p id="modal-item" class="item-name"></p>
+          <p id="modal-rating" class="rating"></p>
+        </div>
+
+        <h2 id="modal-title" class="review-title"></h2>
+
+        <div class="review-content-box" style="height:150px;">
+          <p id="modal-content"></p>
+        </div>
+
+        <div class="hashtags" id="modal-tags"></div>
+      </div>
+
+      <!-- 오른쪽 작성자 프로필 -->
+      <div class="right-profile">
+        <div class="author-photo">
+          <img src="{{ url_for('static', filename='seller.png') }}" alt="작성자 프로필 사진">
+        </div>
+        <p id="modal-author" class="author-name"></p>
+        <p id="modal-author-rating" class="author-rating"></p>
+      </div>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="{{ url_for('static', filename='review_detail.css') }}">
+
+
+
+<!-- Flask에서 넘겨주는 데이터 -->
+<script id="reviewData" type="application/json">
+  {{ user_reviews | tojson }}
+</script>
+
+<!-- 모달 기능 JS -->
+<script src="{{ url_for('static', filename='review_modal.js') }}"></script>
 
 {% endblock %}

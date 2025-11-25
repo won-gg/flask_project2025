@@ -186,6 +186,7 @@ footer {
   align-items: center;
   flex-shrink: 0;
   background: #EEE;
+  min-width:1200px;
 }
 
 footer p {
