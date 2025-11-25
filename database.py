@@ -168,5 +168,51 @@ class DBhandler:
         for item in hearts.each():
             liked_items[item.key()] = item.val()
         
-        print("liked_items###", liked_items)
         return liked_items
+    
+    ## 특정 사용자가 판매한 아이템 목록 조회
+    def get_items_by_user_id(self, user_id):
+        items = self.db.child("item").get()
+        data = items.val()
+
+        # DB가 None일 때
+        if not data:
+            return {}
+
+        user_items = {}
+
+        for idx, value in enumerate(data):
+            if not value:      # None, 빈 값은 건너뛰기
+                continue
+
+            # seller가 원하는 user_id와 같을 때만 추가
+            if value.get('seller') == user_id:
+                user_items[idx] = value  # idx를 key로 사용
+        
+        return user_items
+    
+    ## 특정 사용자가 작성한 리뷰 조회
+    def get_reviews_by_user(self, user_id):
+        reviews = self.db.child("review").get()
+
+        print(">>> Reviews data:", reviews.val())
+        if not reviews.val():
+            return {}
+
+        result = {}
+        print(">>> Checking userid:", user_id)
+
+        for res in reviews.each():
+            key = res.key()
+            value = res.val()
+
+            # value가 None이면 건너뛰기
+            if not value:
+                continue
+
+            # reviewer_id가 일치하는지 체크
+            
+            if value.get('reviewer_id') == user_id:
+                result[key] = value
+
+        return result

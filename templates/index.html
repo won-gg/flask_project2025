@@ -32,7 +32,7 @@
           </form>
         </div>
         {% if session.id %}
-        <a class="profile__container" href="/profile">
+        <a class="profile__container" href="{{ url_for('profile', user_id=session['id']) }}">
           <div class="navbar-greeting" style="font-size: 20px; color: #117e2a;">{{ session.nickname }}님</div>
           <img src="{{ url_for('static', filename = 'assets/profile_default.svg') }}" alt="profile SVG" />
         </a>
