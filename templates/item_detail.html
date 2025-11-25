@@ -3,15 +3,15 @@
 {% block section %}
 <link rel="stylesheet" href="../static/item_style.css" />
 <main class="detail-page" 
-      data-price="{{ price }}" 
-      data-fee="{{ fee }}"
-      data-trade="{{ trade }}">  
+  data-price="{{ price }}" 
+  data-fee="{{ fee }}"
+  data-trade="{{ trade }}">  
 
   <div class="detail-grid">
     <section class="detail-media">
       <img class="detail-img" 
-           src="{{ url_for('static', filename=image_path) }}" 
-           alt="{{ title }}">
+        src="{{ url_for('static', filename = 'images/' + image_path) }}" 
+        alt="{{ title }}">
       <button class="arrow left" aria-label="이전">‹</button>
       <button class="arrow right" aria-label="다음">›</button>
       <div class="pager">2 / 6</div>
