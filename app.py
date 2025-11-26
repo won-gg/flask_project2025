@@ -119,20 +119,21 @@ def reg_item():
   if 'id' not in session:
         flash("상품을 등록하려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
-  return render_template("reg_items.html")
+  user_id = session.get('id')
+  seller_manners_grade = DB.get_user_manners_grade(user_id)
+  return render_template("reg_items.html", user_id=user_id, seller_manners_grade=seller_manners_grade)
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
     if 'id' not in session:
         flash("상품을 등록하려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
-    
+    data = request.form
+    seller_id = session.get('id')
+    seller_manners_grade = DB.get_user_manners_grade(seller_id)
     image_file = request.files["file"]
     image_file.save("static/images/{}".format(image_file.filename))
-   
-    data = request.form
-
-    DB.insert_item(data, image_file.filename)
+    DB.insert_item(data, image_file.filename, seller_manners_grade)
 
     return redirect(url_for('view_list'))
 
@@ -215,6 +216,7 @@ def view_item_detail():
 
   heart_cnt = DB.count_hearts_for_item(str(item_id))
 
+  seller_grade = item.get("seller_manners_grade", "A+")
   return render_template(
     "item_detail.html",
     item_id=item_id,
@@ -227,7 +229,8 @@ def view_item_detail():
     description=item['explain'],
     seller=item['seller'],
     heart_cnt=heart_cnt,
-    sale=item.get('sale', 'Y') 
+    sale=item.get('sale', 'Y'),
+    seller_manners_grade=seller_grade,
   )
 
 
@@ -244,16 +247,21 @@ def reg_review_for(item_id):
     item = DB.get_item_by_id(item_id)
     
     item_name = item['title']
+    reviewer_id = session.get('id')
+    reviewer_manners_grade = DB.get_user_manners_grade(reviewer_id)
     
-    return render_template("reg_reviews.html", item_id=item_id, item_name=item_name)
+    return render_template("reg_reviews.html", item_id=item_id, item_name=item_name,
+                            reviewer_id=reviewer_id,reviewer_manners_grade=reviewer_manners_grade)
 
 @application.route("/reg_review_post", methods=['POST'])
 def reg_review_post():
     data=request.form
     image_file = request.files["file"]
     image_file.save("static/images/{}".format(image_file.filename))
+    reviewer_id = session.get('id')
+    reviewer_manners_grade = DB.get_user_manners_grade(reviewer_id)
 
-    DB.reg_review(data, image_file.filename)
+    DB.reg_review(data, image_file.filename, reviewer_manners_grade)
 
     return redirect(url_for('view_review'))
 
@@ -316,7 +324,7 @@ def view_review_detail(item_id):
         "content": review_data.get("content", ""),
         "tags": [],  # 데이터베이스에 tags 필드가 없으므로 빈 리스트
         "author": review_data.get("reviewer_id", "익명"),  # reviewer_id를 author로 사용
-        "author_avg_rating": "A",  # 기본값 설정 (나중에 계산 가능)
+        "author_avg_rating": review_data.get("reviewer_manners_grade", "B+"),
         "img_path": img_path
     }
 
