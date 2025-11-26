@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("modal-title").textContent = data.title;
         document.getElementById("modal-content").textContent = data.content;
         document.getElementById("modal-author").textContent = data.reviewer_id;
-        document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.author_rating}`;
+        document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.reviewer_manners_grade}`;
     
         const modalTags = document.getElementById("modal-tags");
         modalTags.innerHTML = "";

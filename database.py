@@ -6,8 +6,17 @@ class DBhandler:
             config=json.load(f)
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
+    def get_user_manners_grade(self, user_id):
+        users = self.db.child("user").get()
+        if str(users.val()) == "None":
+            return None
 
-    def insert_item(self, data, img_path):
+        for res in users.each():
+            value = res.val()
+            if value.get('id') == user_id:
+                return value.get('manners_grade', 'B+') 
+        return None
+    def insert_item(self, data, img_path, seller_manners_grade):
 
         items = self.db.child("item").get().val()
 
@@ -29,7 +38,8 @@ class DBhandler:
         "category": data['category'],
         "explain": data['explain'],
         "img_path": img_path,
-        "sale": "Y"
+        "sale": "Y",
+        "seller_manners_grade": seller_manners_grade
         }
 
         self.db.child("item").child(item_id).set(item_info)
@@ -62,7 +72,8 @@ class DBhandler:
             "email": data['email'],
             "phoneNum": data['phoneNum'],
             "id": data['id'],
-            "pw": pw
+            "pw": pw,
+            "manners_grade": "B+"
         }
         if self.user_duplicate_check(str(data['id'])):
             self.db.child("user").push(user_info)
@@ -82,9 +93,18 @@ class DBhandler:
                 return value['id']
         
         return False
+    def get_user_manners_grade(self, user_id):
+        users = self.db.child("user").get()
+        if str(users.val()) == "None":
+            return None
+
+        for res in users.each():
+            value = res.val()
+            if value.get('id') == user_id:
+                return value.get('manners_grade', 'B+')
+        return None
     
-    
-    def reg_review(self, data, img_path):
+    def reg_review(self, data, img_path,reviewer_manners_grade):
         review_info ={
             "item_id": data['item_id'],
             "item_name": data['item_name'],
@@ -92,6 +112,7 @@ class DBhandler:
             "title": data['review_title'],
             "content": data['content'],
             "reviewer_id": data['id'],
+            "reviewer_manners_grade": reviewer_manners_grade,
             "img_path": img_path
         }   
         self.db.child("review").child(data['item_id']).set(review_info)
