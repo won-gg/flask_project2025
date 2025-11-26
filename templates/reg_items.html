@@ -26,13 +26,13 @@
       <div class = "input">
         <label class = "label" for="id">아이디 *</label>
         <input class = "input_box" type="text" name="id" id="id" 
-               value="{{ user_id | default('') }}" 
+               value="{{ user_id | default('사용자 정보를 찾을 수 없음') }}" 
                readonly>
         </div>
 
       <div class = "input">
         <label class = "label" for="tel">연락처 *</label>
-        <input class = "input_box" type="text" name="tel" id="tel" placeholder = "010-0000-0000" required>
+        <input class = "input_box" type="text" name="tel" id="tel" value="{{ user_phone | default('사용자 정보를 찾을 수 없음') }}" readonly>
       </div>
 
       <div class = "input">

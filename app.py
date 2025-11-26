@@ -25,11 +25,13 @@ def login():
         id = request.form['id']
         pw = request.form['pw']
         pw_hash = hashlib.sha256(pw.encode('utf-8')).hexdigest()
-        nickname = DB.find_user(id, pw_hash)
+
+        user_info = DB.find_user(id, pw_hash)
         
-        if nickname:
-            session['id'] = id
-            session['nickname'] = nickname
+        if user_info:
+            session['id'] = user_info['id']
+            session['nickname'] = user_info['id']
+            session['phoneNum'] = user_info['phoneNum']
             return redirect(next_page)
         else:
             flash("잘못된 ID, PW")
@@ -119,20 +121,28 @@ def reg_item():
   if 'id' not in session:
         flash("상품을 등록하려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
+  
   user_id = session.get('id')
+  user_phone = session.get('phoneNum')
+
   seller_manners_grade = DB.get_user_manners_grade(user_id)
-  return render_template("reg_items.html", user_id=user_id, seller_manners_grade=seller_manners_grade)
+
+  return render_template("reg_items.html", user_id=user_id, user_phone = user_phone, seller_manners_grade=seller_manners_grade)
 
 @application.route("/submit_item_post", methods=['POST'])
 def reg_item_submit_post():
     if 'id' not in session:
         flash("상품을 등록하려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
+    
     data = request.form
+
     seller_id = session.get('id')
     seller_manners_grade = DB.get_user_manners_grade(seller_id)
+
     image_file = request.files["file"]
     image_file.save("static/images/{}".format(image_file.filename))
+
     DB.insert_item(data, image_file.filename, seller_manners_grade)
 
     return redirect(url_for('view_list'))

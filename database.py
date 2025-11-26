@@ -6,6 +6,7 @@ class DBhandler:
             config=json.load(f)
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
+
     def get_user_manners_grade(self, user_id):
         users = self.db.child("user").get()
         if str(users.val()) == "None":
@@ -16,6 +17,7 @@ class DBhandler:
             if value.get('id') == user_id:
                 return value.get('manners_grade', 'B+') 
         return None
+    
     def insert_item(self, data, img_path, seller_manners_grade):
 
         items = self.db.child("item").get().val()
@@ -84,15 +86,17 @@ class DBhandler:
         
     def find_user(self, id, pw_hash):
         users = self.db.child("user").get()
+
         if str(users.val()) == "None":
             return False
 
         for res in users.each():
             value = res.val()
             if value['id'] == id and value['pw'] == pw_hash:
-                return value['id']
+                return value
         
         return False
+    
     def get_user_manners_grade(self, user_id):
         users = self.db.child("user").get()
         if str(users.val()) == "None":
