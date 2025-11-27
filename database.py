@@ -6,6 +6,7 @@ class DBhandler:
             config=json.load(f)
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
+
     def get_user_manners_grade(self, user_id):
         users = self.db.child("user").get()
         if str(users.val()) == "None":
@@ -16,7 +17,8 @@ class DBhandler:
             if value.get('id') == user_id:
                 return value.get('manners_grade', 'B+') 
         return None
-    def insert_item(self, data, img_path, seller_manners_grade):
+    
+    def insert_item(self, data, img_paths, seller_manners_grade):
 
         items = self.db.child("item").get().val()
 
@@ -37,7 +39,7 @@ class DBhandler:
         "status": data['status'],
         "category": data['category'],
         "explain": data['explain'],
-        "img_path": img_path,
+        "img_path": img_paths,
         "sale": "Y",
         "seller_manners_grade": seller_manners_grade
         }
@@ -84,15 +86,17 @@ class DBhandler:
         
     def find_user(self, id, pw_hash):
         users = self.db.child("user").get()
+
         if str(users.val()) == "None":
             return False
 
         for res in users.each():
             value = res.val()
             if value['id'] == id and value['pw'] == pw_hash:
-                return value['id']
+                return value
         
         return False
+    
     def get_user_manners_grade(self, user_id):
         users = self.db.child("user").get()
         if str(users.val()) == "None":
@@ -104,7 +108,7 @@ class DBhandler:
                 return value.get('manners_grade', 'B+')
         return None
     
-    def reg_review(self, data, img_path,reviewer_manners_grade):
+    def reg_review(self, data, img_paths,reviewer_manners_grade):
         review_info ={
             "item_id": data['item_id'],
             "item_name": data['item_name'],
@@ -113,7 +117,7 @@ class DBhandler:
             "content": data['content'],
             "reviewer_id": data['id'],
             "reviewer_manners_grade": reviewer_manners_grade,
-            "img_path": img_path
+            "img_path": img_paths
         }   
         self.db.child("review").child(data['item_id']).set(review_info)
         return True
