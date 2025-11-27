@@ -27,7 +27,7 @@
               <article class="product-card">
                 <a href="/item_detail?id={{ item_id }}">
                   <img class="product-img" 
-                      src="{{ url_for('static', filename = 'images/' + item_info.img_path) }}" 
+                      src="{{ url_for('static', filename = 'images/' + item_info.img_path[0]) }}" 
                       alt="{{ item_info.title }}" />
                   <div class="product-title">{{ item_info.title }}</div>
                 </a>
@@ -49,7 +49,7 @@
             <article class="product-card">
               <a href="/item_detail?id={{ item_id }}">
                 <img class="product-img" 
-                    src="{{ url_for('static', filename = 'images/' + item_info.img_path) }}" 
+                    src="{{ url_for('static', filename = 'images/' + item_info.img_path[0]) }}" 
                     alt="{{ item_info.title }}">
                 <div class="product-title">{{ item_info.title }}</div>
               </a>
@@ -69,7 +69,7 @@
             {% if review_info %}
             <article class="review-card" data-id="{{ review_id }}">
                 <img class="product-img" 
-                    src="{{ url_for('static', filename = 'images/' + review_info.img_path) }}" 
+                    src="{{ url_for('static', filename = 'images/' + review_info.img_path[0]) }}" 
                     alt="{{ review_info.title }}">
                 <div class="product-title"><strong>{{ review_info.item_name }}</strong></div>
                 <div class="product-title">{{ review_info.title }}</div>

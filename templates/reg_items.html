@@ -97,14 +97,18 @@
     <section class = "container">
       <h2 class = "heading">상품 사진</h2>
       <p class = "description small">사진은 최대 5장까지 등록 가능합니다.</p>
-      <div class = "img_upload">
-        <!--실제 파일 입력 버튼은 숨김 처리-->
-        <input type="file" id = "file" name="file" multiple hidden/>
-        <!--사용자에게 보여지는 버튼-->
-        <label for="file" class = "upload_btn">
-          <div class = "icon">📷</div>
-          <div class = "description small">사진 추가</div>
-        </label>
+
+      <div class = img_upload_box>
+        <div class="img_preview" id="imagePreview"></div>
+        <div class = "img_upload">
+          <!--실제 파일 입력 버튼은 숨김 처리-->
+          <input type="file" id = "file" name="file" multiple hidden/>
+          <!--사용자에게 보여지는 버튼-->
+          <label for="file" class = "upload_btn">
+            <div class = "icon">📷</div>
+            <div class = "description small">사진 추가</div>
+          </label>
+        </div>
       </div>
     </section>
 
@@ -118,5 +122,43 @@
   </main>
 </body>
 
+
+<script>
+  let selectedFiles = [];
+
+  document.getElementById('file').addEventListener('change', function(e) {
+    var preview = document.getElementById('imagePreview');
+    var newFiles = Array.from(e.target.files);
+    
+    if (selectedFiles.length + newFiles.length > 5) {
+      alert("사진은 최대 5장까지만 업로드 가능합니다. 현재 " + selectedFiles.length + "장 선택됨.");
+      e.target.value = "";
+      return;
+    }
+    
+    selectedFiles = selectedFiles.concat(newFiles);
+    
+    preview.innerHTML = "";
+    
+    selectedFiles.forEach(function(file) {
+      var reader = new FileReader();
+      
+      reader.onload = function(event) {
+        var img = document.createElement("img");
+        img.src = event.target.result;
+        preview.appendChild(img);
+      };
+      
+      reader.readAsDataURL(file);
+    });
+    
+
+    var dataTransfer = new DataTransfer();
+    selectedFiles.forEach(function(file) {
+      dataTransfer.items.add(file);
+    });
+    e.target.files = dataTransfer.files;
+  });
+</script>
 
 {% endblock section %}

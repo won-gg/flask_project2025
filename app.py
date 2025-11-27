@@ -135,15 +135,21 @@ def reg_item_submit_post():
         flash("상품을 등록하려면 로그인이 필요합니다.")
         return redirect(url_for('login'))
     
+    image_files = request.files.getlist("file") #파일 여러 장 받기
+    image_paths = [] 
+
+    for file in image_files:
+        if file.filename != '':
+            file.save("static/images/{}".format(file.filename))
+            image_paths.append(file.filename)
+
     data = request.form
 
     seller_id = session.get('id')
     seller_manners_grade = DB.get_user_manners_grade(seller_id)
 
-    image_file = request.files["file"]
-    image_file.save("static/images/{}".format(image_file.filename))
-
-    DB.insert_item(data, image_file.filename, seller_manners_grade)
+    
+    DB.insert_item(data, image_paths, seller_manners_grade)
 
     return redirect(url_for('view_list'))
 
@@ -265,13 +271,22 @@ def reg_review_for(item_id):
 
 @application.route("/reg_review_post", methods=['POST'])
 def reg_review_post():
+
+    image_files = request.files.getlist("file") #파일 여러 장 받기
+    image_paths = [] 
+
+    for file in image_files:
+        if file.filename != '':
+            file.save("static/images/{}".format(file.filename))
+            image_paths.append(file.filename)
+
+
     data=request.form
-    image_file = request.files["file"]
-    image_file.save("static/images/{}".format(image_file.filename))
+
     reviewer_id = session.get('id')
     reviewer_manners_grade = DB.get_user_manners_grade(reviewer_id)
 
-    DB.reg_review(data, image_file.filename, reviewer_manners_grade)
+    DB.reg_review(data, image_paths, reviewer_manners_grade)
 
     return redirect(url_for('view_review'))
 

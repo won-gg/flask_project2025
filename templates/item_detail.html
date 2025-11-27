@@ -9,9 +9,13 @@
 
   <div class="detail-grid">
     <section class="detail-media">
-      <img class="detail-img" 
-        src="{{ url_for('static', filename = 'images/' + image_path) }}" 
-        alt="{{ title }}">
+      {% if image_path %}
+        {% for image in image_path %}
+          <img class="detail-img" 
+            src="{{ url_for('static', filename = 'images/' + image) }}" 
+            alt="{{ title }}">
+        {% endfor %}
+      {% endif %}
       <button class="arrow left" aria-label="이전">‹</button>
       <button class="arrow right" aria-label="다음">›</button>
       <div class="pager">2 / 6</div>

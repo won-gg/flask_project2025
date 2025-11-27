@@ -213,3 +213,26 @@ textarea.input_box{
     font-weight: 500;
 }
 
+.img_upload_box {
+  display: flex;
+  flex-direction : row;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.img_preview {
+  display: flex;
+  flex-direction : row;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+
+.img_preview img {
+  width: 130px;
+  height: 130px;
+  border-radius: 17px;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+}
+

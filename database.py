@@ -18,7 +18,7 @@ class DBhandler:
                 return value.get('manners_grade', 'B+') 
         return None
     
-    def insert_item(self, data, img_path, seller_manners_grade):
+    def insert_item(self, data, img_paths, seller_manners_grade):
 
         items = self.db.child("item").get().val()
 
@@ -39,7 +39,7 @@ class DBhandler:
         "status": data['status'],
         "category": data['category'],
         "explain": data['explain'],
-        "img_path": img_path,
+        "img_path": img_paths,
         "sale": "Y",
         "seller_manners_grade": seller_manners_grade
         }
@@ -108,7 +108,7 @@ class DBhandler:
                 return value.get('manners_grade', 'B+')
         return None
     
-    def reg_review(self, data, img_path,reviewer_manners_grade):
+    def reg_review(self, data, img_paths,reviewer_manners_grade):
         review_info ={
             "item_id": data['item_id'],
             "item_name": data['item_name'],
@@ -117,7 +117,7 @@ class DBhandler:
             "content": data['content'],
             "reviewer_id": data['id'],
             "reviewer_manners_grade": reviewer_manners_grade,
-            "img_path": img_path
+            "img_path": img_paths
         }   
         self.db.child("review").child(data['item_id']).set(review_info)
         return True

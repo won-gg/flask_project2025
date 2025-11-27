@@ -23,11 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = reviewData[id];
         if (!data) return;
     
-        // 이미지 4장 표시
+        // 이미지 표시
         const modalImages = document.getElementById("modal-images");
-        modalImages.innerHTML = Array(4).fill(0).map(() =>
-          `<img src="/static/images/${data.img_path}" alt="리뷰 이미지">`
-        ).join("");
+        if (data.img_path && data.img_path.length > 0) {
+          modalImages.innerHTML = data.img_path.map(img => 
+            `<img src="/static/images/${img}" alt="리뷰 이미지">`
+          ).join("");
+        } else {
+          modalImages.innerHTML = "<p>등록된 이미지가 없습니다.</p>";
+        }
     
         document.getElementById("modal-item").textContent = data.item_name;
         document.getElementById("modal-rating").textContent = `매너 학점: ${data.rating}`;
