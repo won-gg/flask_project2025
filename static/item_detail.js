@@ -58,12 +58,17 @@
 
 // 2) == heart 기능 ===
 
+function getItemId() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
+
 function showHeart() {
-    var itemTitle = "{{ title }}"; 
+    const itemId = getItemId();
     
     $.ajax({
         type: 'GET',
-        url: `/show_heart/${itemTitle}/`,data: {},
+        url: `/show_heart/${itemId}/`,data: {},
         success: function (response) {
             if (response.my_heart && response.my_heart['interested'] == 'Y') {
                 $("#heart").css("color","#155724");
@@ -80,12 +85,13 @@ function showHeart() {
         }
     });
 }
+
 function like() {
-    var itemTitle = "{{ title }}";
+    const itemId = getItemId();
 
     $.ajax({
         type: 'POST',
-        url: `/like/${itemTitle}/`,
+        url: `/like/${itemId}/`,
         data: { interested : "Y" },
         success: function (response) {
             alert(response['msg']);
@@ -102,11 +108,11 @@ function like() {
     });
 }
 function unlike() {
-    var itemTitle = "{{ title }}";
+    const itemId = getItemId();
 
     $.ajax({
         type: 'POST',
-        url: `/unlike/${itemTitle}/`,
+        url: `/unlike/${itemId}/`,
         data: { interested : "N" },
         success: function (response) {
             alert(response['msg']);
