@@ -23,10 +23,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = reviewData[id];
         if (!data) return;
     
-        // 이미지 4장 표시
+        // 이미지 표시 (리스트인 경우 모든 이미지, 문자열인 경우 단일 이미지)
         const modalImages = document.getElementById("modal-images");
-        modalImages.innerHTML = Array(4).fill(0).map(() =>
-          `<img src="/static/images/${data.img_path}" alt="리뷰 이미지">`
+        let imagePaths = [];
+        
+        if (Array.isArray(data.img_path)) {
+          // 리스트인 경우 모든 이미지 사용
+          imagePaths = data.img_path;
+        } else if (data.img_path) {
+          // 문자열인 경우 단일 이미지
+          imagePaths = [data.img_path];
+        }
+        
+        // 테스트용: 이미지가 5장 미만이면 첫 번째 이미지를 반복해서 5장으로 만들기
+        if (imagePaths.length > 0 && imagePaths.length < 5) {
+          const firstImage = imagePaths[0];
+          while (imagePaths.length < 5) {
+            imagePaths.push(firstImage);
+          }
+        }
+        
+        // 모든 이미지를 표시
+        modalImages.innerHTML = imagePaths.map((imgPath, index) =>
+          `<img src="/static/images/${imgPath}" alt="리뷰 이미지 ${index + 1}">`
         ).join("");
     
         document.getElementById("modal-item").textContent = data.item_name;
