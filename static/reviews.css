@@ -11,7 +11,7 @@ body {
 .review-list {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 60px 170px; /* ✅ 좌우 여백 */
+  padding: 10px 170px; /* ✅ 좌우 여백 */
   box-sizing: border-box;
 }
 

@@ -320,6 +320,13 @@ def view_review():
     current_page_reviews = all_reviews_items[start_idx:end_idx]
     current_reviews = dict(current_page_reviews)
     
+    # img_path가 문자열인 경우 리스트로 변환 (일관성 유지)
+    for review_id, review in current_reviews.items():
+        if isinstance(review, dict) and 'img_path' in review:
+            if not isinstance(review['img_path'], list):
+                # 문자열인 경우 리스트로 변환
+                review['img_path'] = [review['img_path']] if review['img_path'] else []
+    
     # 전체 페이지 수 계산
     page_count = int((total_count / per_page) + 1) if total_count > 0 else 1
 
