@@ -3,7 +3,11 @@
 {% block section %}
 <link rel="stylesheet" href="../static/items_style.css" />
   <main>
+    {% if q %}
+      <h2>검색 결과: "{{ q }}" ({{ total }}개)</h2>
+    {% endif %}
     <!-- 좌측 카테고리 -->
+    <div class="main">
     <aside class="category">
       <a href="{{ url_for('reg_item') }}">
         <button class="newItem-btn" type="button">
@@ -14,15 +18,15 @@
 
       <nav class="ctgy-list">
         <a class="ctgy {% if cat == 'all' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='all', page=0) }}">All</a>
+          href="{{ url_for('view_list', cat='all', page=0, q=q) }}">All</a>
         <a class="ctgy {% if cat == 'clothes' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='clothes', page=0) }}">Clothes</a>
+          href="{{ url_for('view_list', cat='clothes', page=0, q=q) }}">Clothes</a>
         <a class="ctgy {% if cat == 'books' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='books', page=0) }}">Books</a>
+          href="{{ url_for('view_list', cat='books', page=0, q=q ) }}">Books</a>
         <a class="ctgy {% if cat == 'digitals' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='digitals', page=0) }}">Digitals</a>
+          href="{{ url_for('view_list', cat='digitals', page=0, q=q) }}">Digitals</a>
         <a class="ctgy {% if cat == 'etc' %}active{% endif %}" 
-          href="{{ url_for('view_list', cat='etc', page=0) }}">Etc</a>
+          href="{{ url_for('view_list', cat='etc', page=0, q=q) }}">Etc</a>
       </nav>
     </aside>
 
@@ -35,7 +39,7 @@
     <a href="/item_detail?id={{ item_id }}">
       <div class="item-img-div">
         <img class="thumb-img" 
-            src="{{ url_for('static', filename = 'images/' + item.img_path) }}" 
+            src="{{ url_for('static', filename = 'images/' + item.img_path[0]) }}" 
             alt="{{ item.title }}">
       </div>
       <div class="item-body">
@@ -54,7 +58,7 @@
     <a href="/item_detail?id={{ item_id }}">
       <div class="item-img-div">
         <img class="thumb-img" 
-            src="{{ url_for('static', filename = 'images/' + item.img_path) }}" 
+            src="{{ url_for('static', filename = 'images/' + item.img_path[0]) }}" 
             alt="{{ item.title }}">
       </div>
       <div class="item-body">
@@ -71,19 +75,26 @@
 
       <!-- 페이지네이션 -->
       <nav class ="item-pagination">
-        <button class="page-btn">&laquo;</button>
+        <button class="page-btn"
+        onclick="window.location.href='{{ url_for('view_list', page=(page-1 if page > 0 else 0)) }}'"
+        {% if page == 0 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+        &laquo;</button>
         {% for i in range(page_count)%}
         <button class="page-btn {% if i == page %}active{% endif %}" type="button"
-          onclick="window.location.href ='{{url_for('view_list', page=i, cat=cat) }}'">
+          onclick="window.location.href ='{{ url_for('view_list', page=i, cat=cat) }}'">
           {{i+1}}
         </button>
         {% endfor %}
-        <button class="page-btn">&raquo;</button>
+        <button class="page-btn"
+        onclick="window.location.href='{{ url_for('view_list', page=(page+1 if page < page_count-1 else page_count-1)) }}'"
+        {% if page >= page_count - 1 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+        &raquo;</button>
       </nav>
       {% else %}
       <p>등록된 상품이 없습니다.</p>
       {% endif %}
 
     </section>
+    </div>
 </main>
 {% endblock section %}

@@ -16,11 +16,7 @@
     {% for review_id, review in reviews.items() %}
     <article class="review-card" data-id="{{ review_id }}">
       <div class="review-image">
-        {% if review.img_path is iterable and review.img_path is not string %}
-          <img src="{{ url_for('static', filename = 'images/' + review.img_path[0]) }}" alt="상품 이미지">
-        {% else %}
-          <img src="{{ url_for('static', filename = 'images/' + review.img_path) }}" alt="상품 이미지">
-        {% endif %}
+        <img src="{{ url_for('static', filename = 'images/' + review.img_path[0]) }}" alt="상품 이미지">
       </div>
       <div class="review-body">
         <p class="item-name">{{ review.item_name }}</p>

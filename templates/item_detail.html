@@ -1,98 +1,31 @@
 {% extends "index.html" %}
 
 {% block section %}
-<script>
-function showHeart() {
-    var itemTitle = "{{ title }}"; 
-    
-    $.ajax({
-        type: 'GET',
-        url: `/show_heart/${itemTitle}/`,data: {},
-        success: function (response) {
-            if (response.my_heart && response.my_heart['interested'] == 'Y') {
-                $("#heart").css("color","#155724");
-                $("#heart").attr("onclick","unlike()");
-            } else {
-                $("#heart").css("color","grey");
-                $("#heart").attr("onclick","like()");
-            }
-        },
-        error: function(request, status, error) {
-            console.log("Error checking heart status:", error);
-            $("#heart").css("color","grey");
-            $("#heart").attr("onclick","like()");
-        }
-    });
-}
-function like() {
-    var itemTitle = "{{ title }}";
-
-    $.ajax({
-        type: 'POST',
-        url: `/like/${itemTitle}/`,
-        data: { interested : "Y" },
-        success: function (response) {
-            alert(response['msg']);
-            window.location.reload();
-        },
-        error: function(request, status, error) {
-            if (request.status === 401) {
-                alert('좋아요를 하려면 로그인이 필요합니다.');
-                window.location.href = '/login';
-            } else {
-                alert('오류가 발생했습니다.');
-            }
-        }
-    });
-}
-function unlike() {
-    var itemTitle = "{{ title }}";
-
-    $.ajax({
-        type: 'POST',
-        url: `/unlike/${itemTitle}/`,
-        data: { interested : "N" },
-        success: function (response) {
-            alert(response['msg']);
-            window.location.reload();
-        },
-        error: function(request, status, error) {
-            if (request.status === 401) {
-                alert('로그인이 필요합니다.');
-                window.location.href = '/login';
-            } else {
-                alert('오류가 발생했습니다.');
-            }
-        }
-    });
-}
-$(document).ready(function () {
-    showHeart();
-});
-</script>
-
 <link rel="stylesheet" href="../static/item_style.css" />
 <main class="detail-page" 
-      data-price="{{ price }}" 
-      data-fee="{{ fee }}"
-      data-trade="{{ trade }}">  
+  data-price="{{ price }}" 
+  data-fee="{{ fee }}"
+  data-trade="{{ trade }}">  
 
   <div class="detail-grid">
     <section class="detail-media">
-      <img class="detail-img" 
-           src="{{ url_for('static', filename = 'images/' + image_path) }}" 
-           alt="{{ title }}">
+      {% if image_path %}
+        {% for image in image_path %}
+          <img class="detail-img" 
+            src="{{ url_for('static', filename = 'images/' + image) }}" 
+            alt="{{ title }}">
+        {% endfor %}
+      {% endif %}
       <button class="arrow left" aria-label="이전">‹</button>
       <button class="arrow right" aria-label="다음">›</button>
       <div class="pager">2 / 6</div>
-      <!--<i class="fa fa-heart" id="heart"></i>-->
     </section>
 
     <aside class="detail-info">
       <a href="{{ url_for('view_list') }}#{{ category }}">
       <div class="category">{{ category }} &gt;</div>
       </a>
-      <h1 class="title">{{ title|default('국제법_김영석 저') }}</h1>
+      <h1 class="title">{{ title }}</h1>
       <div class="price" id="mainPrice" data-price="{{ price }}"></div>
       <div class="trade">
         <span class="dliv {{ 'on' if trade == 'direct' else '' }}">직거래</span>
@@ -106,13 +39,13 @@ $(document).ready(function () {
         <div class="seller-row">
           <div class="seller-info">
             <div class="seller" aria-hidden="true"></div>
-            <div class="seller-name">{{ seller }}</div>
-            <div class="grade">A+</div>
+            <div class="seller-name"><a href="{{ url_for('profile', user_id=seller) }}">{{ seller }}</a></div>
+            <div class="grade">{{ seller_manners_grade | default('A+') }}</div>
           </div>
           <button class="eval-btn" type="button">판매자 평가</button>
         </div>
         <p class="memo">
-          {{ description|default('작년 수업 시간에 사용한 교재입니다. 필기 하나도 안 되어 있고 거의 새 책입니다.') }}
+          {{ description }}
         </p>
       </div>
 
@@ -123,10 +56,19 @@ $(document).ready(function () {
       </div>
 
       <div class="buttons">
-        <button class="buy-btn" type="button">구매하기</button>
-        <button class="reg_review-btn" type="button" onclick="location.href='/reg_review_for/{{item_id}}/';">+ 리뷰 작성하기</button>
+        <!-- 구매하기 || 판매 완료 -->
+        <button class="buy-btn" type="button"
+        data-item-id="{{ item_id }}" data-sale="{{ sale }}">
+        {% if sale == 'Y' %}구매하기
+        {% else %}판매 완료
+        {% endif %}
+        </button>
+        <!-- 판매 완료일 때 나타남 -->
+        <button class="reg_review-btn" type="button" onclick="location.href='/reg_review_for/{{item_id}}/';"
+        style="{% if sale == 'Y' %}display:none;{% endif %}">+ 리뷰 작성하기
+        </button>
       </div>
-      <!--좋아요 수-->
+      <!-- 좋아요 수 -->
       <div class="heart-box">
         <i class="fa fa-heart" id="heart"></i>
         <div class="heart-cnt"> {{ heart_cnt }}</div>
@@ -135,64 +77,6 @@ $(document).ready(function () {
     </aside>
   </div>
 </main>
+<script src="{{ url_for('static', filename='item_detail.js') }}"></script>
 
-<script>
-  // 가격 계산(직거래면 배송비(fee) 0)
-  (() => {
-  const $root = document.querySelector('.detail-page');
-  if (!$root) return;
-
-  // 기본 데이터 추출
-  const price = +$root.dataset.price || 0;
-  const fee = +$root.dataset.fee || 0;
-  const trade = ($root.dataset.trade || 'delivery').toLowerCase();
-
-  // 계산
-  const feeApplied = trade === 'delivery' ? fee : 0;
-  const total = price + feeApplied;
-
-  // ₩
-  const fmt = (n, withWon = false) =>
-    (withWon ? '₩ ' : '') + n.toLocaleString('ko-KR');
-
-  // DOM 요소 모음
-  const els = {
-    mainPrice: document.getElementById('mainPrice'),
-    feeExtra: document.getElementById('feeExtra'),
-    rawPrice: document.getElementById('rawPrice'),
-    rawFee: document.getElementById('rawFee'),
-    totalPrice: document.getElementById('totalPrice'),
-  };
-
-  // 메인 가격
-  if (els.mainPrice) els.mainPrice.textContent = fmt(price, true);
-
-  // 배송비 안내
-  if (els.feeExtra) {
-    if (trade === 'delivery') {
-      els.feeExtra.textContent = `(${fmt(fee, true)})`;
-      els.feeExtra.style.display = 'block';
-    } else {
-      els.feeExtra.style.display = 'none';
-    }
-  }
-
-  // 총 금액 관련
-  if (els.rawPrice) els.rawPrice.textContent = fmt(price);
-  if (els.rawFee) els.rawFee.textContent = fmt(feeApplied);
-  if (els.totalPrice) els.totalPrice.textContent = fmt(total, true);
-
-  const hintEl = document.querySelector('.total .hint');
-    if (hintEl) {
-        // 직거래이면 힌트 숨기기
-        if (feeApplied === 0) {
-            hintEl.style.display = 'none';
-        } else {
-            hintEl.style.display = 'inline';
-        }
-    }
-
-})();
-
-</script>
 {% endblock section %}

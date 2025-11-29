@@ -23,37 +23,22 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = reviewData[id];
         if (!data) return;
     
-        // 이미지 표시 (리스트인 경우 모든 이미지, 문자열인 경우 단일 이미지)
+        // 이미지 표시
         const modalImages = document.getElementById("modal-images");
-        let imagePaths = [];
-        
-        if (Array.isArray(data.img_path)) {
-          // 리스트인 경우 모든 이미지 사용
-          imagePaths = data.img_path;
-        } else if (data.img_path) {
-          // 문자열인 경우 단일 이미지
-          imagePaths = [data.img_path];
+        if (data.img_path && data.img_path.length > 0) {
+          modalImages.innerHTML = data.img_path.map(img => 
+            `<img src="/static/images/${img}" alt="리뷰 이미지">`
+          ).join("");
+        } else {
+          modalImages.innerHTML = "<p>등록된 이미지가 없습니다.</p>";
         }
-        
-        // 테스트용: 이미지가 5장 미만이면 첫 번째 이미지를 반복해서 5장으로 만들기
-        if (imagePaths.length > 0 && imagePaths.length < 5) {
-          const firstImage = imagePaths[0];
-          while (imagePaths.length < 5) {
-            imagePaths.push(firstImage);
-          }
-        }
-        
-        // 모든 이미지를 표시
-        modalImages.innerHTML = imagePaths.map((imgPath, index) =>
-          `<img src="/static/images/${imgPath}" alt="리뷰 이미지 ${index + 1}">`
-        ).join("");
     
         document.getElementById("modal-item").textContent = data.item_name;
         document.getElementById("modal-rating").textContent = `매너 학점: ${data.rating}`;
         document.getElementById("modal-title").textContent = data.title;
         document.getElementById("modal-content").textContent = data.content;
         document.getElementById("modal-author").textContent = data.reviewer_id;
-        document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.author_rating}`;
+        document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.reviewer_manners_grade}`;
     
         const modalTags = document.getElementById("modal-tags");
         modalTags.innerHTML = "";
