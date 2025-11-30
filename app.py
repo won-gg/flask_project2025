@@ -363,7 +363,9 @@ def profile(user_id):
         liked_items = DB.get_liked_items_by_user(user_id)
     else:
         liked_items = {}
+        user_manners_grade = None
 
+    user_manners_grade = DB.get_manners_grade_by_userid(user_id)
     user_items = DB.get_items_by_user_id(user_id)
     user_reviews = DB.get_reviews_by_user(user_id)
 
@@ -377,7 +379,8 @@ def profile(user_id):
         user_items=user_items,
         user_reviews=user_reviews,
         user_items_count=user_items_count,
-        user_reviews_count=user_reviews_count
+        user_reviews_count=user_reviews_count,
+        user_manners_grade=user_manners_grade
     )
 
 ## 좋아요 상태 조회
@@ -425,6 +428,7 @@ def unlike(item_id):
     )
 
     return jsonify({'msg': '좋아요 취소 완료!'}) # "안 좋아요" -> "좋아요 취소" 문구 변경
+
 # 판매 완료 기능
 @application.route("/purchase/<item_id>/", methods=['POST'])
 def purchase_item(item_id):
@@ -436,5 +440,7 @@ def purchase_item(item_id):
     DB.update_item_sale(item_id, "N")
 
     return jsonify({'msg': '구매 완료!'})
+
+
 if __name__ == "__main__":
   application.run(host='0.0.0.0', debug=True)
