@@ -194,44 +194,43 @@ document.addEventListener('DOMContentLoaded', () => {
 // 4) === 이미지 슬라이더 ===
 document.addEventListener("DOMContentLoaded", () => {
 
-    const imageDataElement = document.getElementById("image-list");
-    const imageList = JSON.parse(imageDataElement.dataset.images);
+  const imageDataElement = document.getElementById("image-list");
+  const imageList = JSON.parse(imageDataElement.dataset.images);
 
-    let index = 0;
+  let index = 0;
 
-    const imgTag = document.getElementById("detail-img");
-    const pager = document.getElementById("pager");
-    const nextBtn = document.getElementById("next-btn");
-    const prevBtn = document.getElementById("prev-btn");
+  const imgTag = document.getElementById("detail-img");
+  const pager = document.getElementById("pager");
+  const nextBtn = document.getElementById("next-btn");
+  const prevBtn = document.getElementById("prev-btn");
 
-    // 이미지 1장일 때 = 좌우 화살표 비활성화
-    if (imageList.length <= 1) {
-        nextBtn.disabled = true;
-        prevBtn.disabled = true;
+  // 이미지 1장일 때 = 좌우 화살표 비활성화
+  if (imageList.length <= 1) {
+    nextBtn.disabled = true;
+    prevBtn.disabled = true;
 
-        nextBtn.style.opacity = "0";
-        prevBtn.style.opacity = "0";
+    nextBtn.style.opacity = "0";
+    prevBtn.style.opacity = "0";
 
-        nextBtn.style.cursor = "default";
-        prevBtn.style.cursor = "default";
+    nextBtn.style.cursor = "default";
+    prevBtn.style.cursor = "default";
 
-        return;
-    }
+    return;
+  }
 
-    // 이미지 2장부터 = 좌우 화살표버튼 활성화
-    nextBtn.addEventListener("click", () => {
-        index = (index + 1) % imageList.length;
-        updateImage();
-    });
+  // 이미지 2장부터 = 좌우 화살표버튼 활성화
+  nextBtn.addEventListener("click", () => {
+    index = (index + 1) % imageList.length;
+    updateImage();
+  });
 
-    prevBtn.addEventListener("click", () => {
-        index = (index - 1 + imageList.length) % imageList.length;
-        updateImage();
-    });
+  prevBtn.addEventListener("click", () => {
+    index = (index - 1 + imageList.length) % imageList.length;
+    updateImage();
+  });
 
-    function updateImage() {
-        imgTag.src = "/static/images/" + imageList[index];
-        pager.textContent = `${index + 1} / ${imageList.length}`;
-    }
-
+  function updateImage() {
+    imgTag.src = "/static/images/" + imageList[index];
+    pager.textContent = `${index + 1} / ${imageList.length}`;
+  }
 });
