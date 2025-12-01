@@ -240,8 +240,19 @@ class DBhandler:
                 continue
 
             # reviewer_id가 일치하는지 체크
-            
             if value.get('reviewer_id') == user_id:
                 result[key] = value
 
         return result
+    
+    def get_manners_grade_by_userid(self, user_id):
+        users = self.db.child("user").get()
+        if str(users.val()) == "None":
+            return None
+
+        for res in users.each():
+            value = res.val()
+
+            if value.get('id') == user_id:
+                return value.get('manners_grade', 'B+')
+        return None
