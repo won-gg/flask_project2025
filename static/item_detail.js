@@ -192,28 +192,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 4) === 이미지 슬라이더 ===
+document.addEventListener("DOMContentLoaded", () => {
 
-const imageDataElement = document.getElementById("image-list");
-const imageList = JSON.parse(imageDataElement.dataset.images);
+    const imageDataElement = document.getElementById("image-list");
+    const imageList = JSON.parse(imageDataElement.dataset.images);
 
-let index = 0;
+    let index = 0;
 
-const imgTag = document.getElementById("detail-img");
-const pager = document.getElementById("pager");
-const nextBtn = document.getElementById("next-btn");
-const prevBtn = document.getElementById("prev-btn");
+    const imgTag = document.getElementById("detail-img");
+    const pager = document.getElementById("pager");
+    const nextBtn = document.getElementById("next-btn");
+    const prevBtn = document.getElementById("prev-btn");
 
-nextBtn.addEventListener("click", () => {
-    index = (index + 1) % imageList.length;
-    updateImage();
+    // 🔥 이미지가 1장 이하일 경우 버튼 비활성화
+    if (imageList.length <= 1) {
+        nextBtn.disabled = true;
+        prevBtn.disabled = true;
+
+        nextBtn.style.opacity = "0";
+        prevBtn.style.opacity = "0";
+
+        nextBtn.style.cursor = "default";
+        prevBtn.style.cursor = "default";
+
+        // pager 도 그냥 1/1 고정이니 return 가능
+        return;
+    }
+
+    // 🔥 버튼 활성화 시 슬라이더 동작
+    nextBtn.addEventListener("click", () => {
+        index = (index + 1) % imageList.length;
+        updateImage();
+    });
+
+    prevBtn.addEventListener("click", () => {
+        index = (index - 1 + imageList.length) % imageList.length;
+        updateImage();
+    });
+
+    function updateImage() {
+        imgTag.src = "/static/images/" + imageList[index];
+        pager.textContent = `${index + 1} / ${imageList.length}`;
+    }
+
 });
-
-prevBtn.addEventListener("click", () => {
-    index = (index - 1 + imageList.length) % imageList.length;
-    updateImage();
-});
-
-function updateImage() {
-    imgTag.src = "/static/images/" + imageList[index];
-    pager.textContent = `${index + 1} / ${imageList.length}`;
-}

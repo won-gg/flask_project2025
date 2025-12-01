@@ -9,9 +9,14 @@
 
   <div class="detail-grid">
     <section class="detail-media">
-      <img class="detail-img" id="detail-img"
-        src="{{ url_for('static', filename = 'images/' + image_path[0]) }}" 
-        alt="{{ title }}">
+      {% if image_path %}
+        {% for image in image_path %}
+        <img class="detail-img"
+          {% if loop.first %}id="detail-img"{% endif %}
+          src="{{ url_for('static', filename='images/' + image) }}"
+          alt="{{ title }}">
+        {% endfor %}
+      {% endif %}
       <button class="arrow prev-btn" id="prev-btn" aria-label="이전">‹</button>
       <button class="arrow next-btn" id="next-btn" aria-label="다음">›</button>
       <div class="pager" id="pager">1 / {{ image_list|length }}</div>
