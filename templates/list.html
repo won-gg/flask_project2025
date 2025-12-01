@@ -39,14 +39,14 @@
     <a href="/item_detail?id={{ item_id }}">
       <div class="item-img-div">
         <img class="thumb-img" 
-            src="{{ url_for('static', filename = 'images/' + item.img_path[0]) }}" 
+            src="{{ url_for('static', filename = 'images/' + item.img_path) }}" 
             alt="{{ item.title }}">
       </div>
       <div class="item-body">
         <div class="title">{{ item.title }}</div>
         <div class="caption">
           <div class="price">₩ {{ "{:,.0f}".format(item.price | int) }}</div> 
-          <!-- 방문 수 -> 좋아요..? -->
+          <!-- 좋아요 수-->
           <div class="likes">♡ {{ item.heart_count }}</div>
         </div>
       </div>
@@ -58,7 +58,7 @@
     <a href="/item_detail?id={{ item_id }}">
       <div class="item-img-div">
         <img class="thumb-img" 
-            src="{{ url_for('static', filename = 'images/' + item.img_path[0]) }}" 
+            src="{{ url_for('static', filename = 'images/' + item.img_path) }}" 
             alt="{{ item.title }}">
       </div>
       <div class="item-body">

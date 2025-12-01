@@ -9,16 +9,13 @@
 
   <div class="detail-grid">
     <section class="detail-media">
-      {% if image_path %}
-        {% for image in image_path %}
-          <img class="detail-img" 
-            src="{{ url_for('static', filename = 'images/' + image) }}" 
-            alt="{{ title }}">
-        {% endfor %}
-      {% endif %}
-      <button class="arrow left" aria-label="이전">‹</button>
-      <button class="arrow right" aria-label="다음">›</button>
-      <div class="pager">2 / 6</div>
+      <img class="detail-img" id="detail-img"
+        src="{{ url_for('static', filename = 'images/' + image_path[0]) }}" 
+        alt="{{ title }}">
+      <button class="arrow prev-btn" id="prev-btn" aria-label="이전">‹</button>
+      <button class="arrow next-btn" id="next-btn" aria-label="다음">›</button>
+      <div class="pager" id="pager">1 / {{ image_list|length }}</div>
+      <div id="image-list" data-images='{{ image_list|tojson}}'></div>
     </section>
 
     <aside class="detail-info">
@@ -39,8 +36,8 @@
         <div class="seller-row">
           <div class="seller-info">
             <div class="seller" aria-hidden="true"></div>
-            <div class="seller-name"><a href="{{ url_for('profile', user_id=seller) }}">{{ seller }}</a></div>
-            <div class="grade">{{ seller_manners_grade | default('A+') }}</div>
+            <div class="seller-name">{{ seller }}</div>
+            <div class="grade">A+</div>
           </div>
           <button class="eval-btn" type="button">판매자 평가</button>
         </div>

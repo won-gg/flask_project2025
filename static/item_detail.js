@@ -132,7 +132,7 @@ $(document).ready(function () {
     showHeart();
 });
 
-// === 판매 완료 기능 === 
+// 3) === 판매 완료 기능 === 
 // Y = 구매 가능, N = 구매 불가능 = 판매 완료
 document.addEventListener('DOMContentLoaded', () => {
   const buyBtn = document.querySelector('.buy-btn');
@@ -191,3 +191,29 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// 4) === 이미지 슬라이더 ===
+
+const imageDataElement = document.getElementById("image-list");
+const imageList = JSON.parse(imageDataElement.dataset.images);
+
+let index = 0;
+
+const imgTag = document.getElementById("detail-img");
+const pager = document.getElementById("pager");
+const nextBtn = document.getElementById("next-btn");
+const prevBtn = document.getElementById("prev-btn");
+
+nextBtn.addEventListener("click", () => {
+    index = (index + 1) % imageList.length;
+    updateImage();
+});
+
+prevBtn.addEventListener("click", () => {
+    index = (index - 1 + imageList.length) % imageList.length;
+    updateImage();
+});
+
+function updateImage() {
+    imgTag.src = "/static/images/" + imageList[index];
+    pager.textContent = `${index + 1} / ${imageList.length}`;
+}
