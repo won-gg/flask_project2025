@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.getElementById("next-btn");
     const prevBtn = document.getElementById("prev-btn");
 
-    // 🔥 이미지가 1장 이하일 경우 버튼 비활성화
+    // 이미지 1장일 때 = 좌우 화살표 비활성화
     if (imageList.length <= 1) {
         nextBtn.disabled = true;
         prevBtn.disabled = true;
@@ -215,11 +215,10 @@ document.addEventListener("DOMContentLoaded", () => {
         nextBtn.style.cursor = "default";
         prevBtn.style.cursor = "default";
 
-        // pager 도 그냥 1/1 고정이니 return 가능
         return;
     }
 
-    // 🔥 버튼 활성화 시 슬라이더 동작
+    // 이미지 1장 이상일 때
     nextBtn.addEventListener("click", () => {
         index = (index + 1) % imageList.length;
         updateImage();
