@@ -11,14 +11,16 @@
     <section class="detail-media">
       {% if image_path %}
         {% for image in image_path %}
-          <img class="detail-img" 
-            src="{{ url_for('static', filename = 'images/' + image) }}" 
-            alt="{{ title }}">
+        <img class="detail-img"
+          {% if loop.first %}id="detail-img"{% endif %}
+          src="{{ url_for('static', filename='images/' + image) }}"
+          alt="{{ title }}">
         {% endfor %}
       {% endif %}
-      <button class="arrow left" aria-label="이전">‹</button>
-      <button class="arrow right" aria-label="다음">›</button>
-      <div class="pager">2 / 6</div>
+      <button class="arrow prev-btn" id="prev-btn" aria-label="이전">‹</button>
+      <button class="arrow next-btn" id="next-btn" aria-label="다음">›</button>
+      <div class="pager" id="pager">1 / {{ image_list|length }}</div>
+      <div id="image-list" data-images='{{ image_list|tojson}}'></div>
     </section>
 
     <aside class="detail-info">

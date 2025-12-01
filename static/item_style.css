@@ -21,6 +21,7 @@
   border-radius:17px; 
   overflow:hidden; 
   padding: 0;
+  position: relative;
 }
 .detail-img{ 
   display:block;  
@@ -43,11 +44,11 @@
   font-size: clamp(18px, 2.2vw, 25px);
 }
 
-.arrow.left{ 
+.prev-btn{ 
   left:10px; 
 }
 
-.arrow.right{ 
+.next-btn{ 
   right:10px; 
 }
 

@@ -231,10 +231,12 @@ def view_item_detail():
   item = DB.get_item_by_id(item_id) 
 
   heart_cnt = DB.count_hearts_for_item(str(item_id))
+  image_list = item.get("img_path", [])
 
   seller_grade = item.get("seller_manners_grade", "A+")
   return render_template(
     "item_detail.html",
+    image_list=image_list,
     item_id=item_id,
     title=item['title'],
     category=item['category'].capitalize(),
