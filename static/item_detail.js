@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // 이미지 1장 이상일 때
+    // 이미지 2장부터 = 좌우 화살표버튼 활성화
     nextBtn.addEventListener("click", () => {
         index = (index + 1) % imageList.length;
         updateImage();
