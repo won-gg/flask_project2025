@@ -3,7 +3,7 @@
 {% block section %}
 
 <!-- 리뷰 전체 조회 -->
-<link rel="stylesheet" href="{{ url_for('static', filename='reviews.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reviews.css') }}">
 
 <main class="review-list">
   <div class="review-header">
@@ -30,19 +30,19 @@
   {% if total > 0 %}
   <div class="pagination">
     <button type="button" 
-      onclick="window.location.href='{{ url_for('view_review', page=(page-1 if page > 0 else 0)) }}'"
+      onclick="window.location.href='{{ url_for('review.view_review', page=(page-1 if page > 0 else 0)) }}'"
       {% if page == 0 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
       &laquo;
     </button>
     {% for i in range(page_count) %}
     <button type="button" 
       class="{% if i == page %}active{% endif %}"
-      onclick="window.location.href='{{ url_for('view_review', page=i) }}'">
+      onclick="window.location.href='{{ url_for('review.view_review', page=i) }}'">
       {{ i + 1 }}
     </button>
     {% endfor %}
     <button type="button" 
-      onclick="window.location.href='{{ url_for('view_review', page=(page+1 if page < page_count-1 else page_count-1)) }}'"
+      onclick="window.location.href='{{ url_for('review.view_review', page=(page+1 if page < page_count-1 else page_count-1)) }}'"
       {% if page >= page_count - 1 %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
       &raquo;
     </button>
@@ -89,7 +89,7 @@
     </div>
   </div>
 </div>
-<link rel="stylesheet" href="{{ url_for('static', filename='review_detail.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/review_detail.css') }}">
 
 
 
@@ -99,6 +99,6 @@
 </script>
 
 <!-- 모달 기능 JS -->
-<script src="{{ url_for('static', filename='review_modal.js') }}"></script>
+<script src="{{ url_for('static', filename='js/review_modal.js') }}"></script>
 
 {% endblock section %}

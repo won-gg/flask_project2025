@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block section %}
-<link rel="stylesheet" href="../static/item_style.css" />
+<link rel="stylesheet" href="../static/css/item_style.css" />
 <main class="detail-page" 
   data-price="{{ price }}" 
   data-fee="{{ fee }}"
@@ -24,7 +24,7 @@
     </section>
 
     <aside class="detail-info">
-      <a href="{{ url_for('view_list') }}#{{ category }}">
+      <a href="{{ url_for('item.view_list') }}#{{ category }}">
       <div class="category">{{ category }} &gt;</div>
       </a>
       <h1 class="title">{{ title }}</h1>
@@ -40,7 +40,7 @@
         <div class="seller-row">
           <div class="seller-info">
             <img class="seller-img" src="{{ url_for('static', filename='assets/svg/profile_default.svg') }}" alt="profile SVG" />
-            <div class="seller-name"><a href="{{ url_for('profile', user_id=seller) }}">{{ seller }}</a></div>
+            <div class="seller-name"><a href="{{ url_for('user.profile', user_id=seller) }}">{{ seller }}</a></div>
             <div class="grade">{{ seller_manners_grade | default('A+') }}</div>
           </div>
         </div>
@@ -77,6 +77,6 @@
     </aside>
   </div>
 </main>
-<script src="{{ url_for('static', filename='item_detail.js') }}"></script>
+<script src="{{ url_for('static', filename='js/item_detail.js') }}"></script>
 
 {% endblock section %}
