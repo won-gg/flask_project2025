@@ -84,7 +84,7 @@ main h2{
   overflow:hidden;
   background:#ddd;
   border-radius:17px;
-
+  position: relative;
 }
 .item .thumb-img{
   width:100%;
@@ -117,6 +117,29 @@ main h2{
 .item .hearts{
   color:#757575;
   font-size:11px;
+}
+
+.soldout_label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.soldout_label span {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 6px 12px;
+  letter-spacing: 1px;
 }
 
 /* 페이지네이션 */
