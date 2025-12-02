@@ -6,7 +6,7 @@
     <div class="profile-container">
       <!-- 왼쪽 사용자 정보 -->
       <div class="user-info">
-        <img class="profile-img" src="../static/assets/profile_default.svg" alt="profile SVG" />
+        <img class="profile-img" src="{{ url_for('static', filename='assets/svg/profile_default.svg') }}" alt="profile SVG" />
         <p class="user-name">{{ user_id }}</p>
         <div class="user-stats">
           <div><span>매너 학점</span><strong>{{ user_manners_grade }}</strong></div>
