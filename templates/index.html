@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='fonts.css') }}">
-  <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -32,13 +32,13 @@
           </form>
         </div>
         {% if session.id %}
-        <a class="profile__container" href="{{ url_for('profile', user_id=session['id']) }}">
+        <a class="profile__container" href="{{ url_for('user.profile', user_id=session['id']) }}">
           <div class="navbar-greeting" style="font-size: 20px; color: #117e2a;">{{ session.nickname }}님</div>
           <img src="{{ url_for('static', filename = 'assets/svg/profile_default.svg') }}" alt="profile SVG" />
         </a>
-        <div class="logout_button"><a href="{{ url_for('logout', next=request.full_path.rstrip('?')) }}">로그아웃</a></div>
+        <div class="logout_button"><a href="{{ url_for('auth.logout', next=request.full_path.rstrip('?')) }}">로그아웃</a></div>
         {% else %}
-        <div class="login_button"><a href="{{ url_for('login', next=request.full_path.rstrip('?')) }}">로그인</a></div>
+        <div class="login_button"><a href="{{ url_for('auth.login', next=request.full_path.rstrip('?')) }}">로그인</a></div>
         <div class="signup_button"><a href="/signup">회원가입</a></div>
         {% endif %}
     </div>
