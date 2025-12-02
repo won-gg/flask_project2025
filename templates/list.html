@@ -41,6 +41,11 @@
         <img class="thumb-img" 
             src="{{ url_for('static', filename = 'images/' + item.img_path[0]) }}" 
             alt="{{ item.title }}">
+        {% if item.sale == 'N' %}
+        <div class="soldout_label">
+          <span>판매 완료</span>
+        </div>
+        {% endif %}
       </div>
       <div class="item-body">
         <div class="title">{{ item.title }}</div>
@@ -53,6 +58,7 @@
     </a>
   </article>
   {% endfor %}
+
   {% for item_id, item in row2 %}
   <article class="item" data-cat="{{ item.category }}">
     <a href="/item_detail?id={{ item_id }}">
@@ -60,6 +66,11 @@
         <img class="thumb-img" 
             src="{{ url_for('static', filename = 'images/' + item.img_path[0]) }}" 
             alt="{{ item.title }}">
+        {% if item.sale == 'N' %}
+        <div class="soldout_label">
+          <span>판매 완료</span>
+        </div>
+        {% endif %}
       </div>
       <div class="item-body">
         <div class="title">{{ item.title }}</div>

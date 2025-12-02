@@ -23,10 +23,34 @@
   padding: 0;
   position: relative;
 }
+
 .detail-img{ 
   display:block;  
   width: 100%;
   object-fit: cover;    
+}
+
+.soldout_label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 17px;
+}
+
+.soldout_label span {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 600;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  padding: 12px 24px;
+  letter-spacing: 2px;
 }
 
 .arrow{ 
