@@ -36,7 +36,6 @@
         <div class="fee-extra" id="feeExtra"></div>
       </div>
       
-      <div class="seller-title"><h3>판매자 정보</h3></div>
       <div class="seller-card">
         <div class="seller-row">
           <div class="seller-info">
@@ -44,7 +43,6 @@
             <div class="seller-name"><a href="{{ url_for('profile', user_id=seller) }}">{{ seller }}</a></div>
             <div class="grade">{{ seller_manners_grade | default('A+') }}</div>
           </div>
-          <button class="eval-btn" type="button">판매자 평가</button>
         </div>
         <p class="memo">
           {{ description }}
