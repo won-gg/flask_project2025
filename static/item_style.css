@@ -182,7 +182,7 @@
 }
 
 .grade{ 
-  margin-left:40px; 
+  margin-left: 0;
   color:#36AE92; 
   font-weight:800; 
   font-size: 18px;
@@ -267,7 +267,7 @@
   margin-top:10px; 
   width: 50%;
   height: 62px;
-  border:1px solid #757575;
+  border:1px solid rgba(0, 0, 0, 0.10);
   border-radius:17px; 
   cursor:pointer; 
   background:#fff; 

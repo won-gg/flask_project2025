@@ -34,11 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     
         document.getElementById("modal-item").textContent = data.item_name;
-        document.getElementById("modal-rating").textContent = `매너 학점: ${data.rating}`;
+        document.getElementById("modal-rating").textContent = `매너 점수: ${data.rating}`;
         document.getElementById("modal-title").textContent = data.title;
         document.getElementById("modal-content").textContent = data.content;
-        document.getElementById("modal-author").textContent = data.reviewer_id;
-        document.getElementById("modal-author-rating").textContent = `작성자 매너 점수: ${data.reviewer_manners_grade}`;
+
+        //리뷰 작성자 프로필로 이동
+        const reviewerId = data.reviewer_id;
+        document.getElementById("modal-author").innerHTML = `<a href="/profile/${reviewerId}" style="cursor: pointer;"> ${reviewerId} </a>`;
+
+        document.getElementById("modal-author-rating").textContent = `작성자 매너 학점: ${data.reviewer_manners_grade}`;
     
         const modalTags = document.getElementById("modal-tags");
         modalTags.innerHTML = "";
